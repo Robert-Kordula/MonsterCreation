@@ -4,12 +4,19 @@ function useFetchData(url) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => setData(data))
-        .catch((err) => console.log(`Error: ${err}`));
-    }, [url]);
+      console.log(url);
 
+      const fetchData = async () =>{
+        try {
+          let response = await fetch(url);
+          let json = await response.json();
+          setData(json);
+        } catch (error) {
+          console.log("error", error);
+        }
+      };
+    fetchData();
+    }, [url]);
     return { data };
 }
 
