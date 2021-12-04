@@ -1,5 +1,8 @@
 import "./App.css";
-import useFetchData from "./useFetchData";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import useFetchData from "./useFetchData.jsx";
+import AttributeFields from "./AttributesFields.jsx"
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,7 +15,7 @@ import Button from "@mui/material/Button";
 function TableHeader(params) {
   return (
     <TableCell>
-      <strong style={{color: "white"}}>{params.name}</strong>
+      <strong style={{ color: "white" }}>{params.name}</strong>
       <Button>SORT</Button>
     </TableCell>
   );
@@ -32,13 +35,17 @@ function App() {
                 <TableHeader name="Size" />
                 <TableHeader name="HP" />
                 <TableHeader name="CR" />
-                <TableCell colSpan={2}><Button>Add New Monster</Button></TableCell>
+                <TableCell colSpan={2}>
+                  <Button onClick={AddNewMonster()}>Add New Monster</Button>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((monster) => (
                 <TableRow className="Monster-Row">
-                  <TableCell><strong>{monster.name}</strong></TableCell>
+                  <TableCell>
+                    <strong>{monster.name}</strong>
+                  </TableCell>
                   <TableCell>{monster.type}</TableCell>
                   <TableCell>{monster.size}</TableCell>
                   <TableCell>{monster.hit_points}</TableCell>
@@ -56,6 +63,15 @@ function App() {
         </TableContainer>
       )}
     </div>
+  );
+}
+
+function AddNewMonster() {
+  ReactDOM.render(
+    <React.StrictMode>
+      <AttributeFields />
+    </React.StrictMode>,
+    document.getElementById('root')
   );
 }
 
