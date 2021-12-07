@@ -19,15 +19,22 @@ td {
 
 input {
   background-color: white !important;
+  color: black !important;
 }
 
-Button {
+.Buttons {
   color:white !important;
   background-color: var(--button-color) !important;
 }
 
 #Labels {
   background-color: var(--secondary-color);
+}
+
+.UpdateButton {
+  position: fixed !important;
+  bottom: 100px;
+  right: 0;
 }
 
 tr {

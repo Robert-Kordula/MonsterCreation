@@ -1,5 +1,5 @@
 import "./App.css";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TextField, Fab } from "@mui/material";
 
 
 function AttributeFields() {
@@ -13,7 +13,7 @@ function AttributeFields() {
                     <TableHead>
                         <TableRow>
                             <TableCell id="header-title"></TableCell>
-                            <TableCell id="slug">Slug</TableCell>
+                            <TableCell><TextField id="slug" defaultValue=""></TextField></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -23,6 +23,7 @@ function AttributeFields() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Fab className="Buttons UpdateButton" variant="extended" size="medium">SAVE CHANGES</Fab>
         </div>
     )
 }
@@ -31,7 +32,7 @@ function Attribute(params) {
     return (
         <TableRow>
             <TableCell>{params.name}</TableCell>
-            <TableCell><TextField id={params.name}>N/A</TextField></TableCell>
+            <TableCell><TextField id={params.name} defaultValue="N/A"></TextField></TableCell>
         </TableRow>
     )
 }
