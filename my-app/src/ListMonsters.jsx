@@ -35,7 +35,7 @@ function ListMonstersPage() {
             </TableHead>
             <TableBody>
               {data.map((monster) => (
-                <TableRow className="Monster-Row">
+                <TableRow className="Monster-Row" key={monster.slug}>
                   <TableCell>
                     <strong>{monster.name}</strong>
                   </TableCell>
