@@ -9,8 +9,13 @@ function useFetchData(url) {
     const fetchData = async () => {
       try {
         let response = await fetch(url);
-        let json = await response.json();
-        setData(json);
+        console.log(response.status);
+        if (response.status === 200) {
+          let json = await response.json();
+          setData(json);
+        } else {
+          alert(response.statusText);
+        }
       } catch (error) {
         setData(error);
         console.log("error", error);
