@@ -1,7 +1,7 @@
 :root {
-  --primary-color: #7c43bd;
-  --secondary-color: #4a148c;
-  --button-color: #002f6c;
+  --primary-color: #34626C;
+  --secondary-color: #839B97;
+  --button-color: #C6B497;
 }
 
 .App {
@@ -9,12 +9,24 @@
 }
 
 body {
-  color: white;
+  color: white !important;
   background-color: var(--primary-color);
+}
+
+p {
+  color: white !important;
 }
 
 td {
   color: white !important;
+}
+
+th {
+  background-color: var(--secondary-color) !important;
+}
+
+div {
+  background-color: var(--primary-color) !important;
 }
 
 input {
@@ -22,19 +34,46 @@ input {
   color: black !important;
 }
 
-.Buttons {
-  color:white !important;
+button {
+  color: white !important;
   background-color: var(--button-color) !important;
 }
 
-#Labels {
-  background-color: var(--secondary-color);
-}
-
 .UpdateButton {
-  position: absolute !important;
+  position: fixed !important;
   bottom: 100px;
   right: 25px;
+}
+
+.grid-container {
+  display: grid;
+  grid-gap: 15px;
+}
+
+.about-grid {
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
+.stats-grid {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.saves-grid {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.skills-grid {
+  grid-row-start: 3;
+  grid-row-end: 4;
+  grid-column-start: 1;
+  grid-column-end: 4;
 }
 
 tr {

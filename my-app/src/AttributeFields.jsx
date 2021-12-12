@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { TextField, Fab, Box, List, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import { TextField, Fab, Paper, Button, Box, List, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 import { useParams } from 'react-router';
 
 let monsterData;
@@ -10,7 +10,8 @@ function AttributeFields(props) {
     const aboutAttributes = [
         {
             'name': {
-                value: 'string'
+                value: 'string',
+                required: true
             }
         },
         {
@@ -20,12 +21,14 @@ function AttributeFields(props) {
         },
         {
             'size': {
-                value: 'string'
+                value: 'string',
+                required: true
             }
         },
         {
             'type': {
-                value: 'string'
+                value: 'string',
+                required: true
             }
         },
         {
@@ -35,22 +38,29 @@ function AttributeFields(props) {
         },
         {
             'group': {
-                value: 'string'
+                value: 'string',
+                required: true
             }
         },
         {
             'alignment': {
-                value: 'string'
+                value: 'string',
+                required: true
             }
         },
         {
             'languages': {
-                value: 'string'
+                value: 'list',
+                list: {
+
+                },
+                required: true
             }
         },
         {
             'challenge_rating': {
-                value: 'integer'
+                value: 'integer',
+                required: true
             }
         },
         {
@@ -200,11 +210,13 @@ function AttributeFields(props) {
                 table: [
                     {
                         header: 'name',
-                        value: 'string'
+                        value: 'string',
+                        required: true
                     },
                     {
                         header: 'desc',
-                        value: 'string'
+                        value: 'string',
+                        required: true
                     },
                     {
                         header: 'attack_bonus',
@@ -237,11 +249,13 @@ function AttributeFields(props) {
                 table: [
                     {
                         header: 'name',
-                        value: 'string'
+                        value: 'string',
+                        required: true
                     },
                     {
                         header: 'desc',
-                        value: 'string'
+                        value: 'string',
+                        required: true
                     }
                 ]
             }
@@ -252,11 +266,13 @@ function AttributeFields(props) {
                 table: [
                     {
                         header: 'name',
-                        value: 'string'
+                        value: 'string',
+                        required: true
                     },
                     {
                         header: 'desc',
-                        value: 'string'
+                        value: 'string',
+                        required: true
                     }
                 ]
             }
@@ -304,47 +320,34 @@ function AttributeFields(props) {
                 id='slug'
                 defaultValue={slug}
                 label='slug'
-                type='search'
                 disabled
             />
-            <Box>
+            <Box className = 'grid-container'>
                 <Box
-                    component="form"
-                    sx={{
-                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                    }}
                     noValidate
                     autoComplete="off"
+                    className = 'about-grid'
                 >
                     {aboutAttributes.map(buildField)}
                 </Box>
                 <Box
-                    component="form"
-                    sx={{
-                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                    }}
                     noValidate
                     autoComplete="off"
+                    className = 'stats-grid'
                 >
                     {statsAttributes.map(buildField)}
                 </Box>
                 <Box
-                    component="form"
-                    sx={{
-                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                    }}
                     noValidate
                     autoComplete="off"
+                    className = 'saves-grid'
                 >
                     {savesAttributes.map(buildField)}
                 </Box>
                 <Box
-                    component="form"
-                    sx={{
-                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                    }}
                     noValidate
                     autoComplete="off"
+                    className = 'skills-grid'
                 >
                     {skillsAttributes.map(buildField)}
                 </Box>
@@ -399,9 +402,12 @@ function GenerateTable(params) {
     let table = params.table;
     let label = params.id;
     return (
-        <TableContainer>
-            <p>{params.id}</p>
-            <Table>
+        <TableContainer component={Paper}>
+            <p><strong>{params.id}</strong></p>
+            <Table 
+                sx = {{}}
+                size = {'small'}
+            >
                 <TableHead>
                     <GenerateHeaders
                         table={table}
@@ -411,8 +417,12 @@ function GenerateTable(params) {
                 <GenerateBody
                     headers = {table}
                     data = {monsterData[label]}
+                    label = {label}
                 />
             </Table>
+            <Button
+                className = 'Buttons'
+            >Add Ability</Button>
         </TableContainer>
     )
 }
@@ -425,6 +435,7 @@ function GenerateHeaders(params) {
             {headers.map((column) => (
                 <TableCell
                     key={`${id}-${column.header}`}
+                    padding = 'none'
                 >
                     {column.header}
                 </TableCell>
@@ -438,15 +449,24 @@ function GenerateBody(params) {
     let data = params.data;
     console.log(data.length);
     return (
-        <TableBody>
+        <TableBody id = {`${params.label}-body`}>
             {data.map((row) => (
                 <TableRow>
                     {headers.map((column) => (
                         <TableCell
+                            component = {TextField}
+                            id={""}
+                            defaultValue={[row[column.header]] || 'N/A'}
+                            variant="filled"
+                            padding = 'none'
+                            size = 'size'
                         >
-                            {row[column.header]}
                         </TableCell>
-                    ))}    
+                    ))}
+                    <TableCell
+                        className = 'Buttons'
+                        component = {Button}
+                    >DELETE</TableCell>    
                 </TableRow>
             ))}
         </TableBody>

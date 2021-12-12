@@ -16,7 +16,7 @@ function ListMonstersPage() {
       {data?.length > 0 && (
         <TableContainer component={Paper}>
           <Table>
-            <TableHead id='Labels'>
+            <TableHead>
               <TableRow>
                 <TableHeader name='Name' />
                 <TableHeader name='Type' />
