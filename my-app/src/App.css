@@ -34,7 +34,7 @@ input {
   color: black !important;
 }
 
-button {
+button, a {
   color: white !important;
   background-color: var(--button-color) !important;
 }

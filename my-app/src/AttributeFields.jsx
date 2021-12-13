@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { TextField, Fab, Paper, Button, Box, List, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 import { useParams } from 'react-router';
 
@@ -225,7 +226,7 @@ function AttributeFields(props) {
                     {
                         header: 'damage_dice',
                         value: 'string'
-                    }, 
+                    },
                     {
                         header: 'damage_bonus',
                         value: 'integer'
@@ -322,32 +323,32 @@ function AttributeFields(props) {
                 label='slug'
                 disabled
             />
-            <Box className = 'grid-container'>
+            <Box className='grid-container'>
                 <Box
                     noValidate
                     autoComplete="off"
-                    className = 'about-grid'
+                    className='about-grid'
                 >
                     {aboutAttributes.map(buildField)}
                 </Box>
                 <Box
                     noValidate
                     autoComplete="off"
-                    className = 'stats-grid'
+                    className='stats-grid'
                 >
                     {statsAttributes.map(buildField)}
                 </Box>
                 <Box
                     noValidate
                     autoComplete="off"
-                    className = 'saves-grid'
+                    className='saves-grid'
                 >
                     {savesAttributes.map(buildField)}
                 </Box>
                 <Box
                     noValidate
                     autoComplete="off"
-                    className = 'skills-grid'
+                    className='skills-grid'
                 >
                     {skillsAttributes.map(buildField)}
                 </Box>
@@ -367,7 +368,6 @@ function Attribute(params) {
     let attribute = params.attribute;
     let label = Object.keys(attribute)[0];
     let value = attribute[label]['value'];
-    console.log(`${attribute}\n${label}\n${value}`);
     if (value === 'list') {
         return (
             <List
@@ -378,7 +378,6 @@ function Attribute(params) {
         );
     } else if (value === 'table') {
         let table = attribute[label]['table'];
-        console.log(table);
         return (
             <GenerateTable
                 id={label}
@@ -399,78 +398,84 @@ function Attribute(params) {
 }
 
 function GenerateTable(params) {
+
+    const [rows, setRows] = useState([]);
     let table = params.table;
     let label = params.id;
+
+    useEffect(() => {
+        let tempRows = monsterData[label].map((item) => { 
+            return table.reduce((row, head) => {
+                row[head.header] = item[head.header];
+                return row;
+            }, {}) });
+            setRows(tempRows);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    const addNewRow = () => {
+        let tempRows = [...rows, {}];
+        setRows(tempRows);
+    }
+
+    const deleteRow = (index) => {
+        if (rows.length > 1) {
+            let tempRows = [...rows];
+            console.log(tempRows.splice(index, 1));
+            setRows(tempRows);
+        } else {
+            setRows([]);
+        }
+    };
     return (
         <TableContainer component={Paper}>
             <p><strong>{params.id}</strong></p>
-            <Table 
-                sx = {{}}
-                size = {'small'}
+            <Table
+                sx={{}}
+                size={'small'}
             >
                 <TableHead>
-                    <GenerateHeaders
-                        table={table}
-                        label = {label}
-                    />
+                    <TableRow>
+                        {table.map((column) => (
+                            <TableCell
+                                key={`${label}-${column.header}`}
+                                padding='none'
+                            >
+                                {column.header}
+                            </TableCell>
+                        ))}
+                    </TableRow>
                 </TableHead>
-                <GenerateBody
-                    headers = {table}
-                    data = {monsterData[label]}
-                    label = {label}
-                />
+                <TableBody id={`${label}-body`}>
+                    {rows.map((row, index) => {
+                        return (
+                            <TableRow>
+                                {table.map((column) => (
+                                    <TableCell>
+                                        <TextField
+                                            id={""}
+                                            defaultValue={row[column.header]}
+                                            padding='none'
+                                        />
+                                    </TableCell>
+                                ))}
+                                <TableCell>
+                                    <Button
+                                        className='Buttons'
+                                        onClick={() => deleteRow(index)}
+                                    >DELETE</Button>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    })}
+                </TableBody>
             </Table>
             <Button
-                className = 'Buttons'
+                className='Buttons'
+                onClick={addNewRow}
             >Add Ability</Button>
         </TableContainer>
     )
 }
 
-function GenerateHeaders(params) {
-    let headers = params.table;
-    let id = params.label;
-    return (
-        <TableRow>
-            {headers.map((column) => (
-                <TableCell
-                    key={`${id}-${column.header}`}
-                    padding = 'none'
-                >
-                    {column.header}
-                </TableCell>
-            ))}
-        </TableRow>
-    )
-}
-
-function GenerateBody(params) {
-    let headers = params.headers;
-    let data = params.data;
-    console.log(data.length);
-    return (
-        <TableBody id = {`${params.label}-body`}>
-            {data.map((row) => (
-                <TableRow>
-                    {headers.map((column) => (
-                        <TableCell
-                            component = {TextField}
-                            id={""}
-                            defaultValue={[row[column.header]] || 'N/A'}
-                            variant="filled"
-                            padding = 'none'
-                            size = 'size'
-                        >
-                        </TableCell>
-                    ))}
-                    <TableCell
-                        className = 'Buttons'
-                        component = {Button}
-                    >DELETE</TableCell>    
-                </TableRow>
-            ))}
-        </TableBody>
-    )
-}
 
 export default AttributeFields;
