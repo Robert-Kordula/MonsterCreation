@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import ListMonstersPage from "./ListMonsters";
 import AddMonster from "./AddMonster";
-import EditMonster from "./TempEditMonster";
+import EditMonster from "./EditMonster";
 
 ReactDOM.render(
   <BrowserRouter>

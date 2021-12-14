@@ -51,11 +51,7 @@ function AttributeFields(props) {
         },
         {
             'languages': {
-                value: 'list',
-                list: {
-
-                },
-                required: true
+                value: 'string'
             }
         },
         {
@@ -143,7 +139,7 @@ function AttributeFields(props) {
         },
         {
             'senses': {
-                value: 'integer'
+                value: 'string'
             }
         }
     ];
@@ -203,6 +199,10 @@ function AttributeFields(props) {
         {
             'skills': {
                 value: 'list',
+                list: {
+                    value: 'object',
+                    object: 'string'
+                }
             }
         },
         {
@@ -236,7 +236,19 @@ function AttributeFields(props) {
         },
         {
             'reactions': {
-                value: 'list'
+                value: 'table',
+                table: [
+                    {
+                        header: 'name',
+                        value: 'string',
+                        required: true
+                    },
+                    {
+                        header: 'desc',
+                        value: 'string',
+                        required: true
+                    }
+                ]
             }
         },
         {
@@ -280,7 +292,10 @@ function AttributeFields(props) {
         },
         {
             'spell_list': {
-                value: 'list'
+                value: 'list',
+                list: {
+                    value: 'string'
+                }
             }
         }
     ];
@@ -311,7 +326,11 @@ function AttributeFields(props) {
 
     const buildField = (attribute) => {
         let label = Object.keys(attribute)[0];
-        return <Attribute key={label} name={label} attribute={attribute} />;
+        return <Attribute 
+                    key={label} 
+                    name={label} 
+                    attribute={attribute}
+                />;
     };
 
     return (
@@ -364,20 +383,20 @@ function AttributeFields(props) {
     )
 }
 
-function Attribute(params) {
-    let attribute = params.attribute;
+function Attribute(props) {
+    let attribute = props.attribute;
     let label = Object.keys(attribute)[0];
     let value = attribute[label]['value'];
     if (value === 'list') {
+        let list = attribute[label]
         return (
-            <List
-                id={params.name}
-                subheader={params.name}
-                variant="filled"
+            <GenerateList
+                id={label}
+                list={list}
             />
         );
     } else if (value === 'table') {
-        let table = attribute[label]['table'];
+        let table = attribute[label].table;
         return (
             <GenerateTable
                 id={label}
@@ -397,21 +416,26 @@ function Attribute(params) {
     }
 }
 
-function GenerateTable(params) {
+function GenerateTable(props) {
 
     const [rows, setRows] = useState([]);
-    let table = params.table;
-    let label = params.id;
+    let table = props.table;
+    let label = props.id;
 
     useEffect(() => {
-        let tempRows = monsterData[label].map((item) => { 
-            return table.reduce((row, head) => {
-                row[head.header] = item[head.header];
-                return row;
-            }, {}) });
+        if (monsterData[label].length > 0) {
+            let tempRows = monsterData[label].map((item) => {
+                return table.reduce((row, head) => {
+                    row[head.header] = item[head.header];
+                    return row;
+                }, {})
+            });
             setRows(tempRows);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+
     const addNewRow = () => {
         let tempRows = [...rows, {}];
         setRows(tempRows);
@@ -428,7 +452,7 @@ function GenerateTable(params) {
     };
     return (
         <TableContainer component={Paper}>
-            <p><strong>{params.id}</strong></p>
+            <p><strong>{props.id}</strong></p>
             <Table
                 sx={{}}
                 size={'small'}
@@ -477,5 +501,12 @@ function GenerateTable(params) {
     )
 }
 
+function GenerateList(props) {
+
+    return (
+        <List
+        ></List>
+    );
+}
 
 export default AttributeFields;
