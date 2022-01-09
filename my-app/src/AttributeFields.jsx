@@ -423,7 +423,7 @@ function GenerateTable(props) {
     let label = props.id;
 
     useEffect(() => {
-        if (monsterData[label].length > 0) {
+        if (monsterData[label] && monsterData[label].length > 0) {
             let tempRows = monsterData[label].map((item) => {
                 return table.reduce((row, head) => {
                     row[head.header] = item[head.header];

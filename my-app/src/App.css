@@ -76,6 +76,19 @@ button, a {
   grid-column-end: 4;
 }
 
+.Search-Header {
+  /*position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;*/
+  display: block;
+}
+
+.Search-Body {
+  position: relative;
+  top: 100px;
+}
+
 tr {
   align-content: left;
   background-color: var(--primary-color);
