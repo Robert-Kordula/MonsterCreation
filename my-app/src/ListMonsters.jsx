@@ -4,60 +4,52 @@ import { useState } from 'react';
 import useFetchData from './useFetchData.jsx';
 import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Table, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, Button, TextField, ToggleButtonGroup, ToggleButton, Drawer, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Table, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, Button, TextField, ToggleButtonGroup, ToggleButton, Drawer, Accordion, AccordionSummary, AccordionDetails, Autocomplete, Checkbox, Input } from '@mui/material';
 import { Box } from '@mui/system';
 
 
 /*Temporary hardcoding of filter types and values, when backend is complete will be sending
   details of all filters to client
 */
-const aboutFilters = [
-  {
+
+const FILTERS = {
+  About: {
     Size: {
       InputType: 'drop-downs',
       Values: ['Small', 'Medium', 'Large', 'Huge']
-    }
-  },
-  {
+    },
     Type: {
       InputType: 'drop-downs',
       Values: ['celestial', 'dragon', 'aberration', 'undead', 'fey']
-    }
-  },
-  {
+    },
     Languages: {
       InputType: 'multi-drop-down',
       Values: ['Common', 'Gnoll', 'Sylvan', 'Draconic']
-    }
-  },
-  {
+    },
     Challenge_Rating: {
       InputType: 'integer'
     }
-  }
-]
+  },
 
-const statsFilters = [
+  Stats: {
 
-];
+  },
+  Speeds: {
 
-const speedsFilter = [
+  },
+  Saves: {
 
-];
-
-const savesFilter = [
-
-];
-
-const actionsFilter = [
-  {
-    Actions: {
-      InputType: 'range',
-      minValue: 0,
-      maxValue: 10
+  },
+  Actions: [
+    {
+      Actions: {
+        InputType: 'range',
+        minValue: 0,
+        maxValue: 10
+      }
     }
-  }
-];
+  ]
+};
 
 function ListMonstersPage() {
   const { data } = useFetchData('http://localhost:3500/monster');
@@ -204,8 +196,7 @@ function FilterDrawer() {
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >About Monster</AccordionSummary>
-        <AccordionDetails
-        ></AccordionDetails>
+        <AccordionDetails><FilterAbout /></AccordionDetails>
       </Accordion>
       <Accordion
         expanded={expanded === 'panel2'}
@@ -265,10 +256,65 @@ function FilterDrawer() {
 
 function FilterAbout() {
 
+
+  return (
+    <Box
+    >
+      <DropDownFilter label='Size' values={FILTERS.About.Size.Values} />
+      <MultiDropFilter label='Languages' values={FILTERS.About.Languages.Values} />
+      <IntegerFilter label='Challenge Rating' />
+    </Box>
+  )
 }
 
-function DropDownFilter() {
+function DropDownFilter(props) {
+  let label = props.label;
+  let values = props.values;
 
+  return (
+    <Autocomplete
+      id={`filter-${label}`}
+      options={values}
+      renderInput={(params) => <TextField {...params} label={label} />}
+    />
+  )
+}
+
+function MultiDropFilter(props) {
+  let label = props.label;
+  let values = props.values;
+
+  return (
+    <Autocomplete
+      multiple
+      id={`filter-${label}`}
+      options={values}
+      disableCloseOnSelect
+      renderOption={(props, option, {selected}) => (
+        <li {...props}>
+          <Checkbox
+            checked={selected}
+          />
+          {option}
+        </li>
+      )}
+      renderInput={(params) => <TextField {...params} label={label} />}
+    />
+  )
+}
+
+function IntegerFilter(props) {
+  let label = props.label;
+
+  return (
+    <TextField
+      id={`filter-${label}`}
+      label={label}
+      onKeyPress={(event) => {
+        if (!/[0-9]/.test(event.key)) event.preventDefault();
+      }}
+    />
+  )
 }
 
 function TablePaginator() {
