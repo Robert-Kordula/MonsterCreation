@@ -4,7 +4,7 @@ import { useState } from 'react';
 import useFetchData from './useFetchData.jsx';
 import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Table, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, Button, TextField, ToggleButtonGroup, ToggleButton, Drawer, Accordion, AccordionSummary, AccordionDetails, Autocomplete, Checkbox, Input } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Table, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, Button, TextField, ToggleButtonGroup, ToggleButton, Drawer, Accordion, AccordionSummary, AccordionDetails, Autocomplete, Checkbox, Slider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 
 
@@ -12,43 +12,152 @@ import { Box } from '@mui/system';
   details of all filters to client
 */
 
-const FILTERS = {
-  About: {
-    Size: {
-      InputType: 'drop-downs',
-      Values: ['Small', 'Medium', 'Large', 'Huge']
+const ALL_FILTERS = {
+  'about': {
+    'size': {
+      inputType: 'drop-downs',
+      values: ['Small', 'Medium', 'Large', 'Huge']
     },
-    Type: {
-      InputType: 'drop-downs',
-      Values: ['celestial', 'dragon', 'aberration', 'undead', 'fey']
+    'type': {
+      inputType: 'drop-downs',
+      values: ['celestial', 'dragon', 'aberration', 'undead', 'fey']
     },
-    Languages: {
-      InputType: 'multi-drop-down',
-      Values: ['Common', 'Gnoll', 'Sylvan', 'Draconic']
+    'group': {
+      inputType: 'drop-downs',
+      values: ['N/A', 'Elementals', 'Sphinxes', 'Animated Objects']
     },
-    Challenge_Rating: {
-      InputType: 'integer'
+    'alignment': {
+      inputType: 'drop-downs',
+      values: ['lawful good', 'neutral good', 'chaotic good', 'lawful neutral', 'unaligned', 'chaotic neutral', 'lawful evil', 'neutral evil', 'chaotic evil']
+    },
+    'languages': {
+      inputType: 'multi-drop-down',
+      values: ['Common', 'Gnoll', 'Sylvan', 'Draconic']
+    },
+    'challengeRating': {
+      inputType: 'integer'
     }
   },
-
-  Stats: {
-
-  },
-  Speeds: {
-
-  },
-  Saves: {
-
-  },
-  Actions: [
-    {
-      Actions: {
-        InputType: 'range',
-        minValue: 0,
-        maxValue: 10
-      }
+  'stats': {
+    'armorClass': {
+      inputType: 'integer'
+    },
+    'armourDescription': {
+      inputType: 'string'
+    },
+    'hitPoints': {
+      inputType: 'integer'
+    },
+    'hitDice': {
+      inputType: ''
+    },
+    'strength': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'dexterity': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'constitution': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'intelligence': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'wisdom': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'charisma': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'perception': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'senses': {
+      inputType: 'string'
     }
-  ]
+  },
+  'speeds': {
+    'walk': {
+      inputType: 'integer'
+    },
+    'climb': {
+      inputType: 'integer'
+    },
+    'burrow': {
+      inputType: 'integer'
+    },
+    'swim': {
+      inputType: 'integer'
+    },
+    'fly': {
+      inputType: 'integer'
+    }
+  },
+  'saves and resistances': {
+    'strengthSave': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'dexteritySave': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'constitutionSave': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'intelligenceSave': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'wisdomSave': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'charismaSave': {
+      inputType: 'range',
+      min: 0,
+      max: 100
+    },
+    'damageVulnerabilites': {
+      inputType: 'drop-downs',
+      values: ['radiant', 'cold', 'fire', 'bludgeoning']
+    },
+    'damageResistances': {
+      inputType: 'drop-downs',
+      values: ['radiant', 'cold', 'fire', 'bludgeoning']
+    },
+    'damageImmunities': {
+      inputType: 'drop-downs',
+      values: ['radiant', 'cold', 'fire', 'bludgeoning']
+    },
+    'conditionImmunities': {
+      inputType: 'drop-downs',
+      values: ['paralyzed', 'unconscious', 'charmed', 'poisoned']
+    }
+  },
+  'actions and spells': {
+
+  }
 };
 
 function ListMonstersPage() {
@@ -184,68 +293,27 @@ function FilterDrawer() {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   }
+
+  let sections = Object.keys(ALL_FILTERS);
+
   return (
     <Box
     >
-      <Accordion
-        expanded={expanded === 'panel1'}
-        onChange={handleChange('panel1')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >About Monster</AccordionSummary>
-        <AccordionDetails><FilterAbout /></AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === 'panel2'}
-        onChange={handleChange('panel2')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2bh-content"
-          id="panel2bh-header"
-        >Monster Stats</AccordionSummary>
-        <AccordionDetails
-        ></AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === 'panel3'}
-        onChange={handleChange('panel3')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel3bh-content"
-          id="panel3bh-header"
-        >Monster Speeds</AccordionSummary>
-        <AccordionDetails
-        ></AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === 'panel4'}
-        onChange={handleChange('panel4')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >Monster Saves/Resistances</AccordionSummary>
-        <AccordionDetails
-        ></AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === 'panel5'}
-        onChange={handleChange('panel5')}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel5bh-content"
-          id="panel5bh-header"
-        >Monster Actions/Spells</AccordionSummary>
-        <AccordionDetails
-        ></AccordionDetails>
-      </Accordion>
+      {sections.map((label)=> {
+        return (
+          <Accordion
+          expanded={expanded === label}
+          onChange={handleChange(label)}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`${label}bh-content`}
+            id={`${label}bh-header`}
+          >{label}</AccordionSummary>
+          <PopulateFilters filters={ALL_FILTERS[label]}/>
+        </Accordion>
+        )
+      })}
       <div style={{ display: 'inline' }}>
         <Button>Apply</Button>
         <Button>Reset</Button>
@@ -254,16 +322,26 @@ function FilterDrawer() {
   )
 }
 
-function FilterAbout() {
+function PopulateFilters(props) {  
+  let filters = props.filters;
+  let filterLabels = Object.keys(filters);
 
+  const determineFilter = (label) => {
+    let filter = filters[label];
+    let inputType = filter.inputType;
+    if (inputType === 'drop-downs') return (<DropDownFilter label={label} values={filter.values}/>)
+    else if (inputType === 'multi-drop-down') return (<MultiDropFilter label={label} values={filter.values}/>)
+    else if (inputType === 'integer') return (<IntegerFilter label={label} />);
+    else if (inputType === 'string') return (<StringFilter label={label} />);
+    else if (inputType === 'range') return (<RangeFilter label={label} min={filter.min} max={filter.max}/>)
+    else if (inputType === 'number-in-list') return (<ListLengthFilter label={label} min={filter.min} max={filter.max}/>)
+  };
 
   return (
-    <Box
+    <AccordionDetails
     >
-      <DropDownFilter label='Size' values={FILTERS.About.Size.Values} />
-      <MultiDropFilter label='Languages' values={FILTERS.About.Languages.Values} />
-      <IntegerFilter label='Challenge Rating' />
-    </Box>
+      {filterLabels.map(determineFilter)}
+    </AccordionDetails>
   )
 }
 
@@ -314,6 +392,73 @@ function IntegerFilter(props) {
         if (!/[0-9]/.test(event.key)) event.preventDefault();
       }}
     />
+  )
+}
+
+function StringFilter(props) {
+  let label = props.label;
+
+  return (
+    <TextField
+      id={`filter-${label}`}
+      label={label}
+    />
+  )
+}
+
+function RangeFilter(props) {
+  const [value, setValue] = useState([20, 37]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  }
+  
+  let label = props.label;
+  let min = props.min;
+  let max = props.max;
+
+  return (
+    <Box
+    >
+      <Typography>{label}</Typography>
+      <Slider
+        id={`filter-${label}`}
+        valueLabelDisplay='auto'
+        value={value}
+        onChange={handleChange}
+        min={min}
+        max={max}
+        disableSwap
+      />
+    </Box>
+  )
+}
+
+function ListLengthFilter(props) {
+  const [value, setValue] = useState([20, 37]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  }
+  
+  let label = props.label;
+  let min = props.min;
+  let max = props.max;
+
+  return (
+    <Box
+    >
+      <Typography>{label}</Typography>
+      <Slider
+        id={`filter-${label}`}
+        valueLabelDisplay='auto'
+        value={value}
+        onChange={handleChange}
+        min={min}
+        max={max}
+        disableSwap
+      />
+    </Box>
   )
 }
 
