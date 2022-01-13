@@ -289,9 +289,23 @@ function FilterButton() {
 function FilterDrawer() {
 
   const [expanded, setExpanded] = useState(false);
+  const [userFilters, setUserFilters] = useState({});
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+  }
+
+  const onApply = () => {
+    console.log(JSON.stringify(userFilters));
+  };
+
+  const onReset = () => {
+    setUserFilters((prevState) => {
+      for (const prop of Object.getOwnPropertyNames(prevState)) {
+        delete prevState[prop];
+      }
+    });
+    console.log(JSON.stringify(userFilters));
   }
 
   let sections = Object.keys(ALL_FILTERS);
@@ -299,42 +313,50 @@ function FilterDrawer() {
   return (
     <Box
     >
-      {sections.map((label)=> {
+      {sections.map((label) => {
         return (
           <Accordion
-          expanded={expanded === label}
-          onChange={handleChange(label)}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={`${label}bh-content`}
-            id={`${label}bh-header`}
-          >{label}</AccordionSummary>
-          <PopulateFilters filters={ALL_FILTERS[label]}/>
-        </Accordion>
+            expanded={expanded === label}
+            onChange={handleChange(label)}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls={`${label}bh-content`}
+              id={`${label}bh-header`}
+            >{label}
+            </AccordionSummary>
+            <PopulateFilters
+              filters={ALL_FILTERS[label]}
+              userFilters={[userFilters, setUserFilters]}
+            />
+          </Accordion>
         )
       })}
       <div style={{ display: 'inline' }}>
-        <Button>Apply</Button>
-        <Button>Reset</Button>
+        <Button
+          onClick={onApply}
+        >Apply</Button>
+        <Button
+          onClick={onReset}
+        >Reset</Button>
       </div>
     </Box>
   )
 }
 
-function PopulateFilters(props) {  
+function PopulateFilters(props) {
   let filters = props.filters;
   let filterLabels = Object.keys(filters);
 
   const determineFilter = (label) => {
     let filter = filters[label];
     let inputType = filter.inputType;
-    if (inputType === 'drop-downs') return (<DropDownFilter label={label} values={filter.values}/>)
-    else if (inputType === 'multi-drop-down') return (<MultiDropFilter label={label} values={filter.values}/>)
-    else if (inputType === 'integer') return (<IntegerFilter label={label} />);
-    else if (inputType === 'string') return (<StringFilter label={label} />);
-    else if (inputType === 'range') return (<RangeFilter label={label} min={filter.min} max={filter.max}/>)
-    else if (inputType === 'number-in-list') return (<ListLengthFilter label={label} min={filter.min} max={filter.max}/>)
+    if (inputType === 'drop-downs') return (<DropDownFilter label={label} values={filter.values} userFilters={props.userFilters} />)
+    else if (inputType === 'multi-drop-down') return (<MultiDropFilter label={label} values={filter.values} userFilters={props.userFilters} />)
+    else if (inputType === 'integer') return (<IntegerFilter label={label} userFilters={props.userFilters} />);
+    else if (inputType === 'string') return (<StringFilter label={label} userFilters={props.userFilters} />);
+    else if (inputType === 'range') return (<RangeFilter label={label} min={filter.min} max={filter.max} userFilters={props.userFilters} />)
+    else if (inputType === 'number-in-list') return (<ListLengthFilter label={label} min={filter.min} max={filter.max} userFilters={props.userFilters} />)
   };
 
   return (
@@ -346,29 +368,55 @@ function PopulateFilters(props) {
 }
 
 function DropDownFilter(props) {
-  let label = props.label;
-  let values = props.values;
+  const [userFilters, setUserFilters] = props.userFilters;
 
+  const label = props.label;
+  const acceptedValues = props.values;
+
+  const handleChange = (event, newValue) => {
+    setUserFilters((prevState) => ({
+      ...prevState,
+      [label]: newValue
+    }));
+  }
+  const getValue = () => {
+    if (typeof userFilters[label] === 'undefined') return '';
+    return userFilters[label];
+  }
   return (
     <Autocomplete
       id={`filter-${label}`}
-      options={values}
+      options={acceptedValues}
       renderInput={(params) => <TextField {...params} label={label} />}
+      onChange={handleChange}
+      //value={getValue}
     />
   )
 }
 
 function MultiDropFilter(props) {
-  let label = props.label;
-  let values = props.values;
+  const [userFilters, setUserFilters] = props.userFilters;
 
+  const label = props.label;
+  const acceptedValues = props.values;
+
+  const handleChange = (event, newValue) => {
+    setUserFilters((prevState) => ({
+      ...prevState,
+      [label]: newValue
+    }));
+  }
+  const getValue = () => {
+    if (typeof userFilters[label] === 'undefined') return [];
+    return userFilters[label];
+  }
   return (
     <Autocomplete
       multiple
       id={`filter-${label}`}
-      options={values}
+      options={acceptedValues}
       disableCloseOnSelect
-      renderOption={(props, option, {selected}) => (
+      renderOption={(props, option, { selected }) => (
         <li {...props}>
           <Checkbox
             checked={selected}
@@ -376,14 +424,28 @@ function MultiDropFilter(props) {
           {option}
         </li>
       )}
+      onChange={handleChange}
+      //value={getValue}
       renderInput={(params) => <TextField {...params} label={label} />}
     />
   )
 }
 
 function IntegerFilter(props) {
-  let label = props.label;
+  const [userFilters, setUserFilters] = props.userFilters;
 
+  const label = props.label;
+
+  const handleChange = (event) => {
+    setUserFilters((prevState) => ({
+      ...prevState,
+      [label]: event.target.value
+    }));
+  }
+  const getValue = () => {
+    if (typeof userFilters[label] === 'undefined') return '';
+    return userFilters[label];
+  }
   return (
     <TextField
       id={`filter-${label}`}
@@ -391,32 +453,57 @@ function IntegerFilter(props) {
       onKeyPress={(event) => {
         if (!/[0-9]/.test(event.key)) event.preventDefault();
       }}
+      onChange={handleChange}
+      value={getValue}
     />
   )
 }
 
 function StringFilter(props) {
-  let label = props.label;
+  const [userFilters, setUserFilters] = props.userFilters;
+
+  const label = props.label;
+
+  const handleChange = (event) => {
+    setUserFilters((prevState) => ({
+      ...prevState,
+      [label]: event.target.value
+    }));
+  }
+
+  const getValue = () => {
+    if (typeof userFilters[label] === 'undefined') return '';
+    return userFilters[label];
+  }
 
   return (
     <TextField
       id={`filter-${label}`}
       label={label}
+      onChange={handleChange}
+      //value={getValue}
     />
   )
 }
 
 function RangeFilter(props) {
-  const [value, setValue] = useState([20, 37]);
+  const [userFilters, setUserFilters] = props.userFilters;
+
+  const label = props.label;
+  const min = props.min;
+  const max = props.max;
+
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setUserFilters((prevState) => ({
+      ...prevState,
+      [label]: newValue
+    }));
   }
-  
-  let label = props.label;
-  let min = props.min;
-  let max = props.max;
-
+  const getValue = () => {
+    if (typeof userFilters[label] === 'undefined') return [min, max];
+    return userFilters[label];
+  }
   return (
     <Box
     >
@@ -424,27 +511,36 @@ function RangeFilter(props) {
       <Slider
         id={`filter-${label}`}
         valueLabelDisplay='auto'
-        value={value}
+        value={[min, max]}
+        //value={getValue}
         onChange={handleChange}
         min={min}
         max={max}
         disableSwap
+        
       />
     </Box>
   )
 }
 
 function ListLengthFilter(props) {
-  const [value, setValue] = useState([20, 37]);
+  const [userFilters, setUserFilters] = props.userFilters;
+
+  const label = props.label;
+  const min = props.min;
+  const max = props.max;
+
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setUserFilters((prevState) => ({
+      ...prevState,
+      [label]: newValue
+    }));
   }
-  
-  let label = props.label;
-  let min = props.min;
-  let max = props.max;
-
+  const getValue = () => {
+    if (typeof userFilters[label] === 'undefined') return '';
+    return userFilters[label];
+  }
   return (
     <Box
     >
@@ -452,7 +548,8 @@ function ListLengthFilter(props) {
       <Slider
         id={`filter-${label}`}
         valueLabelDisplay='auto'
-        value={value}
+        value={[min, max]}
+        //value={getValue}
         onChange={handleChange}
         min={min}
         max={max}
