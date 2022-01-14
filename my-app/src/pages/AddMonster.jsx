@@ -1,5 +1,5 @@
-import './App.css';
-import AttributeFields from './AttributeFields'
+import '../App.css';
+import AttributeFields from '../components/AttributeFields'
 
 function AddMonster(props) {
     return (

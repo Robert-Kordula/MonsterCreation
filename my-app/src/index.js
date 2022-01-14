@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
-import ListMonstersPage from "./ListMonsters";
-import AddMonster from "./AddMonster";
-import EditMonster from "./EditMonster";
+import ListMonstersPage from "./pages/ListMonstersPage";
+import AddMonster from "./pages/AddMonster";
+import EditMonster from "./pages/EditMonster";
 
 ReactDOM.render(
   <BrowserRouter>

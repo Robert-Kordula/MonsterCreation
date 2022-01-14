@@ -1,7 +1,7 @@
-import './App.css';
+import '../App.css';
 import React from 'react';
 import { useState } from 'react';
-import useFetchData from './useFetchData.jsx';
+import useFetchData from '../useFetchData.jsx';
 import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Table, TableBody, TableCell, TableContainer, TablePagination, TableHead, TableRow, Paper, Button, TextField, ToggleButtonGroup, ToggleButton, Drawer, Accordion, AccordionSummary, AccordionDetails, Autocomplete, Checkbox, Slider, Typography } from '@mui/material';
@@ -300,11 +300,13 @@ function FilterDrawer() {
   };
 
   const onReset = () => {
-    setUserFilters((prevState) => {
-      for (const prop of Object.getOwnPropertyNames(prevState)) {
-        delete prevState[prop];
-      }
-    });
+    console.log(JSON.stringify(userFilters));
+    setUserFilters({});
+    // setUserFilters((prevState) => {
+    //   for (const prop of Object.getOwnPropertyNames(prevState)) {
+    //     prevState[prop] = '';
+    //   }
+    // });
     console.log(JSON.stringify(userFilters));
   }
 
@@ -437,15 +439,14 @@ function IntegerFilter(props) {
   const label = props.label;
 
   const handleChange = (event) => {
+    console.log(event.target.value);
     setUserFilters((prevState) => ({
       ...prevState,
       [label]: event.target.value
     }));
+    console.log(userFilters);
   }
-  const getValue = () => {
-    if (typeof userFilters[label] === 'undefined') return '';
-    return userFilters[label];
-  }
+
   return (
     <TextField
       id={`filter-${label}`}
@@ -454,7 +455,7 @@ function IntegerFilter(props) {
         if (!/[0-9]/.test(event.key)) event.preventDefault();
       }}
       onChange={handleChange}
-      value={getValue}
+      value={userFilters?.[label]}
     />
   )
 }

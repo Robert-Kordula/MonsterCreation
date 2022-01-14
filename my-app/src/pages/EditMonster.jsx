@@ -1,5 +1,5 @@
-import './App.css';
-import AttributeFields from './AttributeFields';
+import '../App.css';
+import AttributeFields from '../components/AttributeFields';
 import { useParams } from 'react-router';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import React from "react";
