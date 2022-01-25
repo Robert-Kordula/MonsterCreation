@@ -5,7 +5,7 @@ import { THead } from './THead'
 import { TablePaginator } from './TablePaginator';
 import { TBody } from './TBody';
 
-export function DynamicTable(props) {
+export function FetchTable(props) {
     let data = props.tableData;
 
     return (

@@ -1,14 +1,14 @@
 import '../App.css';
 import React from 'react';
 import { FilterButton } from '../components/Forms/FilterButton';
-import { DynamicTable } from '../components/Tables/DynamicTable';
+import { FetchTable } from '../components/Tables/FetchTable';
 import useFetchData from '../useFetchData.jsx';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Button, TextField, ToggleButtonGroup, ToggleButton } from '@mui/material';
 
-
-function ListMonstersPage() {
+function ListMonstersPage(props) {
   const { data } = useFetchData('http://localhost:3500/monster');
+  const [searchParams, setSearchParams] = useSearchParams();
 
   return (
     <div className='App'>
@@ -22,7 +22,7 @@ function ListMonstersPage() {
           />
         </div>
         <div style={{ display: 'inline' }}>
-          <FilterButton />
+          <FilterButton searchParams={[searchParams, setSearchParams]} />
           <Button
             className='Buttons'
             component={Link}
@@ -31,7 +31,7 @@ function ListMonstersPage() {
           <ViewToggleButton />
         </div>
       </header>
-      <DynamicTable tableData={data} />
+      <FetchTable tableData={data} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -157,29 +157,60 @@ const ALL_FILTERS = {
   }
 };
 
-export function FilterDrawer() {
+export function FilterDrawer(props) {
 
   const [expanded, setExpanded] = useState(false);
   const [userFilters, setUserFilters] = useState({});
+  const [searchParams, setSearchParams] = props.searchParams;
+
+  const updateFiltersFromSearch = () => {
+    const iterator = searchParams.entries();
+    let isDone = false;
+    while (!isDone) {
+      const {value, done} = iterator.next();
+      isDone = done;
+      if (!value) break;
+      setUserFilters((prevState) => ({
+        ...prevState,
+        [value[0]]: value[1]
+      }))
+    }
+  };
+
+  const updateSearchFromFilter = () => {
+    let params = new URLSearchParams();
+    console.log(JSON.stringify(userFilters));
+    for (const filter in userFilters) {
+      console.log(`${filter}, ${userFilters[filter]}`);
+      params.append(filter, userFilters[filter]);
+    }
+    return params;
+  };
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
-  }
+  };
 
   const onApply = () => {
     console.log(JSON.stringify(userFilters));
+    setSearchParams(updateSearchFromFilter());
   };
 
   const onReset = () => {
-    console.log(JSON.stringify(userFilters));
     setUserFilters({});
-    console.log(JSON.stringify(userFilters));
-  }
+    setSearchParams(new URLSearchParams());
+  };
+
+  useEffect(() => {
+    updateFiltersFromSearch();
+    // eslint-disable-next-line
+  }, []);
 
   let sections = Object.keys(ALL_FILTERS);
-
   return (
-    <Box
+    <Box sx={{
+      width: 400
+    }}
     >
       {sections.map((label) => {
         return (

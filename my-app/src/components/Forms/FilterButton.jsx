@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import { FilterDrawer } from './FilterDrawer';
 
-export function FilterButton() {
+export function FilterButton(props) {
     const [state, setState] = useState(false);
 
     const openDrawer = () => {
@@ -24,7 +24,7 @@ export function FilterButton() {
                 open={state}
                 onClose={closeDrawer}
                 hideBackdrop={true}
-            ><FilterDrawer /></Drawer>
+            ><FilterDrawer searchParams={props.searchParams} /></Drawer>
         </div>
     )
 }
