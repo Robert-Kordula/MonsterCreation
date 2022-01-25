@@ -167,9 +167,17 @@ export function FilterDrawer(props) {
     const iterator = searchParams.entries();
     let isDone = false;
     while (!isDone) {
-      const {value, done} = iterator.next();
+      let {value, done} = iterator.next();
       isDone = done;
       if (!value) break;
+      if (value[1].includes(',')) {
+        let str = value[1].split(',');
+        value[1] = [];
+        console.log(value[1]);
+        for (const number of str) {
+          value[1].push(parseInt(number));
+        }
+      }
       setUserFilters((prevState) => ({
         ...prevState,
         [value[0]]: value[1]
