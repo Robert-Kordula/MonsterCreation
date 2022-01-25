@@ -34,6 +34,11 @@ input {
   color: black !important;
 }
 
+textarea {
+  background-color: white !important;
+  color: black !important;
+}
+
 button, a {
   color: white !important;
   background-color: var(--button-color) !important;

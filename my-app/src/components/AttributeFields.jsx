@@ -334,7 +334,7 @@ function AttributeFields(props) {
     };
 
     return (
-        <div>
+        <Box>
             <header id='header-title'>{props.name || ''}</header>
             <TextField
                 id='slug'
@@ -372,6 +372,17 @@ function AttributeFields(props) {
                     {skillsAttributes.map(buildField)}
                 </Box>
             </Box>
+            <TextField 
+                id='notes'
+                key='notes'
+                label='notes'
+                multiline
+                minRows={3}
+                maxRows={6}
+                variant='outlined'
+                onChange={(event) => console.log(event.target.value)}
+                defaultValue={monsterData['notes'] || 'N/A'}
+            />
             <Fab
                 className='Buttons UpdateButton'
                 variant='extended'
@@ -379,7 +390,7 @@ function AttributeFields(props) {
                 id='UpdateButton'
                 onClick={sendMonster}>
                 SAVE CHANGES</Fab>
-        </div>
+        </Box>
     )
 }
 
