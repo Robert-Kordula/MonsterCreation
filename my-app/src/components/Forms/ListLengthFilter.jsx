@@ -22,7 +22,7 @@ export function ListLengthFilter(props) {
         >
             <Typography>{label}</Typography>
             <Slider
-                id={`filter-${label}`}
+                key={`filter-${label}`}
                 valueLabelDisplay='auto'
                 value={userFilters[label] ?? [min, max]}
                 onChange={handleChange}

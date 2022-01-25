@@ -18,7 +18,7 @@ export function MultiDropFilter(props) {
     return (
         <Autocomplete
             multiple
-            id={`filter-${label}`}
+            key={`filter-${label}`}
             options={acceptedValues}
             disableCloseOnSelect
             renderOption={(props, option, { selected }) => (

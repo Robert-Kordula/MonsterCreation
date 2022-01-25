@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -160,36 +160,13 @@ const ALL_FILTERS = {
 export function FilterDrawer(props) {
 
   const [expanded, setExpanded] = useState(false);
-  const [userFilters, setUserFilters] = useState({});
-  const [searchParams, setSearchParams] = props.searchParams;
-
-  const updateFiltersFromSearch = () => {
-    const iterator = searchParams.entries();
-    let isDone = false;
-    while (!isDone) {
-      let {value, done} = iterator.next();
-      isDone = done;
-      if (!value) break;
-      if (value[1].includes(',')) {
-        let str = value[1].split(',');
-        value[1] = [];
-        console.log(value[1]);
-        for (const number of str) {
-          value[1].push(parseInt(number));
-        }
-      }
-      setUserFilters((prevState) => ({
-        ...prevState,
-        [value[0]]: value[1]
-      }))
-    }
-  };
+  const [userFilters, setUserFilters] = props.userFilters;
+  const [setSearchParams] = props.searchParams;
 
   const updateSearchFromFilter = () => {
     let params = new URLSearchParams();
     console.log(JSON.stringify(userFilters));
     for (const filter in userFilters) {
-      console.log(`${filter}, ${userFilters[filter]}`);
       params.append(filter, userFilters[filter]);
     }
     return params;
@@ -209,11 +186,6 @@ export function FilterDrawer(props) {
     setSearchParams(new URLSearchParams());
   };
 
-  useEffect(() => {
-    updateFiltersFromSearch();
-    // eslint-disable-next-line
-  }, []);
-
   let sections = Object.keys(ALL_FILTERS);
   return (
     <Box sx={{
@@ -225,16 +197,19 @@ export function FilterDrawer(props) {
           <Accordion
             expanded={expanded === label}
             onChange={handleChange(label)}
+            key={`accordion-${label}`}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls={`${label}bh-content`}
               id={`${label}bh-header`}
+              key={`accord-sum-${label}`}
             >{label}
             </AccordionSummary>
             <PopulateAccordion
               filters={ALL_FILTERS[label]}
-              userFilters={[userFilters, setUserFilters]}
+              userFilters={props.userFilters}
+              label={label}
             />
           </Accordion>
         )

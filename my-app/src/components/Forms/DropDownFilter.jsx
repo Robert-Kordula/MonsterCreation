@@ -16,7 +16,7 @@ export function DropDownFilter(props) {
     }
     return (
         <Autocomplete
-            id={`filter-${label}`}
+            key={`filter-${label}`}
             options={['', ...acceptedValues]}
             renderInput={(params) => <TextField {...params} label={label} />}
             onChange={handleChange}

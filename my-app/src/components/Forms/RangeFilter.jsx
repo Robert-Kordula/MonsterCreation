@@ -16,13 +16,13 @@ export function RangeFilter(props) {
             ...prevState,
             [label]: newValue
         }));
-    }
+    };
     return (
         <Box
         >
             <Typography>{label}</Typography>
             <Slider
-                id={`filter-${label}`}
+                key={`filter-${label}`}
                 valueLabelDisplay='auto'
                 value={userFilters[label] ?? [min, max]}
                 onChange={handleChange}

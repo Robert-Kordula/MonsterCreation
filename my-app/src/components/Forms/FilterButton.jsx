@@ -23,8 +23,8 @@ export function FilterButton(props) {
                 anchor={'left'}
                 open={state}
                 onClose={closeDrawer}
-                hideBackdrop={true}
-            ><FilterDrawer searchParams={props.searchParams} /></Drawer>
+                hideBackdrop={false}
+            ><FilterDrawer searchParams={props.searchParams} userFilters={props.userFilters} /></Drawer>
         </div>
     )
 }

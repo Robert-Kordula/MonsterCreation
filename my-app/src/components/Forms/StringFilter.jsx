@@ -16,7 +16,7 @@ export function StringFilter(props) {
 
     return (
         <TextField
-            id={`filter-${label}`}
+            key={`filter-${label}`}
             label={label}
             onChange={handleChange}
             value={userFilters[label] ?? ''}

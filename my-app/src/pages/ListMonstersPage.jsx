@@ -1,28 +1,53 @@
 import '../App.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FilterButton } from '../components/Forms/FilterButton';
 import { FetchTable } from '../components/Tables/FetchTable';
+import { LiveSearchBar } from '../components/Forms/LiveSearchBar'
 import useFetchData from '../useFetchData.jsx';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Button, TextField, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
 
 function ListMonstersPage(props) {
   const { data } = useFetchData('http://localhost:3500/monster');
   const [searchParams, setSearchParams] = useSearchParams();
+  const [userFilters, setUserFilters] = useState({});
+
+  const updateFiltersFromSearch = () => {
+    const iterator = searchParams.entries();
+    let isDone = false;
+    while (!isDone) {
+      let {value, done} = iterator.next();
+      isDone = done;
+      if (!value) break;
+      if (value[1].includes(',')) {
+        let str = value[1].split(',');
+        value[1] = [];
+        console.log(value[1]);
+        for (const number of str) {
+          value[1].push(parseInt(number));
+        }
+      }
+      setUserFilters((prevState) => ({
+        ...prevState,
+        [value[0]]: value[1]
+      }))
+    }
+  };
+
+  useEffect(() => {
+    updateFiltersFromSearch();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className='App'>
       <header>
         <div className='Search-Header'>
           <p style={{ display: 'grid' }}>List Of Monsters</p>
-          <TextField
-            id="outlined-search"
-            label="Search field"
-            type="search"
-          />
+          <LiveSearchBar label='name' searchParams={[searchParams, setSearchParams]} userFilters={[userFilters, setUserFilters]} />
         </div>
         <div style={{ display: 'inline' }}>
-          <FilterButton searchParams={[searchParams, setSearchParams]} />
+          <FilterButton searchParams={[searchParams, setSearchParams]} userFilters={[userFilters, setUserFilters]} />
           <Button
             className='Buttons'
             component={Link}
