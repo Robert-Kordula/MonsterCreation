@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 
-export function IntegerFilter(props) {
+export default function IntegerFilter(props) {
     const [userFilters, setUserFilters] = props.userFilters;
 
     const label = props.label;

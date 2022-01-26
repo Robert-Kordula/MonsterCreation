@@ -1,37 +1,34 @@
 import '../App.css';
 import React, { useEffect, useState } from 'react';
-import { FilterButton } from '../components/Forms/FilterButton';
-import { FetchTable } from '../components/Tables/FetchTable';
-import { LiveSearchBar } from '../components/Forms/LiveSearchBar'
-import useFetchData from '../useFetchData.jsx';
+import FilterButton from '../components/Forms/FilterButton';
+import FetchQuery from '../components/FetchQuery';
+import FetchTable from '../components/Tables/FetchTable';
+import LiveSearchBar from '../components/Forms/LiveSearchBar';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
 
-function ListMonstersPage(props) {
-  const { data } = useFetchData('http://localhost:3500/monster');
+const URL = 'http://localhost:3500/monster';
+
+export default function ListMonstersPage(props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [userFilters, setUserFilters] = useState({});
 
   const updateFiltersFromSearch = () => {
     const iterator = searchParams.entries();
-    let isDone = false;
-    while (!isDone) {
-      let {value, done} = iterator.next();
+    console.log(iterator);
+    let isDone;
+    do {
+      const {value, done} = iterator.next();
       isDone = done;
+      let [key, query] = value || [];
+      
       if (!value) break;
-      if (value[1].includes(',')) {
-        let str = value[1].split(',');
-        value[1] = [];
-        console.log(value[1]);
-        for (const number of str) {
-          value[1].push(parseInt(number));
-        }
+      if (query.includes(',')) {
+        query = [...query.split(',')];
+        console.log(query);
       }
-      setUserFilters((prevState) => ({
-        ...prevState,
-        [value[0]]: value[1]
-      }))
-    }
+      setUserFilters((prevState) => ({...prevState, [key]: query}))
+    } while (!isDone);
   };
 
   useEffect(() => {
@@ -44,10 +41,10 @@ function ListMonstersPage(props) {
       <header>
         <div className='Search-Header'>
           <p style={{ display: 'grid' }}>List Of Monsters</p>
-          <LiveSearchBar label='name' searchParams={[searchParams, setSearchParams]} userFilters={[userFilters, setUserFilters]} />
+          <LiveSearchBar label='name' searchParams={[searchParams, setSearchParams]} userFilters={[userFilters, setUserFilters]}/>
         </div>
         <div style={{ display: 'inline' }}>
-          <FilterButton searchParams={[searchParams, setSearchParams]} userFilters={[userFilters, setUserFilters]} />
+          <FilterButton searchParams={[searchParams, setSearchParams]} userFilters={[userFilters, setUserFilters]}/>
           <Button
             className='Buttons'
             component={Link}
@@ -56,7 +53,10 @@ function ListMonstersPage(props) {
           <ViewToggleButton />
         </div>
       </header>
-      <FetchTable tableData={data} />
+      <FetchQuery 
+        userComponent={FetchTable}
+        url={URL}
+      />
     </div>
   );
 }
@@ -81,5 +81,3 @@ function ViewToggleButton() {
     </ToggleButtonGroup>
   );
 }
-
-export default ListMonstersPage;

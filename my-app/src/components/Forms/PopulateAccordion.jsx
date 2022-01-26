@@ -1,18 +1,17 @@
 import React from 'react';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import { DropDownFilter } from './DropDownFilter';
-import { MultiDropFilter } from './MultiDropFilter';
-import { IntegerFilter } from './IntegerFilter';
-import { StringFilter } from './StringFilter';
-import { RangeFilter } from './RangeFilter';
-import { ListLengthFilter } from './ListLengthFilter';
+import DropDownFilter from './DropDownFilter';
+import MultiDropFilter from './MultiDropFilter';
+import IntegerFilter from './IntegerFilter';
+import StringFilter from './StringFilter';
+import RangeFilter from './RangeFilter';
+import ListLengthFilter from './ListLengthFilter';
 
-export function PopulateAccordion(props) {
-    let filters = props.filters;
-    let filterLabels = Object.keys(filters);
+export default function PopulateAccordion(props) {
+    let filterLabels = Object.keys(props.filters);
 
     const determineFilter = (label) => {
-        let filter = filters[label];
+        let filter = props.filters[label];
         let inputType = filter.inputType;
         if (inputType === 'drop-downs') return (<DropDownFilter key={`accord-filter-${label}`} label={label} values={filter.values} userFilters={props.userFilters} />)
         else if (inputType === 'multi-drop-down') return (<MultiDropFilter key={`accord-filter-${label}`} label={label} values={filter.values} userFilters={props.userFilters} />)

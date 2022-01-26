@@ -4,7 +4,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Button from '@mui/material/Button';
 
-export function THead() {
+export default function THead() {
     return (
         <TableHead>
             <TableRow>

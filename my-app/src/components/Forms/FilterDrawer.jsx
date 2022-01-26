@@ -4,7 +4,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button'
-import { PopulateAccordion } from './PopulateAccordion'
+import PopulateAccordion from './PopulateAccordion'
 
 /*Temporary hardcoding of filter types and values, when backend is complete will be sending
   details of all filters to client
@@ -157,11 +157,11 @@ const ALL_FILTERS = {
   }
 };
 
-export function FilterDrawer(props) {
+export default function FilterDrawer(props) {
 
   const [expanded, setExpanded] = useState(false);
   const [userFilters, setUserFilters] = props.userFilters;
-  const [setSearchParams] = props.searchParams;
+  const [,setSearchParams] = props.searchParams;
 
   const updateSearchFromFilter = () => {
     let params = new URLSearchParams();

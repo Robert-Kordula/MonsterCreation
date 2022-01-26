@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 
-export function ListLengthFilter(props) {
+export default function ListLengthFilter(props) {
     const [userFilters, setUserFilters] = props.userFilters;
 
     const label = props.label;

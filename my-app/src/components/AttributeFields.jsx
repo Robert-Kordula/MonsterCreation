@@ -300,9 +300,8 @@ function AttributeFields(props) {
         }
     ];
     const attributeList = [];
-    const { slug } = useParams();
-    console.log(slug);
-    monsterData = props.monster || {};
+    const { name } = useParams();
+    monsterData = props.data || {};
 
     const sendMonster = async () => {
         let sendData = attributeList.reduce((data, attribute) => {
@@ -317,7 +316,7 @@ function AttributeFields(props) {
         };
         let url = 'http://localhost:3500/monster';
         if (props.method === 'PATCH') {
-            url = url.concat(`/${slug}`);
+            url = url.concat(`/${name}`);
         }
 
         let response = await fetch(url, requestOptions);
@@ -338,7 +337,7 @@ function AttributeFields(props) {
             <header id='header-title'>{props.name || ''}</header>
             <TextField
                 id='slug'
-                defaultValue={slug}
+                defaultValue={name}
                 label='slug'
                 disabled
             />

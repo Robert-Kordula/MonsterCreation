@@ -3,7 +3,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 
-export function MultiDropFilter(props) {
+export default function MultiDropFilter(props) {
     const [userFilters, setUserFilters] = props.userFilters;
 
     const label = props.label;

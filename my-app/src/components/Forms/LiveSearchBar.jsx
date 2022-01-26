@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 
-export function LiveSearchBar(props) {
+export default function LiveSearchBar(props) {
     const [userFilters, setUserFilters] = props.userFilters;
     const [searchParams, setSearchParams] = props.searchParams;
     const label = props.label;

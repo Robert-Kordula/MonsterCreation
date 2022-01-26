@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 
-export function StringFilter(props) {
+export default function StringFilter(props) {
     const [userFilters, setUserFilters] = props.userFilters;
 
     const label = props.label;

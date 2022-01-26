@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 
-function ConfirmDelete(params) {
+export default function ConfirmDelete(params) {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -62,5 +62,3 @@ function ConfirmDelete(params) {
         </div>
     )
 }
-
-export default ConfirmDelete;

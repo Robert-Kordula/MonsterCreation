@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
-import { FilterDrawer } from './FilterDrawer';
+import FilterDrawer from './FilterDrawer';
 
-export function FilterButton(props) {
+export default function FilterButton(props) {
     const [state, setState] = useState(false);
 
     const openDrawer = () => {

@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import ConfirmDelete from '../ConfirmDelete';
 
-export function TBody(props) {
+export default function TBody(props) {
     let data = props.tableData;
     return (
         <TableBody>
