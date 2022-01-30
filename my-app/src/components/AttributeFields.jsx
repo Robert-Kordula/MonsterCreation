@@ -1,20 +1,311 @@
 import '../App.css';
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { TextField, Fab, Paper, Button, Box, List, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import StringFilter from '../components/Forms/StringFilter';
+import DynamicTable from '../components/Tables/DynamicTable';
 import { useParams } from 'react-router';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Fab from '@mui/material/Fab';
 
-let monsterData;
+export default function AttributeFields(props) {
 
-function AttributeFields(props) {
+    // const Attributes = [
+    //     {
+    //         AboutAttribute: [
+    //             {
+    //                 'img_main': {
+    //                     value: 'image'
+    //                 }
+    //             },
+    //             {
+    //                 'size': {
+    //                     value: 'string',
+    //                     required: true
+    //                 }
+    //             },
+    //             {
+    //                 'type': {
+    //                     value: 'string',
+    //                     required: true
+    //                 }
+    //             },
+    //             {
+    //                 'subtype': {
+    //                     value: 'string'
+    //                 }
+    //             },
+    //             {
+    //                 'group': {
+    //                     value: 'string',
+    //                     required: true
+    //                 }
+    //             },
+    //             {
+    //                 'alignment': {
+    //                     value: 'string',
+    //                     required: true
+    //                 }
+    //             },
+    //             {
+    //                 'languages': {
+    //                     value: 'string'
+    //                 }
+    //             },
+    //             {
+    //                 'challenge_rating': {
+    //                     value: 'integer',
+    //                     required: true
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         StatsAttributes: [
+    //             {
+    //                 'armor_class': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'armor_desc': {
+    //                     value: 'string'
+    //                 }
+    //             },
+    //             {
+    //                 'hit_points': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'hit_dice': {
+    //                     value: 'string'
+    //                 }
+    //             },
+    //             {
+    //                 'speed': {
+    //                     value: 'string'
+    //                 }
+    //             },
+    //             {
+    //                 'strength': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'dexterity': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'constitution': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'intelligence': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'wisdom': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'charisma': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'perception': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'senses': {
+    //                     value: 'string'
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         SavesAttributes: [
+    //             {
+    //                 'armor_class': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'armor_desc': {
+    //                     value: 'string'
+    //                 }
+    //             },
+    //             {
+    //                 'hit_points': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'hit_dice': {
+    //                     value: 'string'
+    //                 }
+    //             },
+    //             {
+    //                 'speed': {
+    //                     value: 'string'
+    //                 }
+    //             },
+    //             {
+    //                 'strength': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'dexterity': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'constitution': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'intelligence': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'wisdom': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'charisma': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'perception': {
+    //                     value: 'integer'
+    //                 }
+    //             },
+    //             {
+    //                 'senses': {
+    //                     value: 'string'
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         SkillsAttributes: [
+    //             {
+    //                 'skills': {
+    //                     value: 'list',
+    //                     list: {
+    //                         value: 'object',
+    //                         object: 'string'
+    //                     }
+    //                 }
+    //             },
+    //             {
+    //                 'actions': {
+    //                     value: 'table',
+    //                     table: [
+    //                         {
+    //                             header: 'name',
+    //                             value: 'string',
+    //                             required: true
+    //                         },
+    //                         {
+    //                             header: 'desc',
+    //                             value: 'string',
+    //                             required: true
+    //                         },
+    //                         {
+    //                             header: 'attack_bonus',
+    //                             value: 'integer'
+    //                         },
+    //                         {
+    //                             header: 'damage_dice',
+    //                             value: 'string'
+    //                         },
+    //                         {
+    //                             header: 'damage_bonus',
+    //                             value: 'integer'
+    //                         }
+    //                     ]
+    //                 }
+    //             },
+    //             // {
+    //             //     'reactions': {
+    //             //         value: 'table',
+    //             //         table: [
+    //             //             {
+    //             //                 header: 'name',
+    //             //                 value: 'string',
+    //             //                 required: true
+    //             //             },
+    //             //             {
+    //             //                 header: 'desc',
+    //             //                 value: 'string',
+    //             //                 required: true
+    //             //             }
+    //             //         ]
+    //             //     }
+    //             // },
+    //             {
+    //                 'legendary_desc': {
+    //                     value: 'list'
+    //                 }
+    //             },
+    //             {
+    //                 'legendary_actions': {
+    //                     value: 'table',
+    //                     table: [
+    //                         {
+    //                             header: 'name',
+    //                             value: 'string',
+    //                             required: true
+    //                         },
+    //                         {
+    //                             header: 'desc',
+    //                             value: 'string',
+    //                             required: true
+    //                         }
+    //                     ]
+    //                 }
+    //             },
+    //             {
+    //                 'special_abilities': {
+    //                     value: 'table',
+    //                     table: [
+    //                         {
+    //                             header: 'name',
+    //                             value: 'string',
+    //                             required: true
+    //                         },
+    //                         {
+    //                             header: 'desc',
+    //                             value: 'string',
+    //                             required: true
+    //                         }
+    //                     ]
+    //                 }
+    //             },
+    //             {
+    //                 'spell_list': {
+    //                     value: 'list',
+    //                     list: {
+    //                         value: 'string'
+    //                     }
+    //                 }
+    //             }
+    //         ]
+    //     }
+    // ];
 
     const aboutAttributes = [
-        {
-            'name': {
-                value: 'string',
-                required: true
-            }
-        },
         {
             'img_main': {
                 value: 'image'
@@ -58,21 +349,6 @@ function AttributeFields(props) {
             'challenge_rating': {
                 value: 'integer',
                 required: true
-            }
-        },
-        {
-            'document__slug': {
-                value: 'string'
-            }
-        },
-        {
-            'document__title': {
-                value: 'string'
-            }
-        },
-        {
-            'document__license_url': {
-                value: 'string'
             }
         }
     ];
@@ -299,16 +575,13 @@ function AttributeFields(props) {
             }
         }
     ];
-    const attributeList = [];
-    const { name } = useParams();
-    monsterData = props.data || {};
+    //const attributeList = [];
 
-    const sendMonster = async () => {
-        let sendData = attributeList.reduce((data, attribute) => {
-            data[attribute] = document.getElementById(attribute).value
-            return data;
-        }, {});
-        console.log(sendData);
+    const { name } = useParams();
+    const [data, setData] = useState(props.data || {});
+
+    const sendData = async () => {
+        console.log(data);
         const requestOptions = {
             method: props.method,
             headers: { 'Content-Type': 'application/json' },
@@ -325,21 +598,25 @@ function AttributeFields(props) {
 
     const buildField = (attribute) => {
         let label = Object.keys(attribute)[0];
-        return <Attribute 
-                    key={label} 
-                    name={label} 
-                    attribute={attribute}
-                />;
+        if (attribute[label].value === 'table') {
+            const columns = attribute[label].table;
+            return (<DynamicTable 
+                        label={label} 
+                        data={data} 
+                        columns={columns} 
+                        useData={[data, setData]}
+                    />);
+        }
+        else return (<StringFilter label={label} userFilters={[data, setData]} />);
     };
 
     return (
         <Box>
             <header id='header-title'>{props.name || ''}</header>
             <TextField
-                id='slug'
-                defaultValue={name}
-                label='slug'
-                disabled
+                id='name'
+                value={data.name}
+                label='name'
             />
             <Box className='grid-container'>
                 <Box
@@ -371,7 +648,7 @@ function AttributeFields(props) {
                     {skillsAttributes.map(buildField)}
                 </Box>
             </Box>
-            <TextField 
+            <TextField
                 id='notes'
                 key='notes'
                 label='notes'
@@ -380,143 +657,15 @@ function AttributeFields(props) {
                 maxRows={6}
                 variant='outlined'
                 onChange={(event) => console.log(event.target.value)}
-                defaultValue={monsterData['notes'] || 'N/A'}
+                defaultValue={data['notes'] || 'N/A'}
             />
             <Fab
                 className='Buttons UpdateButton'
                 variant='extended'
                 size='medium'
                 id='UpdateButton'
-                onClick={sendMonster}>
+                onClick={sendData}>
                 SAVE CHANGES</Fab>
         </Box>
     )
 }
-
-function Attribute(props) {
-    let attribute = props.attribute;
-    let label = Object.keys(attribute)[0];
-    let value = attribute[label]['value'];
-    if (value === 'list') {
-        let list = attribute[label]
-        return (
-            <GenerateList
-                id={label}
-                list={list}
-            />
-        );
-    } else if (value === 'table') {
-        let table = attribute[label].table;
-        return (
-            <GenerateTable
-                id={label}
-                table={table}
-            />
-        )
-    }
-    else {
-        return (
-            <TextField
-                id={label}
-                label={label}
-                defaultValue={monsterData[label] || 'N/A'}
-                variant="filled"
-            />
-        );
-    }
-}
-
-function GenerateTable(props) {
-
-    const [rows, setRows] = useState([]);
-    let table = props.table;
-    let label = props.id;
-
-    useEffect(() => {
-        if (monsterData[label] && monsterData[label].length > 0) {
-            let tempRows = monsterData[label].map((item) => {
-                return table.reduce((row, head) => {
-                    row[head.header] = item[head.header];
-                    return row;
-                }, {})
-            });
-            setRows(tempRows);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-
-    const addNewRow = () => {
-        let tempRows = [...rows, {}];
-        setRows(tempRows);
-    }
-
-    const deleteRow = (index) => {
-        if (rows.length > 1) {
-            let tempRows = [...rows];
-            console.log(tempRows.splice(index, 1));
-            setRows(tempRows);
-        } else {
-            setRows([]);
-        }
-    };
-    return (
-        <TableContainer component={Paper}>
-            <p><strong>{props.id}</strong></p>
-            <Table
-                sx={{}}
-                size={'small'}
-            >
-                <TableHead>
-                    <TableRow>
-                        {table.map((column) => (
-                            <TableCell
-                                key={`${label}-${column.header}`}
-                                padding='none'
-                            >
-                                {column.header}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody id={`${label}-body`}>
-                    {rows.map((row, index) => {
-                        return (
-                            <TableRow>
-                                {table.map((column) => (
-                                    <TableCell>
-                                        <TextField
-                                            id={""}
-                                            defaultValue={row[column.header]}
-                                            padding='none'
-                                        />
-                                    </TableCell>
-                                ))}
-                                <TableCell>
-                                    <Button
-                                        className='Buttons'
-                                        onClick={() => deleteRow(index)}
-                                    >DELETE</Button>
-                                </TableCell>
-                            </TableRow>
-                        )
-                    })}
-                </TableBody>
-            </Table>
-            <Button
-                className='Buttons'
-                onClick={addNewRow}
-            >Add Ability</Button>
-        </TableContainer>
-    )
-}
-
-function GenerateList(props) {
-
-    return (
-        <List
-        ></List>
-    );
-}
-
-export default AttributeFields;
