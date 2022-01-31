@@ -12,14 +12,12 @@ export default function StringFilter(props) {
             [label]: event.target.value
         }));
     }
-
-
     return (
         <TextField
             key={`filter-${label}`}
             label={label}
             onChange={handleChange}
-            value={userFilters[label] ?? ''}
+            value={userFilters[label] || (props.data? props.data[label] : '')}
         />
     )
 }

@@ -13,8 +13,17 @@ export default function DynamicTable(props) {
         <TableContainer componet={Paper}>
             <p><strong>{label}</strong></p>
             <Table>
-                <CustomTableHead columns={props.columns} label={label}/>
-                <DynamicTableBody columns={props.columns} label={label} useData={props.useData}/>
+                <CustomTableHead 
+                    columns={props.columns} 
+                    label={label}
+                />
+                <DynamicTableBody 
+                    columns={props.columns} 
+                    label={label} 
+                    data={props.data}
+                    isInitial={props.isInitial}
+                    useNewData={props.useNewData}
+                />
             </Table>
         </TableContainer>
     )

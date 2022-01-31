@@ -14,13 +14,19 @@ export default function DropDownFilter(props) {
             [label]: acceptedValues.indexOf(newValue)
         }));
     }
+
+    const getValue = () => {
+        if (props.data) return props.data[label];
+        else if (userFilters[label]) return userFilters[label];
+    }
+
     return (
         <Autocomplete
             key={`filter-${label}`}
-            options={['', ...acceptedValues]}
+            options={[...acceptedValues]}
             renderInput={(params) => <TextField {...params} label={label} />}
             onChange={handleChange}
-            value={acceptedValues[userFilters[label]] ?? ''}
+            value={acceptedValues[getValue] || null}
         />
     )
 }

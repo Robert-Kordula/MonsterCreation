@@ -6,14 +6,16 @@ export default function DynamicRow(props) {
     const index = props.index;
     const label = props.label;
     const [rows, setRows] = props.useRows;
-    const [data, setData] = props.useData;
+    const [, setNewData] = props.useNewData;
     const [row, setRow] = useState(rows[index]);
 
     useEffect(() => {
-        setData((prevState) => ({
-            ...prevState,
-            [label]: rows
-        }));
+        if (!props.isInitial) {
+            setNewData((prevState) => ({
+                ...prevState,
+                [label]: rows
+            }))
+        }
         //eslint-disable-next-line
     }, [rows])
 
@@ -22,9 +24,9 @@ export default function DynamicRow(props) {
                     index={index} 
                     useRow={[row, setRow]}
                     useRows={[rows, setRows]}
-                    useData={[data, setData]} 
                     header={column.header} 
                     type={column.value}
                     label={label}
+                    isInitial={props.isInitial}
                 />));
 }

@@ -24,7 +24,7 @@ export default function RangeFilter(props) {
             <Slider
                 key={`filter-${label}`}
                 valueLabelDisplay='auto'
-                value={userFilters[label] ?? [min, max]}
+                value={userFilters[label] || props.data ? props.data[label] : [min, max]}
                 onChange={handleChange}
                 min={min}
                 max={max}

@@ -22,7 +22,7 @@ export default function IntegerFilter(props) {
                 if (!/[0-9]/.test(event.key)) event.preventDefault();
             }}
             onChange={handleChange}
-            value={userFilters[label] ?? ''}
+            value={userFilters[label] || (props.data? props.data[label] : '')}
         />
     )
 }

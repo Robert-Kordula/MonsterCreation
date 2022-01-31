@@ -7,7 +7,7 @@ import DynamicRow from './DynamicRow';
 
 export default function DynamicTableBody(props) {
     const label = props.label;
-    const [data, setData] = props.useData;
+    const data = props.data;
     const [rows, setRows] = useState(data[label] || []);
 
     const addNewRow = () => {
@@ -33,9 +33,11 @@ export default function DynamicTableBody(props) {
                             <DynamicRow
                                 columns={props.columns}
                                 useRows={[rows, setRows]}
-                                useData={[data, setData]}
+                                data={data}
                                 label={label}
                                 index={index}
+                                isInitial={props.isInitial}
+                                useNewData={props.useNewData}
                             />
                             <TableCell>
                                 <Button 

@@ -9,153 +9,7 @@ import PopulateAccordion from './PopulateAccordion'
 /*Temporary hardcoding of filter types and values, when backend is complete will be sending
   details of all filters to client
 */
-const ALL_FILTERS = {
-  'about': {
-    'size': {
-      inputType: 'drop-downs',
-      values: ['Small', 'Medium', 'Large', 'Huge']
-    },
-    'type': {
-      inputType: 'drop-downs',
-      values: ['celestial', 'dragon', 'aberration', 'undead', 'fey']
-    },
-    'group': {
-      inputType: 'drop-downs',
-      values: ['N/A', 'Elementals', 'Sphinxes', 'Animated Objects']
-    },
-    'alignment': {
-      inputType: 'drop-downs',
-      values: ['lawful good', 'neutral good', 'chaotic good', 'lawful neutral', 'unaligned', 'chaotic neutral', 'lawful evil', 'neutral evil', 'chaotic evil']
-    },
-    'languages': {
-      inputType: 'multi-drop-down',
-      values: ['Common', 'Gnoll', 'Sylvan', 'Draconic']
-    },
-    'challengeRating': {
-      inputType: 'integer'
-    }
-  },
-  'stats': {
-    'armorClass': {
-      inputType: 'integer'
-    },
-    'armourDescription': {
-      inputType: 'string'
-    },
-    'hitPoints': {
-      inputType: 'integer'
-    },
-    'hitDice': {
-      inputType: ''
-    },
-    'strength': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'dexterity': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'constitution': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'intelligence': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'wisdom': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'charisma': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'perception': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'senses': {
-      inputType: 'string'
-    }
-  },
-  'speeds': {
-    'walk': {
-      inputType: 'integer'
-    },
-    'climb': {
-      inputType: 'integer'
-    },
-    'burrow': {
-      inputType: 'integer'
-    },
-    'swim': {
-      inputType: 'integer'
-    },
-    'fly': {
-      inputType: 'integer'
-    }
-  },
-  'saves and resistances': {
-    'strengthSave': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'dexteritySave': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'constitutionSave': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'intelligenceSave': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'wisdomSave': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'charismaSave': {
-      inputType: 'range',
-      min: 0,
-      max: 100
-    },
-    'damageVulnerabilites': {
-      inputType: 'drop-downs',
-      values: ['radiant', 'cold', 'fire', 'bludgeoning']
-    },
-    'damageResistances': {
-      inputType: 'drop-downs',
-      values: ['radiant', 'cold', 'fire', 'bludgeoning']
-    },
-    'damageImmunities': {
-      inputType: 'drop-downs',
-      values: ['radiant', 'cold', 'fire', 'bludgeoning']
-    },
-    'conditionImmunities': {
-      inputType: 'drop-downs',
-      values: ['paralyzed', 'unconscious', 'charmed', 'poisoned']
-    }
-  },
-  'actions and spells': {
-
-  }
-};
+import TempFilters from '../../TempFilters';
 
 export default function FilterDrawer(props) {
 
@@ -186,7 +40,7 @@ export default function FilterDrawer(props) {
     setSearchParams(new URLSearchParams());
   };
 
-  let sections = Object.keys(ALL_FILTERS);
+  let sections = Object.keys(TempFilters());
   return (
     <Box sx={{
       width: 400
@@ -207,7 +61,7 @@ export default function FilterDrawer(props) {
             >{label}
             </AccordionSummary>
             <PopulateAccordion
-              filters={ALL_FILTERS[label]}
+              filters={TempFilters()[label]}
               userFilters={props.userFilters}
               label={label}
             />

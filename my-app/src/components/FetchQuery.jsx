@@ -19,7 +19,8 @@ export default function FetchQuery(props) {
 }
 
 function Query(props) {
-    const { isLoading, error, data } = useQuery('monster', () => fetchData(props.url))
+    const { isLoading, error, data } = useQuery('monster', () => fetchData(props.url));
+    console.log(props.url);
     const UserComponent = props.userComponent;
 
     if (isLoading) return 'Loading...';

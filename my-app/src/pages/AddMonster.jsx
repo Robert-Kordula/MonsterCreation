@@ -1,10 +1,17 @@
-import '../App.css';
-import AttributeFields from '../components/AttributeFields'
+import AttributeFields from '../components/AttributeFields';
+import FetchQuery from '../components/FetchQuery';
+import { useParams } from 'react-router';
+import React from "react";
 
-function AddMonster(props) {
+const URL = 'http://localhost:3500/monster';
+
+export default function AddMonster(props) {
+    let { name } = useParams();
     return (
-        <AttributeFields name= 'Add New Monster' method = 'POST'/>
+        <FetchQuery 
+            userComponent={AttributeFields}
+            userProps={{name: 'Add Monster', method: 'POST'}}
+            url={`${URL}/${name || ''}`}
+        />
     )
 }
-
-export default AddMonster;

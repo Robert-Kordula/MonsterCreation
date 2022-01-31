@@ -15,7 +15,6 @@ export default function ListMonstersPage(props) {
 
   const updateFiltersFromSearch = () => {
     const iterator = searchParams.entries();
-    console.log(iterator);
     let isDone;
     do {
       const {value, done} = iterator.next();
@@ -25,7 +24,6 @@ export default function ListMonstersPage(props) {
       if (!value) break;
       if (query.includes(',')) {
         query = [...query.split(',')];
-        console.log(query);
       }
       setUserFilters((prevState) => ({...prevState, [key]: query}))
     } while (!isDone);

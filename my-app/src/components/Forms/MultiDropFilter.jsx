@@ -14,7 +14,8 @@ export default function MultiDropFilter(props) {
             ...prevState,
             [label]: newValue
         }));
-    }
+    };
+    
     return (
         <Autocomplete
             multiple
@@ -30,7 +31,7 @@ export default function MultiDropFilter(props) {
                 </li>
             )}
             onChange={handleChange}
-            value={userFilters[label] ?? []}
+            value={userFilters[label] || (props.data? [props.data[label]] : [])}
             renderInput={(params) => <TextField {...params} label={label} />}
         />
     )

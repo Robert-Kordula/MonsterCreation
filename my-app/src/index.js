@@ -10,7 +10,7 @@ ReactDOM.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<ListMonstersPage />} />
-      <Route path="add" element={<AddMonster />} />
+      <Route path="add/:name" element={<AddMonster />} />
       <Route path="edit/:name" element={<EditMonster />} />
     </Routes>
   </BrowserRouter>,
