@@ -46,8 +46,6 @@ export default function AttributeFields(props) {
         alert(response.status);
     };
 
-
-
     return (
         <Box>
             <header id='header-title'>{props.name || ''}</header>
