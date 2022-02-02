@@ -1,5 +1,5 @@
 import '../App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import FilterButton from '../components/Forms/FilterButton';
 import FetchQuery from '../components/FetchQuery';
 import FetchTable from '../components/Tables/FetchTable';
@@ -7,11 +7,12 @@ import LiveSearchBar from '../components/Forms/LiveSearchBar';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
 
-const URL = 'http://localhost:3500/monster';
+const URL = 'https://api.open5e.com/monsters/?';
 
 export default function ListMonstersPage(props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [userFilters, setUserFilters] = useState({});
+  const [url, setURL] = useState("");
 
   const updateFiltersFromSearch = () => {
     const iterator = searchParams.entries();
@@ -31,6 +32,7 @@ export default function ListMonstersPage(props) {
 
   useEffect(() => {
     updateFiltersFromSearch();
+    setURL(`${URL}${searchParams.toString()}`);
     // eslint-disable-next-line
   }, []);
 
@@ -53,7 +55,8 @@ export default function ListMonstersPage(props) {
       </header>
       <FetchQuery 
         userComponent={FetchTable}
-        url={URL}
+        userProps={{"useSearchParams": [searchParams, setSearchParams]}}
+        useURL={[url, setURL]}
       />
     </div>
   );

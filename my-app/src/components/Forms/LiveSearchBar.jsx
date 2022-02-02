@@ -20,7 +20,7 @@ export default function LiveSearchBar(props) {
         <TextField
             id="outlined-search"
             label="Search Monster Name"
-            value={userFilters[label] || props.data ? props.data[label] : ''}
+            value={userFilters[label] || ''}
             onChange={handleChange}
         />
     )

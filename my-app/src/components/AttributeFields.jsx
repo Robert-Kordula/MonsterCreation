@@ -11,7 +11,7 @@ import BuildSection from './BuildSection';
 export default function AttributeFields(props) {
 
     const { name } = useParams();
-    const data = props.data || {};
+    const data = props.data.results[0] || {};
     const [newData, setNewData] = useState({});
     const [isInitial, setIsInitial] = useState(true);
     const [changed, setChanged] = useState(false);
@@ -45,7 +45,12 @@ export default function AttributeFields(props) {
         let response = await fetch(url, requestOptions);
         alert(response.status);
     };
+    console.log(data);
 
+    if (props.status === 'loading') return <p>{props.status}</p>
+    if (props.status === 'error') return <p>{props.status}</p>
+    // if (data.length > 1) return <p>{name} does not exist</p>
+    // if (data.length === 1) 
     return (
         <Box>
             <header id='header-title'>{props.name || ''}</header>

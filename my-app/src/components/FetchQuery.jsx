@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
 export default function FetchQuery(props) {
@@ -6,31 +6,44 @@ export default function FetchQuery(props) {
         defaultOptions: {
             queries: {
                 retry: process.env.NODE_ENV === 'production',
-                refetchOnWindowFocus: false,
+                refetchOnWindowFocus: true,
             },
         },
     });
-
     return (
         <QueryClientProvider client={queryClient}>
-            <Query userComponent={props.userComponent} userProps={props.userProps} url={props.url}/>
+            <Query userComponent={props.userComponent} userProps={props.userProps} useURL={props.useURL}/>
         </QueryClientProvider>
     )
 }
 
 function Query(props) {
-    const { isLoading, error, data } = useQuery('monster', () => fetchData(props.url));
-    console.log(props.url);
+    const [url, setURL] = props.useURL;
+    const { isLoading, error, data } = useQuery(['monster', url], () => fetchData(url));
     const UserComponent = props.userComponent;
+    console.log(data? data.results.length: false);
 
-    if (isLoading) return 'Loading...';
-    if (error) return 'An error has occured: ' + error.message;
-    
+    if (isLoading) return (
+        <UserComponent 
+        {...props.userProps}                     
+        data={{results: []}}
+        useURL={props.useURL} 
+        status='loading'
+    />);
+    if (error) return (
+        <UserComponent 
+        {...props.userProps}                     
+        data={{results: ['An error has occured: ' + error.message]}}
+        useURL={props.useURL} 
+        status='error'
+    />);
     return (
-        <div>
-            {<UserComponent {...props.userProps} data={data} />}
-        </div>
-    )
+        <UserComponent 
+            {...props.userProps} 
+            data={data} 
+            useURL={props.useURL} 
+            status='success'
+    />);
 }
 
 async function fetchData(url){

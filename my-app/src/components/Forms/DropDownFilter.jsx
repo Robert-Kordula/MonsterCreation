@@ -11,7 +11,8 @@ export default function DropDownFilter(props) {
     const handleChange = (event, newValue) => {
         setUserFilters((prevState) => ({
             ...prevState,
-            [label]: acceptedValues.indexOf(newValue)
+            [label]: newValue
+            //[label]: acceptedValues.indexOf(newValue)
         }));
     }
 
@@ -26,7 +27,8 @@ export default function DropDownFilter(props) {
             options={[...acceptedValues]}
             renderInput={(params) => <TextField {...params} label={label} />}
             onChange={handleChange}
-            value={acceptedValues[getValue] || null}
+            //value={acceptedValues[getValue] || null}
+            value={userFilters[label] || null}
         />
     )
 }

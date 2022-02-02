@@ -15,7 +15,7 @@ export default function MultiDropFilter(props) {
             [label]: newValue
         }));
     };
-    
+    console.log(acceptedValues);
     return (
         <Autocomplete
             multiple
