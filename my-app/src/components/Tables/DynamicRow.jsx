@@ -11,6 +11,7 @@ export default function DynamicRow(props) {
 
     useEffect(() => {
         if (!props.isInitial) {
+            console.log('edit table');
             setNewData((prevState) => ({
                 ...prevState,
                 [label]: rows

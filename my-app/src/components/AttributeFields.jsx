@@ -18,12 +18,20 @@ export default function AttributeFields(props) {
     const attributes = TempFilters();
 
     useEffect(() => {
-        setIsInitial(false);
-    }, []);
+        if (props.status === 'success') {
+            console.log(newData);
+            setIsInitial(false);
+        }
+        //eslint-disable-next-line
+    }, [props]);
 
     useEffect(() => {
-        console.log(data.actions);
-        console.log(newData);
+        console.log(`Initial: ${isInitial}`);
+        console.log(`New Data: ${JSON.stringify(newData)}`);
+        console.log(`Changed: ${changed}`);
+    })
+
+    useEffect(() => {
         if (!isInitial) {
             setChanged(true);
         }
@@ -45,7 +53,6 @@ export default function AttributeFields(props) {
         let response = await fetch(url, requestOptions);
         alert(response.status);
     };
-    console.log(data);
 
     if (props.status === 'loading') return <p>{props.status}</p>
     if (props.status === 'error') return <p>{props.status}</p>

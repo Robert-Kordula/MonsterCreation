@@ -3,23 +3,23 @@ export default function TempFilters() {
     "about": {
       size: {
         inputType: "drop-downs",
-        values: [undefined, "Small", "Medium", "Large", "Huge"],
+        values: ["", "Small", "Medium", "Large", "Huge"],
       },
       type: {
         inputType: "drop-downs",
-        values: [undefined, "celestial", "dragon", "aberration", "undead", "fey"],
+        values: ["", "celestial", "dragon", "aberration", "undead", "fey"],
       },
       subtype: {
         inputType: "drop-downs",
-        values: [undefined, "celestial", "dragon", "aberration", "undead", "fey"],
+        values: ["", "celestial", "dragon", "aberration", "undead", "fey"],
       },
       group: {
         inputType: "drop-downs",
-        values: [undefined, "Elementals", "Sphinxes", "Animated Objects"],
+        values: ["", "Elementals", "Sphinxes", "Animated Objects"],
       },
       alignment: {
         inputType: "drop-downs",
-        values: [undefined, 
+        values: ["", 
           "lawful good",
           "neutral good",
           "chaotic good",
@@ -33,7 +33,7 @@ export default function TempFilters() {
       },
       // languages: {
       //   inputType: "multi-drop-down",
-      //   values: [undefined, "Common", "Gnoll", "Sylvan", "Draconic", "understands all but can't speak"],
+      //   values: ["", "Common", "Gnoll", "Sylvan", "Draconic", "understands all but can't speak"],
       // },
       challenge_rating: {
         inputType: "integer",
@@ -140,20 +140,20 @@ export default function TempFilters() {
         max: 100,
       },
       damageVulnerabilites: {
-        inputType: "drop-downs",
-        values: [undefined, "radiant", "cold", "fire", "bludgeoning"],
+        inputType: "multi-drop-down",
+        values: ["", "radiant", "cold", "fire", "bludgeoning"],
       },
       damageResistances: {
-        inputType: "drop-downs",
-        values: [undefined, "radiant", "cold", "fire", "bludgeoning"],
+        inputType: "multi-drop-down",
+        values: ["", "radiant", "cold", "fire", "bludgeoning"],
       },
       damageImmunities: {
-        inputType: "drop-downs",
-        values: [undefined, "radiant", "cold", "fire", "bludgeoning"],
+        inputType: "multi-drop-down",
+        values: ["", "radiant", "cold", "fire", "bludgeoning"],
       },
       conditionImmunities: {
-        inputType: "drop-downs",
-        values: [undefined, "paralyzed", "unconscious", "charmed", "poisoned"],
+        inputType: "multi-drop-down",
+        values: ["", "paralyzed", "unconscious", "charmed", "poisoned"],
       },
     },
     "actions and spells": {

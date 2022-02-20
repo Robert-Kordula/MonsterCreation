@@ -8,6 +8,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
 
 const URL = 'https://api.open5e.com/monsters/?';
+//const URL = 'localhost:3500/monster?';
 
 export default function ListMonstersPage(props) {
   const [searchParams, setSearchParams] = useSearchParams();

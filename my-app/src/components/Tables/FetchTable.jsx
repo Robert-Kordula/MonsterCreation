@@ -12,13 +12,14 @@ export default function FetchTable(props) {
     const [searchParams, setSearchParams]= props.useSearchParams
     const [url ,setURL] = props.useURL;
     const data = props.data;
-    const dataLength = data.results.length;
+    const dataLength = data.count;
     const rowOptions = [50, 100, 200];
     let start = 0;
     let end = start + parseInt(rowsPerPage);
 
     useEffect( () => {
         setURL(`https://api.open5e.com/monsters/?limit=${rowsPerPage}&page=${page}&${searchParams}`);
+        //eslint-disable-next-line
     }, [rowsPerPage, page, searchParams])
     console.log(data.results.length);
     return (

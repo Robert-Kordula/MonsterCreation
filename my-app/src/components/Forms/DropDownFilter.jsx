@@ -16,11 +16,6 @@ export default function DropDownFilter(props) {
         }));
     }
 
-    const getValue = () => {
-        if (props.data) return props.data[label];
-        else if (userFilters[label]) return userFilters[label];
-    }
-
     return (
         <Autocomplete
             key={`filter-${label}`}

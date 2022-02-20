@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Button from '@mui/material/Button';
-import DynamicRow from './DynamicRow';
+import TextField from '@mui/material/TextField';
+//import DynamicRow from './DynamicRow';
 
 export default function DynamicTableBody(props) {
     const label = props.label;
@@ -33,7 +34,6 @@ export default function DynamicTableBody(props) {
                             <DynamicRow
                                 columns={props.columns}
                                 useRows={[rows, setRows]}
-                                data={data}
                                 label={label}
                                 index={index}
                                 isInitial={props.isInitial}
@@ -56,5 +56,69 @@ export default function DynamicTableBody(props) {
                 </Button>
             </TableCell></TableRow>
         </TableBody>
+    )
+}
+
+function DynamicRow(props) {
+    const columns = props.columns;
+    const index = props.index;
+    const label = props.label;
+    const [rows, setRows] = props.useRows;
+    const [, setNewData] = props.useNewData;
+    const [row, setRow] = useState(rows[index]);
+
+    useEffect(() => {
+        if (!props.isInitial) {
+            console.log('edit table');
+            setNewData((prevState) => ({
+                ...prevState,
+                [label]: rows
+            }))
+        }
+        //eslint-disable-next-line
+    }, [rows])
+
+    return columns.map((column) => (
+                <DynamicCell
+                    index={index} 
+                    useRow={[row, setRow]}
+                    useRows={[rows, setRows]}
+                    header={column.header} 
+                    type={column.value}
+                    label={label}
+                    isInitial={props.isInitial}
+                />));
+}
+
+function DynamicCell(props) {
+    
+    const [rows, setRows] = props.useRows;
+    const [row, setRow] = props.useRow;
+    const index = props.index;
+    const header = props.header;
+
+    useEffect(() => {
+        if (!props.isInitial) {
+            let tempRows = [...rows];
+            tempRows.splice(index, 1, row);
+            setRows(tempRows);
+        }
+        //eslint-disable-next-line
+    }, [row])
+
+    const handleChange = (event) => {
+        setRow((prevState) => ({
+            ...prevState,
+            [header]: event.target.value
+        }));
+    }
+
+    return (
+        <TableCell>
+            <TextField
+                value={row[header] || ''}
+                onChange={handleChange}
+            />
+        </TableCell>
     )
 }
