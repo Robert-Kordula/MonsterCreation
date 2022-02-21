@@ -1,11 +1,11 @@
-import '../App.css';
+import '../../App.css';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Fab from '@mui/material/Fab';
-import TempFilters from '../TempFilters';
-import BuildSection from './BuildSection';
+import TempFilters from '../../TempFilters';
+import BuildSection from '../Forms/BuildSection';
 
 
 export default function AttributeFields(props) {

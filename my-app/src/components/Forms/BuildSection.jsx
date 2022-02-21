@@ -1,10 +1,10 @@
 import React from 'react';
-import StringFilter from '../components/Forms/StringFilter';
-import IntegerFilter from '../components/Forms/IntegerFilter';
-import DropDownFilter from '../components/Forms/DropDownFilter';
-import MultiDropFilter from '../components/Forms/MultiDropFilter';
+import StringFilter from './StringFilter';
+import IntegerFilter from './IntegerFilter';
+import DropDownFilter from './DropDownFilter';
+import MultiDropFilter from './MultiDropFilter';
 import TextField from '@mui/material/TextField';
-import DynamicTable from '../components/Tables/DynamicTable';
+import DynamicTable from '../Tables/DynamicTable';
 
 export default function BuildSection(props) {
     const label = props.label;

@@ -4,7 +4,6 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-//import DynamicRow from './DynamicRow';
 
 export default function DynamicTableBody(props) {
     const label = props.label;

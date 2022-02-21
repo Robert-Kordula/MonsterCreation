@@ -4,7 +4,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import ConfirmDelete from '../ConfirmDelete';
+import ConfirmDelete from '../Forms/ConfirmDelete';
 
 export default function TBody(props) {
     let data = props.tableData;
