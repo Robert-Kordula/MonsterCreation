@@ -15,6 +15,7 @@ export default function BuildSection(props) {
                 label={name} 
                 useNewData={props.useNewData}
                 data={props.data}
+                isInitial={props.isInitial}
                 />
         ))
     )

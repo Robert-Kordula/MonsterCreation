@@ -1,5 +1,5 @@
 import '../App.css';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import FilterButton from '../components/Forms/FilterButton';
 import FetchQuery from '../components/FetchQuery';
 import FetchTable from '../components/Tables/FetchTable';

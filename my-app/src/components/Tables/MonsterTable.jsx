@@ -27,8 +27,15 @@ export default function TBody(props) {
                             <Button
                                 className='Buttons'
                                 component={Link}
-                                to={`/edit/${monster.slug}`}
+                                to={`/add/${monster.slug}`}
                             >EDIT</Button>
+                        </TableCell>
+                        <TableCell>
+                            <Button
+                                className='Buttons'
+                                component={Link}
+                                to={`/edit/${monster.slug}`}
+                            >COPY</Button>
                         </TableCell>
                         <TableCell>
                             <ConfirmDelete

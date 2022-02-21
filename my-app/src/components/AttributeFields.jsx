@@ -4,9 +4,9 @@ import { useParams } from 'react-router';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Fab from '@mui/material/Fab';
-
 import TempFilters from '../TempFilters';
 import BuildSection from './BuildSection';
+
 
 export default function AttributeFields(props) {
 
@@ -19,17 +19,10 @@ export default function AttributeFields(props) {
 
     useEffect(() => {
         if (props.status === 'success') {
-            console.log(newData);
             setIsInitial(false);
         }
         //eslint-disable-next-line
     }, [props]);
-
-    useEffect(() => {
-        console.log(`Initial: ${isInitial}`);
-        console.log(`New Data: ${JSON.stringify(newData)}`);
-        console.log(`Changed: ${changed}`);
-    })
 
     useEffect(() => {
         if (!isInitial) {
@@ -42,22 +35,23 @@ export default function AttributeFields(props) {
         console.log(newData);
         const requestOptions = {
             method: props.method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(sendData)
+            headers: { 
+                        'Content-Type': 'application/json', 
+                        'Access-Control-Allow-Origin': 'http://localhost:3500/monster' 
+                    },
+            body: JSON.stringify(newData)
         };
         let url = 'http://localhost:3500/monster';
         if (props.method === 'PATCH') {
             url = url.concat(`/${name}`);
         }
-
+        console.log(requestOptions);
         let response = await fetch(url, requestOptions);
         alert(response.status);
     };
 
     if (props.status === 'loading') return <p>{props.status}</p>
-    if (props.status === 'error') return <p>{props.status}</p>
-    // if (data.length > 1) return <p>{name} does not exist</p>
-    // if (data.length === 1) 
+    if (props.status === 'error') return <p>{props.status}</p> 
     return (
         <Box>
             <header id='header-title'>{props.name || ''}</header>
@@ -110,7 +104,8 @@ export default function AttributeFields(props) {
                 >
                     <BuildSection 
                         attributes={attributes}
-                        label={"actions and spells"} 
+                        label={"actions and spells"}
+                        isInitial={isInitial} 
                         useNewData={[newData, setNewData]}
                         data={data}
                     />

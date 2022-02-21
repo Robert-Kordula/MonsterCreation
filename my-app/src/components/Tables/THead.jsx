@@ -13,8 +13,9 @@ export default function THead() {
                 <TableHeader name='Size' />
                 <TableHeader name='HP' />
                 <TableHeader name='CR' />
-                <TableHeader name='' />
-                <TableHeader name='' />
+                <th></th>
+                <th></th>
+                <th></th>
             </TableRow>
         </TableHead>
     )

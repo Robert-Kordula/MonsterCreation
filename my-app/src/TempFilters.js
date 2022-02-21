@@ -33,7 +33,7 @@ export default function TempFilters() {
       },
       // languages: {
       //   inputType: "multi-drop-down",
-      //   values: ["", "Common", "Gnoll", "Sylvan", "Draconic", "understands all but can't speak"],
+      //   values: ["Common", "Gnoll", "Sylvan", "Draconic", "understands all but can't speak"],
       // },
       challenge_rating: {
         inputType: "integer",
@@ -141,19 +141,19 @@ export default function TempFilters() {
       },
       damageVulnerabilites: {
         inputType: "multi-drop-down",
-        values: ["", "radiant", "cold", "fire", "bludgeoning"],
+        values: ["radiant", "cold", "fire", "bludgeoning"],
       },
       damageResistances: {
         inputType: "multi-drop-down",
-        values: ["", "radiant", "cold", "fire", "bludgeoning"],
+        values: ["radiant", "cold", "fire", "bludgeoning"],
       },
       damageImmunities: {
         inputType: "multi-drop-down",
-        values: ["", "radiant", "cold", "fire", "bludgeoning"],
+        values: ["radiant", "cold", "fire", "bludgeoning"],
       },
       conditionImmunities: {
         inputType: "multi-drop-down",
-        values: ["", "paralyzed", "unconscious", "charmed", "poisoned"],
+        values: ["paralyzed", "unconscious", "charmed", "poisoned"],
       },
     },
     "actions and spells": {
