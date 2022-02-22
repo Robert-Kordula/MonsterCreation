@@ -49,7 +49,7 @@ export default function TBody(props) {
         )
     }
     console.log(props.status);
-    if (props.status === 'loading') return <p>{props.status}</p>
-    if (props.status === 'error') return <p>{data}</p>
-    if (props.status === 'success' && data.length < 1) return <p>NO SEARCH RESULTS FOUND, PLEASE USE DIFFERENT SEARCH TERMS</p>
+    if (props.status === 'loading') return <tbody><tr><td>{props.status}</td></tr></tbody>
+    if (props.status === 'error') return <tbody><tr><td>{data}</td></tr></tbody>
+    if (props.status === 'success' && data.length < 1) return <tbody><tr><td>NO SEARCH RESULTS FOUND, PLEASE USE DIFFERENT SEARCH TERMS</td></tr></tbody>
 }

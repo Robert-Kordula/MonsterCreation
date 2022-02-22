@@ -12,12 +12,10 @@ export default function FetchTable(props) {
     const [searchParams, ]= props.useSearchParams
     const [,setURL] = props.useURL;
     const data = props.data;
-    const dataLength = data.count;
     const rowOptions = [50, 100, 200];
-    let start = 0;
-    let end = start + parseInt(rowsPerPage);
 
     useEffect( () => {
+        console.log('changing url')
         setURL(`https://api.open5e.com/monsters/?limit=${rowsPerPage}&page=${page}&${searchParams}`);
         //eslint-disable-next-line
     }, [rowsPerPage, page, searchParams])
@@ -26,9 +24,7 @@ export default function FetchTable(props) {
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
             <TablePaginator 
                 rowOptions={rowOptions} 
-                start={start} 
-                end={end} 
-                dataLength={dataLength}
+                count={data.count}
                 useRows={[rowsPerPage, setRowsPerPage]}
                 usePage={[page, setPage]}
                 
