@@ -6,13 +6,13 @@ export default function TablePaginator(props) {
     let rowOptions = props.rowOptions;
     const [rowsPerPage, setRowsPerPage] = props.useRows;
     const [page, setPage] = props.usePage;
-    const [isButtonEnabled, setIsButtonEnabled] = useState({ left: false, right: true })
-    let maxPages = Math.ceil(props.count / rowsPerPage);
+    const [isButtonEnabled, setIsButtonEnabled] = useState({});
+    const [maxPages, setMaxPages] = useState(1);
+    const [count, ] = props.useCount;
 
     const changeRows = (event) => {
         setRowsPerPage(event.target.value);
         setPage(1);
-        maxPages = Math.ceil(props.count / rowsPerPage);
     }
 
     const leftPage = () => {
@@ -37,8 +37,8 @@ export default function TablePaginator(props) {
         return total;
     }
 
-    useEffect(() => {
-        console.log(`Max Pages: ${maxPages}\nCurrent Page: ${page}`);
+    const updateButtonStates = () => {
+        console.log(maxPages);
         if (page === 1) {
             setIsButtonEnabled((prevState) => ({...prevState, left: false}));
         } else if (page > 1) {
@@ -49,8 +49,27 @@ export default function TablePaginator(props) {
         } else if (page === maxPages) {
             setIsButtonEnabled((prevState) => ({...prevState, right: false}));
         }
+    }
+
+    useEffect(() => {
+        console.log(`Max Pages: ${maxPages}\nCurrent Page: ${page}`);
+        console.log(isButtonEnabled);
+    });
+    // useEffect(() => {
+    //     console.log('initial');
+    //     setMaxPages(Math.ceil(props.count / rowsPerPage));
+    //     updateButtonStates();
+    //     //eslint-disable-next-line
+    // }, [])
+
+    useEffect(() => {
+        updateButtonStates();
         //eslint-disable-next-line
-    }, [page, rowsPerPage]);
+    }, [page]);
+
+    useEffect(() => {
+        setMaxPages(Math.ceil(count / rowsPerPage));
+    }, [rowsPerPage])
 
     return (
         <Box
@@ -62,7 +81,7 @@ export default function TablePaginator(props) {
             >
                 {rowOptions.map((rows) => (<option value={rows}>{rows}</option>))}
             </select>
-            <p>{`${rowsPerPage * (page - 1) + 1}-${end()} of ${props.count}`}</p>
+            <p>{`${rowsPerPage * (page - 1) + 1}-${end()} of ${count}`}</p>
             <Button
                 disabled={!isButtonEnabled.left}
                 onClick={leftPage}

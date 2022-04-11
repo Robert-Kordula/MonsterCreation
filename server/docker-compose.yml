@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  ts-node-docker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ./src:/home/node/app/src
+      - ./nodemon.json:/home/node/app/nodemon.json
+    container_name: ts-node-docker
+    expose:
+      - '${PORT}'
+    ports:
+      - '${PORT}:${PORT}'
+    command: npm run dev
+    network_mode: "host"
+  db:
+    container_name: "psql"
+    image: postgres
+    ports: 
+      - "5432:5432"
+    environment: 
+      POSTGRES_DB: ${DATABASE} 
+      POSTGRES_USER: ${LOGIN}
+      POSTGRES_PASS: ${PASSWORD}
+    volumes: 
+      - ~/dbdata:/var/lib/postgresql/data
