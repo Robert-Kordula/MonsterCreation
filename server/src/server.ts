@@ -1,49 +1,78 @@
-import express, { Application, Router } from 'express';
+import express, { Application, Router, urlencoded, Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import { sequelize } from './db_config/db';
-class Server {
-    private app;
 
-    constructor() {
-        this.app = express();
-        this.config();
-        this.routerConfig();
-        this.dbConnect();
-    }
+const cors = require('cors');
+const app = express();
+let corsOptions = {
+              origin: "*",
+              methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+              preflightContinue: false,
+              optionsSuccessStatus: 204
+};
 
-    private config() {
-        this.app.use(bodyParser.urlencoded({extended: true}));
-        this.app.use(bodyParser.json({limit: '1mb'})); //100kb default
+app.use(cors(corsOptions));
+
+app.use(express.json());
+
+app.use(express.urlencoded({extended: true}));
+
+app.get('/', (req: Request, res: Response) => {
+    res.json({message: 'Where have you gone?'});
+});
+
+const db = require('./models/db');
+db.sequelize.sync();
+
+require('./routers/Language.Routes')(app);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+})
+
+// class Server {
+//     private app;
+
+//     constructor() {
+//         this.app = express();
+//         this.config();
+//         this.routerConfig();
+//         this.dbConnect();
+//     }
+
+//     private config() {
+//         this.app.use(bodyParser.urlencoded({extended: true}));
+//         this.app.use(bodyParser.json({limit: '1mb'})); //100kb default
         
-        let cors = require('cors');
-        let corsOptions = {
-          origin: "*",
-          methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-          preflightContinue: false,
-          optionsSuccessStatus: 204
-        };
-        this.app.use(cors(corsOptions));
-    };
+//         let cors = require('cors');
+//         let corsOptions = {
+//           origin: "*",
+//           methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//           preflightContinue: false,
+//           optionsSuccessStatus: 204
+//         };
+//         this.app.use(cors(corsOptions));
+//     };
     
-    private async dbConnect() {
-        try {
-            await sequelize.authenticate();
-            console.log('Connection has been established successfully.');
-        } catch (error) {
-            console.error('Unable to connect to the database:', error);
-        }
-    }
+//     private async dbConnect() {
+//         try {
+//             await sequelize.authenticate();
+//             console.log('Connection has been established successfully.');
+//         } catch (error) {
+//             console.error('Unable to connect to the database:', error);
+//         }
+//     }
 
-    private routerConfig() {
+//     private routerConfig() {
         
-    }
+//     }
 
-    public start = (port: number) => {
-        return new Promise((resolve, reject) => {
-            this.app.listen(port, () => {
-                resolve(port);
-            }).on('error', (err: Object) => reject(err));
-        });
-    }
-}
-export default Server;
+//     public start = (port: number) => {
+//         return new Promise((resolve, reject) => {
+//             this.app.listen(port, () => {
+//                 resolve(port);
+//             }).on('error', (err: Object) => reject(err));
+//         });
+//     }
+// }
+// export default Server;

@@ -1,14 +1,14 @@
-import server from './server';
-import dotenv from 'dotenv';
+// import server from './server';
+// import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
-const port = parseInt(process.env.PORT || '3000');
+// const port = parseInt(process.env.PORT || '3000');
 
-const starter = new server().start(port)
-  .then(port => console.log(`Running on port ${port}`))
-  .catch(error => {
-    console.log(error)
-  });
+// const starter = new server().start(port)
+//   .then(port => console.log(`Running on port ${port}`))
+//   .catch(error => {
+//     console.log(error)
+//   });
 
-export default starter;
+// export default starter;
