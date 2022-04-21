@@ -1,9 +1,10 @@
-import { Op, InferCreationAttributes } from 'sequelize';
+import { Op, InferCreationAttributes, Transaction } from 'sequelize';
+import { Type } from '../models';
 import Monster from '../models/Monster';
 import { MonsterInput, MonsterOutput } from '../models/Monster';
 
-export const create = async (payload: MonsterInput): Promise<MonsterOutput> => {
-    const monster = await Monster.create(payload);
+export const create = async (payload: MonsterInput, t: Transaction): Promise<MonsterOutput> => {
+    const monster = await Monster.create(payload, {transaction: t});
     return monster;
 }
 

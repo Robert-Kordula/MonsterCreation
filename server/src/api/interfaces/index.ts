@@ -1,5 +1,7 @@
 import { Monster } from './monster';
+import { Name } from './name';
 
 export {
-    Monster
+    Monster,
+    Name
 }

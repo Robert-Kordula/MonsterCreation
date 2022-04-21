@@ -10,10 +10,6 @@ export interface MonsterAttributes {
     id: number;
     name: string;
     size: number;
-    type: ForeignKey<number>;
-    subtype?: ForeignKey<number>;
-    group: ForeignKey<number>;
-    alignment: ForeignKey<number>;
     armor_class: number;
     armor_desc?: string;
     hit_points: number;
@@ -41,10 +37,6 @@ class Monster extends Model<MonsterAttributes, MonsterInput> implements MonsterA
     public id!: number;
     public name!: string;
     public size!: number;
-    public type!: ForeignKey<number>;
-    public subtype!: ForeignKey<number>;
-    public group!: ForeignKey<number>;
-    public alignment!: ForeignKey<number>;
     public armor_class!: number;
     public armor_desc!: string;
     public hit_points!: number;
@@ -82,36 +74,6 @@ Monster.init({
         type: DataTypes.STRING,
         //values: ['SMALL', 'MEDIUM', 'LARGE', 'HUGE'],
         allowNull: false
-    }, 
-    type: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-        references: {
-            model: Type,
-            key: 'id'
-        }
-    }, 
-    subtype: {
-        type: DataTypes.SMALLINT,
-        references: {
-            model: SubType,
-            key: 'id'
-        }
-    }, 
-    group: {
-        type: DataTypes.SMALLINT,
-        references: {
-            model: Group,
-            key: 'id'
-        }
-    }, 
-    alignment: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-        references: {
-            model: Alignment,
-            key: 'id'
-        }
     }, 
     armor_class: {
         type: DataTypes.SMALLINT, 
@@ -252,19 +214,27 @@ Monster.init({
 });
 
 Type.hasMany(Monster, {
-    foreignKey: 'id'
+    foreignKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
 });
 Monster.belongsTo(Type);
 SubType.hasMany(Monster, {
-    foreignKey: 'id'
+    foreignKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
 });
 Monster.belongsTo(SubType);
 Alignment.hasMany(Monster, {
-    foreignKey: 'id'
+    foreignKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
 });
 Monster.belongsTo(Alignment);
 Group.hasMany(Monster, {
-    foreignKey: 'id'
+    foreignKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
 });
 Monster.belongsTo(Group);
 export default Monster;

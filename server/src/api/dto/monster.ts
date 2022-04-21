@@ -1,12 +1,8 @@
-import { ForeignKey, Optional } from "sequelize/types";
+import { Optional } from "sequelize/types";
 
 export type CreateMonsterDTO = {
     name: string;
     size: number;
-    type: ForeignKey<number>;
-    subtype?: ForeignKey<number>;
-    group: ForeignKey<number>;
-    alignment: ForeignKey<number>;
     armor_class: number;
     armor_desc?: string;
     hit_points: number;
