@@ -1,6 +1,9 @@
 import express, { Application, Router, urlencoded, Request, Response } from 'express';
+import router from './api/routers';
 import bodyParser from 'body-parser';
+import dbInit from './db/init';
 
+dbInit();
 const cors = require('cors');
 const app = express();
 let corsOptions = {
@@ -16,14 +19,17 @@ app.use(express.json());
 
 app.use(express.urlencoded({extended: true}));
 
+app.use((req: Request, res: Response, next) => {
+    const currentDate = new Date();
+    console.log(`${currentDate}\nURL:\t${req.url}\nNew request:\t${req.method}\nIP:\t\t\t${req.ip}`);
+    next();
+});
+
+app.use('/api', router);
+
 app.get('/', (req: Request, res: Response) => {
     res.json({message: 'Where have you gone?'});
 });
-
-const db = require('./models/db');
-db.sequelize.sync();
-
-require('./routers/Language.Routes')(app);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
