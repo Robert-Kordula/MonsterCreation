@@ -1,57 +1,49 @@
-import { Sequelize, DataTypes } from "sequelize/types";
+import { Optional, DataTypes, ForeignKey, Model } from "sequelize/types";
+import sequelizeConnection from "../db-config";
+import Monster from "./Monster";
 
+export interface SenseAttributes {
+    id: number;
+    monster_id: ForeignKey<number>;
+    sense: string;
+}
 
-// class Sense extends Model {}
+export interface SenseInput extends Optional<SenseAttributes, 'id'> {}
+export interface SenseOutput extends Required<SenseAttributes> {}
 
-// Sense.init({
-//     monster_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Monster,
-//             key: 'id'
-//         }
-//     }, 
-//     sense: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         validate: {
-//             len: [5, 20]
-//         }
-//     }
-// }, {
-//     sequelize,
-//     modelName: 'Sense'
-// });
+class Sense extends Model<SenseAttributes, SenseInput> {
+    public id!: number;
+    public monster_id!: ForeignKey<number>;
+    public sense!: string;
+}
 
-
-
-module.exports = (sequelize: Sequelize) => {
-
-    const Monster = require('./Monster');
-    const Sense = sequelize.define('sense', {
-        monster_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Monster,
-                key: 'id'
-            }
-        }, 
-        sense: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                len: [5, 20]
-            }
+Sense.init({
+    id: {
+        type: DataTypes.SMALLINT,
+        autoIncrement: true,
+        primaryKey: true
+    }, 
+    sense: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [5, 20]
         }
-    });
+    }
+}, {
+    sequelize: sequelizeConnection,
+    modelName: 'Sense',
+    tableName: 'Senses'
+});
 
-    Monster.hasMany(Sense, {
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-    });
-    Sense.belongsTo(Monster);
+Monster.hasMany(Sense, {
+    foreignKey: {
+        name: 'id',
+        allowNull: false
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+Sense.belongsTo(Monster);
 
-    return Sense;
-};
+export default Sense;

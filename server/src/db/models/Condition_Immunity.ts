@@ -1,81 +1,41 @@
-import { Sequelize, DataTypes } from "sequelize/types";
+import { Model, DataTypes } from "sequelize/types";
+import sequelizeConnection from "../db-config";
+import { NameAttributes, NameInput } from "./interfaces/nameInterfaces";
+import Monster from "./Monster";
+class Condition extends Model<NameAttributes, NameInput> implements NameAttributes {
+    public id!: number;
+    public name!: string;
+}
 
-// class Conditions extends Model {}
-
-// Conditions.init({
-//     condition_name: {
-//         type: DataTypes.STRING,
-//         unique: true,
-//         allowNull: false,
-//         validate: {
-//             len: [3, 20]
-//         }
-//     }
-// }, {
-//     sequelize,
-//     modelName: 'Conditions'
-// });
-
-// class Condition_Immunity extends Model {}
-
-// Condition_Immunity.init({
-//     monster_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Monster,
-//             key: 'id'
-//         }
-//     },
-//     condition_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Conditions,
-//             key: 'id'
-//         }
-//     }
-// }, {
-//     sequelize,
-//     modelName: 'Condition_Immunities'
-// });
-
-module.exports = (sequelize: Sequelize) => {
-
-    const Monster = require('./Monster');
-
-    const Conditions = sequelize.define('conditions', {
-        condition_name: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false,
-            validate: {
-                len: [3, 20]
-            }
+Condition.init({
+    id: {
+        type: DataTypes.SMALLINT,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            len: [3, 20]
         }
-    });
+    }
+}, {
+    sequelize: sequelizeConnection,
+    modelName: 'Condition',
+    tableName: 'Conditions'
+});
 
-    const Condition_Immunity = sequelize.define('condition_immunity', {
-        monster_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Monster,
-                key: 'id'
-            }
-        },
-        condition_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Conditions,
-                key: 'id'
-            }
-        }
-    });
+class Condition_Immunity extends Model {}
 
-    Monster.belongsToMany(Conditions, { through: Condition_Immunity });
-    Conditions.belongsToMany(Monster, { through: Condition_Immunity });
+Condition_Immunity.init({}, {
+    sequelize: sequelizeConnection,
+    modelName: 'Condition_Immunity',
+    tableName: 'Condition_Immunities'
+});
 
-    return Condition_Immunity;
-};
+Monster.belongsToMany(Condition, {through: Condition_Immunity});
+Condition.belongsToMany(Monster, {through: Condition_Immunity});
+
+export default Condition;

@@ -1,71 +1,47 @@
-import { Sequelize, DataTypes } from "sequelize/types";
+import { Optional, Model, DataTypes, ForeignKey, ENUM } from "sequelize/types";
+import sequelizeConnection from "../db-config";
+import Monster from "./Monster";
+export interface SpeedAttributes {
+    monster_id: ForeignKey<number>;
+    terrain: number;
+    speed: number;
+}
 
+export interface SpeedInput extends Optional<SpeedAttributes, 'monster_id'> { }
+export interface SpeedOutput extends Required<SpeedAttributes> { }
 
-// class Speed extends Model {}
+class Speeds extends Model<SpeedAttributes, SpeedInput> implements SpeedAttributes {
+    public monster_id!: ForeignKey<number>;
+    public terrain!: number;
+    public speed!: number;
+}
 
-// Speed.init({
-//     monster_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Monster,
-//             key: 'id'
-//         }
-//     },
-//     terrain: {
-//         type: DataTypes.ENUM('WALK', 'CLIMB', 'BURROW', 'SWIM', 'FLY', 'HOVER'),
-//         allowNull: false
-//     },
-//     speed: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: true,
-//         validate: {
-//             customValidator(value: Number) {
-//                 if (value === null && this.terrain !== 'HOVER') {
-//                     throw new Error('Speed cannot be null unless it is hovering');
-//                 }
-//             }
-//         }
-//     }
-// }, {
-//     sequelize,
-//     modelName: 'Speed'
-// });
-
-module.exports = (sequelize: Sequelize) => {
-
-    const Monster = require('./Monster');
-    const Speed = sequelize.define('speed', {
-        monster_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Monster,
-                key: 'id'
-            }
-        },
-        terrain: {
-            type: DataTypes.ENUM('WALK', 'CLIMB', 'BURROW', 'SWIM', 'FLY', 'HOVER'),
-            allowNull: false
-        },
-        speed: {
-            type: DataTypes.SMALLINT,
-            allowNull: true,
-            validate: {
-                customValidator(value: Number) {
-                    if (value === null && this.terrain !== 'HOVER') {
-                        throw new Error('Speed cannot be null unless it is hovering');
-                    }
+Speeds.init({
+    terrain: {
+        type: DataTypes.ENUM('WALK', 'CLIMB', 'BURROW', 'SWIM', 'FLY', 'HOVER'),
+        allowNull: false
+    },
+    speed: {
+        type: DataTypes.SMALLINT,
+        allowNull: true,
+        validate: {
+            customValidator(value: Number) {
+                if (value === null && this.terrain !== 'HOVER') {
+                    throw new Error('Speed cannot be null unless it is hovering');
                 }
             }
         }
-    });
+    }
+}, {
+    sequelize: sequelizeConnection,
+    modelName: 'Speed',
+    tableName: 'Speeds'
+});
 
-    Monster.hasMany(Speed, {
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-    });
-    Speed.belongsTo(Monster);
+Monster.hasMany(Speeds, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+Speeds.belongsTo(Monster);
 
-    return Speed;
-};
+export default Speeds;

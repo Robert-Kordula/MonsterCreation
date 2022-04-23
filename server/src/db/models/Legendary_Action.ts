@@ -1,65 +1,49 @@
-import { Sequelize, DataTypes } from "sequelize/types";
+import { Model, DataTypes, ForeignKey } from "sequelize/types";
+import sequelizeConnection from "../db-config";
+import { DescAttributes, DescInput } from "./interfaces/descInterface";
+import Monster from "./Monster";
 
-// class Legendary_Action extends Model {}
+class Legendary_Action extends Model<DescAttributes, DescInput> implements DescAttributes {
+    public id!: number;
+    public monster_id!: ForeignKey<number>;
+    public name!: string;
+    public desc!: string;
+}
 
-// Legendary_Action.init({
-//     monster_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Monster, 
-//             key: 'id'
-//         }
-//     },
-//     name: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         validate: {
-//             len: [3, 30]
-//         }
-//     },
-//     desc: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         validate: {
-//             len: [5, 1023]
-//         }
-//     }
-// }, {
-//     sequelize, 
-//     modelName: 'Legendary_Action'
-// });
-
-module.exports = (sequelize: Sequelize) => {
-    
-    const Monster = require('./Monster');
-    const Legendary_Action = sequelize.define('legendary_action', {
-        monster_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Monster, 
-                key: 'id'
-            }
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                len: [3, 30]
-            }
-        },
-        desc: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                len: [5, 1023]
-            }
+Legendary_Action.init({
+    id: {
+        type: DataTypes.SMALLINT,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [3, 30]
         }
-    });
+    },
+    desc: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [5, 1023]
+        }
+    }
+}, {
+    sequelize: sequelizeConnection, 
+    modelName: 'Legendary_Action',
+    tableName: 'Legendary_Actions'
+});
 
-    Monster.hasMany(Legendary_Action);
-    Legendary_Action.belongsTo(Monster);
+Monster.hasMany(Legendary_Action, {
+    foreignKey: {
+        name: 'monster_id',
+        allowNull: false
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+Legendary_Action.belongsTo(Monster);
 
-    return Legendary_Action;
-};
+export default Legendary_Action;

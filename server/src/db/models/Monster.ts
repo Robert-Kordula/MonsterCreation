@@ -11,7 +11,7 @@ export interface MonsterAttributes {
     name: string;
     size: number;
     armor_class: number;
-    armor_desc?: string;
+    armor_desc: string;
     hit_points: number;
     hit_dice: string;
     strength: number;
@@ -21,13 +21,13 @@ export interface MonsterAttributes {
     wisdom: number;
     charisma: number;
     perception: number;
-    challenge_rating?: number;
-    strength_save?: number;
-    dexterity_save?: number;
-    intelligence_save?: number;
-    wisdom_save?: number;
-    charisma_save?: number;
-    legendary_desc?: string;
+    challenge_rating: number;
+    strength_save: number;
+    dexterity_save: number;
+    intelligence_save: number;
+    wisdom_save: number;
+    charisma_save: number;
+    legendary_desc: string;
 }
 
 export interface MonsterInput extends Optional<MonsterAttributes, 'id'> {}
@@ -59,7 +59,7 @@ class Monster extends Model<MonsterAttributes, MonsterInput> implements MonsterA
 
 Monster.init({
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         autoIncrement: true,
         primaryKey: true,
     },

@@ -1,66 +1,50 @@
-import { Sequelize, DataTypes } from "sequelize/types";
+import { Model, DataTypes, ForeignKey, Optional } from "sequelize/types";
+import sequelizeConnection from "../db-config";
+import { DescAttributes, DescInput } from "./interfaces/descInterface";
+import Monster from "./Monster";
+
+class Reaction extends Model<DescAttributes, DescInput> implements DescAttributes {
+    public id!: number;
+    public monster_id!: ForeignKey<number>;
+    public name!: string;
+    public desc!: string;
+}
 
 
-// class Reaction extends Model {}
-
-// Reaction.init({
-//     monster_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Monster, 
-//             key: 'id'
-//         }
-//     },
-//     name: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         validate: {
-//             len: [3, 30]
-//         }
-//     },
-//     desc: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         validate: {
-//             len: [5, 1023]
-//         }
-//     }
-// }, {
-//     sequelize, 
-//     modelName: 'Reaction'
-// });
-
-module.exports = (sequelize: Sequelize) => {
-
-    const Monster = require('./Monster');
-    const Reaction = sequelize.define('reaction', {
-        monster_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Monster, 
-                key: 'id'
-            }
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                len: [3, 30]
-            }
-        },
-        desc: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                len: [5, 1023]
-            }
+Reaction.init({
+    id: {
+        type: DataTypes.SMALLINT,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [3, 30]
         }
-    });
+    },
+    desc: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            len: [5, 1023]
+        }
+    }
+}, {
+    sequelize: sequelizeConnection, 
+    modelName: 'Reaction',
+    tableName: 'Reactions'
+});
 
-    Monster.hasMany(Reaction);
-    Reaction.belongsTo(Monster);
+Monster.hasMany(Reaction, {
+    foreignKey: {
+        name: 'monster_id',
+        allowNull: false
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+Reaction.belongsTo(Monster);
 
-    return Reaction;
-};
+export default Reaction;

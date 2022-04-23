@@ -1,31 +1,36 @@
-import { Sequelize, DataTypes } from "sequelize/types";
+import { Optional, DataTypes, Model } from "sequelize/types";
+import sequelizeConnection from "../db-config";
 
-// class Spell extends Model {}
+export interface SpellAttributes {
+    id: number;
+    url: string;
+}
 
-// Spell.init({
-//     url: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         validate: {
-//             isUrl: true
-//         }
-//     }
-// }, {
-//     sequelize,
-//     modelName: 'Spell'
-// });
+export interface SpellInput extends Optional<SpellAttributes, 'id'> {}
+export interface SpellOutput extends Required<SpellAttributes> {}
 
-module.exports = (sequelize: Sequelize) => {
+class Spell extends Model<SpellAttributes, SpellInput> implements SpellAttributes {
+    public id!: number;
+    public url!: string;
+}
 
-    const Spell = sequelize.define('spells', {
-        url: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                isUrl: true
-            }
+Spell.init({
+    id: {
+        type: DataTypes.SMALLINT,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            isUrl: true
         }
-    });
+    }
+}, {
+    sequelize: sequelizeConnection,
+    modelName: 'Spell',
+    tableName: 'Spells'
+});
 
-    return Spell;
-};
+export default Spell;

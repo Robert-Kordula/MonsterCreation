@@ -1,81 +1,49 @@
-import { Sequelize, DataTypes } from "sequelize/types";
+import { ForeignKey, DataTypes, Model } from "sequelize/types";
+import sequelizeConnection from "../db-config";
+import { NameAttributes, NameInput } from "./interfaces/nameInterfaces";
 
-// class Language extends Model {}
+import Monster from "./Monster";
 
-// Language.init({
-//     language_name: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         unique: true, 
-//         validate: {
-//             len: [3, 20]
-//         }
-//     }
-// }, {
-//     sequelize,
-//     modelName: 'Language',
-//     freezeTableName: true
-// });
+export interface LanguageAttributes {
+    monster_id: ForeignKey<number>;
+    language_id: ForeignKey<number>;
+}
 
-// class Languages extends Model {}
+class Language extends Model<NameAttributes, NameInput> implements NameAttributes {
+    public id!: number;
+    public name!: string;
+}
 
-// Languages.init({
-//     monster_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Monster,
-//             key: 'id'
-//         }
-//     },
-//     language_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Language,
-//             key: 'id'
-//         }
-//     }
-// }, {
-//     sequelize,
-//     modelName: 'Languages'
-// });
-
-module.exports = (sequelize: Sequelize) => {
-
-    const Monster = require('./Monster');
-    const Language = sequelize.define('Language', {
-        language_name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true, 
-            validate: {
-                len: [3, 20]
-            }
+Language.init({
+    id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true, 
+        validate: {
+            len: [3, 20]
         }
-    });
+    }
+}, {
+    sequelize: sequelizeConnection,
+    modelName: 'Language',
+    tableName: 'Language'
+});
 
-    const Languages = sequelize.define('language', {
-        monster_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Monster,
-                key: 'id'
-            }
-        },
-        language_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Language,
-                key: 'id'
-            }
-        }
-    });
+class Languages extends Model {}
 
-    Monster.belongsToMany(Language, { through: Languages });
-    Language.belongsToMany(Monster, { through: Languages });
+Languages.init({}, {
+    sequelize: sequelizeConnection,
+    modelName: 'Languages',
+    tableName: 'Languages'
+});
 
-    return Languages;
-};
+Monster.belongsToMany(Language, {through: Languages});
+Language.belongsToMany(Monster, {through: Languages});
+
+export default Languages;

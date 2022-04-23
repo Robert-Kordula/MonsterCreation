@@ -1,54 +1,59 @@
-import { Sequelize, DataTypes } from "sequelize";
+// import { Sequelize, DataTypes, Model } from "sequelize";
+// import { DamageAttributes, DamageInput } from "./interfaces/damageInterface";
 
-// class Damage_Resistance extends Model {}
+// class Damage_Resistance extends Model<DamageAttributes, DamageInput> {}
 
-// Damage_Resistance.init({
-//     monster_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: 'Monster',
-//             key: 'id'
-//         }
-//     },
-//     damage_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: 'Damage_Type',
-//             key: 'id'
-//         }
-//     }
-// }, {
-//     sequelize,
-//     modelName: 'Damage_Vulnerabilities'
-// });
+// Damage_Resistance.init({}, {})
 
-module.exports = (sequelize: Sequelize) => {
+// // class Damage_Resistance extends Model {}
 
-    const Monster = require('./Monster');
-    const Damage_Type = require('./Damage_Type')(sequelize);
+// // Damage_Resistance.init({
+// //     monster_id: {
+// //         type: DataTypes.SMALLINT,
+// //         allowNull: false,
+// //         references: {
+// //             model: 'Monster',
+// //             key: 'id'
+// //         }
+// //     },
+// //     damage_id: {
+// //         type: DataTypes.SMALLINT,
+// //         allowNull: false,
+// //         references: {
+// //             model: 'Damage_Type',
+// //             key: 'id'
+// //         }
+// //     }
+// // }, {
+// //     sequelize,
+// //     modelName: 'Damage_Vulnerabilities'
+// // });
 
-    const Damage_Resistance = sequelize.define('damage_resistance', {
-        monster_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: 'Monster',
-                key: 'id'
-            }
-        },
-        damage_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: 'Damage_Type',
-                key: 'id'
-            }
-        }
-    });
-    Monster.belongsToMany(Damage_Type, { through: Damage_Resistance});
-    Damage_Type.belongsToMany(Monster, { through: Damage_Resistance});
+// // module.exports = (sequelize: Sequelize) => {
 
-    return Damage_Resistance;
-};
+// //     const Monster = require('./Monster');
+// //     const Damage_Type = require('./Damage_Type')(sequelize);
+
+// //     const Damage_Resistance = sequelize.define('damage_resistance', {
+// //         monster_id: {
+// //             type: DataTypes.SMALLINT,
+// //             allowNull: false,
+// //             references: {
+// //                 model: 'Monster',
+// //                 key: 'id'
+// //             }
+// //         },
+// //         damage_id: {
+// //             type: DataTypes.SMALLINT,
+// //             allowNull: false,
+// //             references: {
+// //                 model: 'Damage_Type',
+// //                 key: 'id'
+// //             }
+// //         }
+// //     });
+// //     Monster.belongsToMany(Damage_Type, { through: Damage_Resistance});
+// //     Damage_Type.belongsToMany(Monster, { through: Damage_Resistance});
+
+// //     return Damage_Resistance;
+// // };
