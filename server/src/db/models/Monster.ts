@@ -220,7 +220,10 @@ Type.hasMany(Monster, {
 });
 Monster.belongsTo(Type);
 SubType.hasMany(Monster, {
-    foreignKey: 'id',
+    foreignKey: {
+        name: 'id',
+        allowNull: false
+    },
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });
@@ -232,7 +235,10 @@ Alignment.hasMany(Monster, {
 });
 Monster.belongsTo(Alignment);
 Group.hasMany(Monster, {
-    foreignKey: 'id',
+    foreignKey: {
+        name: 'id',
+        allowNull: false
+    },
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });
