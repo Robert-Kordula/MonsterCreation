@@ -1,13 +1,14 @@
-import { ForeignKey, DataTypes, Model } from "sequelize/types";
+import { ForeignKey, DataTypes, Model, Optional } from "sequelize";
 import sequelizeConnection from "../db-config";
 import { NameAttributes, NameInput } from "./interfaces/nameInterfaces";
-
 import Monster from "./Monster";
-
 export interface LanguageAttributes {
     monster_id: ForeignKey<number>;
     language_id: ForeignKey<number>;
 }
+
+export interface LanguageInput extends Optional<LanguageAttributes, 'language_id'> {}
+export interface LanguageOuput extends Required<LanguageAttributes> {}
 
 class Language extends Model<NameAttributes, NameInput> implements NameAttributes {
     public id!: number;
@@ -16,7 +17,7 @@ class Language extends Model<NameAttributes, NameInput> implements NameAttribute
 
 Language.init({
     id: {
-        type: DataTypes.STRING,
+        type: DataTypes.SMALLINT,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
@@ -31,19 +32,27 @@ Language.init({
     }
 }, {
     sequelize: sequelizeConnection,
-    modelName: 'Language',
-    tableName: 'Language'
+    modelName: 'SingleLanguage',
+    freezeTableName: true
 });
 
-class Languages extends Model {}
+class Languages extends Model<LanguageAttributes, LanguageInput> implements LanguageAttributes {
+    public monster_id!: ForeignKey<number>;
+    public language_id!: ForeignKey<number>;
+}
 
 Languages.init({}, {
     sequelize: sequelizeConnection,
-    modelName: 'Languages',
-    tableName: 'Languages'
+    modelName: 'Language',
 });
 
-Monster.belongsToMany(Language, {through: Languages});
-Language.belongsToMany(Monster, {through: Languages});
+Monster.belongsToMany(Language, {
+    through: Languages, 
+    foreignKey: 'language_id'
+});
+Language.belongsToMany(Monster, {
+    through: Languages,
+    foreignKey: 'monster_id'
+});
 
-export default Languages;
+export {Language, Languages };

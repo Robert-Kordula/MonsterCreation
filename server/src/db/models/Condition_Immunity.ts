@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize/types";
+import { Model, DataTypes } from "sequelize";
 import sequelizeConnection from "../db-config";
 import { NameAttributes, NameInput } from "./interfaces/nameInterfaces";
 import Monster from "./Monster";
@@ -35,7 +35,12 @@ Condition_Immunity.init({}, {
     tableName: 'Condition_Immunities'
 });
 
-Monster.belongsToMany(Condition, {through: Condition_Immunity});
-Condition.belongsToMany(Monster, {through: Condition_Immunity});
+Monster.belongsToMany(Condition, {
+    through: Condition_Immunity,
+    foreignKey: 'monster_id'
+});
+Condition.belongsToMany(Monster, {
+    through: Condition_Immunity,
+    foreignKey: 'condition_id'});
 
-export default Condition;
+export default Condition_Immunity;

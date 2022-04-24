@@ -1,4 +1,4 @@
-import { Optional, DataTypes, Model } from "sequelize/types";
+import { Optional, DataTypes, Model } from "sequelize";
 import sequelizeConnection from "../db-config";
 
 export interface SpellAttributes {

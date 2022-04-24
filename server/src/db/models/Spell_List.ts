@@ -1,58 +1,33 @@
-import { Sequelize, DataTypes } from "sequelize/types";
+import { Optional, Model, DataTypes, ForeignKey } from "sequelize";
+import sequelizeConnection from "../db-config";
+import Monster from "./Monster";
+import Spell from './Spell';
+export interface ListAttributes {
+    spell_id: ForeignKey<number>;
+    monster_id: ForeignKey<number>;
+}
 
+export interface ListInput extends Optional<ListAttributes, 'spell_id'> {}
+export interface ListOutput extends Required<ListAttributes> {}
 
-// class Spell_List extends Model {}
+class Spell_List extends Model<ListAttributes, ListInput> implements ListAttributes {
+    public spell_id!: ForeignKey<number>;
+    public monster_id!: ForeignKey<number>;
+}
 
-// Spell_List.init({
-//     monster_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Monster,
-//             key: 'id'
-//         }
-//     },
-//     spell_id: {
-//         type: DataTypes.SMALLINT,
-//         allowNull: false,
-//         references: {
-//             model: Spell,
-//             key: 'id'
-//         }
-//     }
-// }, {
-//     sequelize,
-//     modelName: 'Spell_List'
-// });
+Spell_List.init({}, {
+    sequelize: sequelizeConnection,
+    modelName: 'Spell_List',
+    tableName: 'Spell_List'
+});
 
+Monster.belongsToMany(Spell, {
+    through: Spell_List,
+    foreignKey: 'spell_id'
+});
+Spell.belongsToMany(Monster, {
+    through: Spell_List,
+    foreignKey: 'monster_id'
+});
 
-
-exports.module = (sequelize: Sequelize) => {
-
-    const Monster = require('./Monster');
-    const Spell = require('./Spell');
-
-    const Spell_List = sequelize.define('spell_list', {
-        monster_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Monster,
-                key: 'id'
-            }
-        },
-        spell_id: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            references: {
-                model: Spell,
-                key: 'id'
-            }
-        }
-    });
-
-    Monster.belongsToMany(Spell, { through: Spell_List });
-    Spell.belongsToMany(Monster, { through: Spell_List });
-
-    return Spell_List;
-};
+export default Spell_List;

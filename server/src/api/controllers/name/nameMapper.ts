@@ -1,5 +1,5 @@
-import { Name } from '../interfaces';
-import { NameOutput } from '../../db/models/interfaces/nameInterfaces';
+import { Name } from '../../interfaces';
+import { NameOutput } from '../../../db/models/interfaces/nameInterfaces';
 
 export const toName = (name: NameOutput): Name => {
     return {

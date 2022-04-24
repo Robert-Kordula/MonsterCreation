@@ -1,4 +1,4 @@
-import { Model, DataTypes, ForeignKey, Optional } from "sequelize/types";
+import { Model, DataTypes, ForeignKey, Optional } from "sequelize";
 import sequelizeConnection from "../db-config";
 import { DescAttributes, DescInput } from "./interfaces/descInterface";
 import Monster from "./Monster";
@@ -45,6 +45,5 @@ Monster.hasMany(Special_Ability, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
-Special_Ability.belongsTo(Monster);
 
 export default Special_Ability;

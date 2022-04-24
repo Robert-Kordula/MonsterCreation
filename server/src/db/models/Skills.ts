@@ -1,4 +1,4 @@
-import { Model, DataTypes, ForeignKey, Optional } from "sequelize/types";
+import { Model, DataTypes, ForeignKey, Optional } from "sequelize";
 import sequelizeConnection from "../db-config";
 import { NameAttributes, NameInput } from "./interfaces/nameInterfaces";
 import Monster from "./Monster";
@@ -33,26 +33,16 @@ Skill.init({
     }
 }, {
     sequelize: sequelizeConnection,
-    modelName: 'Skill',
-    tableName: 'Skill'
+    modelName: 'Skill'
 });
 
-class Skills extends Model {}
-
-Skills.init({
-    value: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-        validate: {
-            min: 1,
-            max: 20
-        }
-    }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Skills',
-    tableName: 'Skills'
+Monster.hasMany(Skill, {
+    foreignKey: {
+        name: 'monster_id',
+        allowNull: false
+    },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
 });
 
-Monster.belongsToMany(Skill, {through: Skills});
-Skill.belongsToMany(Skill, {through: Skills});
+export default Skill;

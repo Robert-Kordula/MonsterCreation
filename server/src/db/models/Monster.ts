@@ -5,7 +5,6 @@ import Type from './Type';
 import SubType from './SubType';
 import Alignment from './Alignment';
 import Group from './Group';
-
 export interface MonsterAttributes {
     id: number;
     name: string;
@@ -243,4 +242,5 @@ Group.hasMany(Monster, {
     onUpdate: 'CASCADE',
 });
 Monster.belongsTo(Group);
+
 export default Monster;

@@ -1,10 +1,10 @@
 import express, { Router, Request, Response } from 'express';
 import { CreateMonsterDTO } from '../dto/monster';
 import * as monsterController from '../controllers/monster/monster';
-import * as typeController from '../controllers/type';
-import * as subtypeController from '../controllers/subtype';
-import * as groupController from '../controllers/group';
-import * as alignmentController from '../controllers/alignment';
+import * as typeController from '../controllers/name/type';
+import * as subtypeController from '../controllers/name/subtype';
+import * as groupController from '../controllers/name/group';
+import * as alignmentController from '../controllers/name/alignment';
 import sequelizeConnection from '../../db/db-config';
 
 const monsterRouter = Router();

@@ -1,4 +1,4 @@
-import { Model, DataTypes, ForeignKey, Optional } from "sequelize/types";
+import { Model, DataTypes, ForeignKey, Optional } from "sequelize";
 import sequelizeConnection from "../db-config";
 import { DescAttributes, DescInput } from "./interfaces/descInterface";
 import Monster from "./Monster";
@@ -45,6 +45,5 @@ Monster.hasMany(Reaction, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
-Reaction.belongsTo(Monster);
 
 export default Reaction;

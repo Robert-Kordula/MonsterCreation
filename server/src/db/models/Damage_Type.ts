@@ -36,7 +36,7 @@ Damage_Type.init({
     modelName: 'Damage_Type'
 });
 
-export class Damage_Resistance extends Model<DamageAttributes, DamageInput> implements DamageAttributes {
+class Damage_Resistance extends Model<DamageAttributes, DamageInput> implements DamageAttributes {
     public monster_id!: ForeignKey<number>;
     public damage_id!: ForeignKey<number>;
 }
@@ -47,15 +47,21 @@ Damage_Resistance.init({}, {
     tableName: 'Damage_Resistances'
 });
 
-export class Damage_Immunity extends Model<DamageAttributes, DamageInput> {}
+class Damage_Immunity extends Model<DamageAttributes, DamageInput> {
+    public monster_id!: number;
+    public damage_id!: number;
+    }
 
 Damage_Immunity.init({}, {
     sequelize: sequelizeConnection,
     modelName: 'Damage_Immunity',
-    tableName: 'Damage_Immunitiess'
+    tableName: 'Damage_Immunities'
 });
 
-export class Damage_Vulnerability extends Model<DamageAttributes, DamageInput> {}
+class Damage_Vulnerability extends Model<DamageAttributes, DamageInput> {
+    public monster_id!: number;
+    public damage_id!: number;
+}
 
 Damage_Vulnerability.init({}, {
     sequelize: sequelizeConnection,
@@ -63,9 +69,29 @@ Damage_Vulnerability.init({}, {
     tableName: 'Damage_Vulnerabilities'
 });
 
-Monster.belongsToMany(Damage_Type, {through: Damage_Resistance});
-Damage_Type.belongsToMany(Monster, {through: Damage_Resistance});
-Monster.belongsToMany(Damage_Type, {through: Damage_Immunity});
-Damage_Type.belongsToMany(Monster, {through: Damage_Immunity});
-Monster.belongsToMany(Damage_Type, {through: Damage_Vulnerability});
-Damage_Type.belongsToMany(Monster, {through: Damage_Vulnerability});
+Monster.belongsToMany(Damage_Type, {
+    through: Damage_Resistance,
+    foreignKey: 'damage_id'
+});
+Damage_Type.belongsToMany(Monster, {
+    through: Damage_Resistance,
+    foreignKey: 'monster_id'
+});
+Monster.belongsToMany(Damage_Type, {
+    through: Damage_Immunity,
+    foreignKey: 'damage_id'
+});
+Damage_Type.belongsToMany(Monster, {
+    through: Damage_Immunity,
+    foreignKey: 'monster_id'
+});
+Monster.belongsToMany(Damage_Type, {
+    through: Damage_Vulnerability,
+    foreignKey: 'damage_id'
+});
+Damage_Type.belongsToMany(Monster, {
+    through: Damage_Vulnerability,
+    foreignKey: 'monster_id'
+});
+
+export { Damage_Type, Damage_Immunity, Damage_Resistance, Damage_Vulnerability };

@@ -1,5 +1,4 @@
 import * as alignmentDal from '../../db/dal/alignment';
-import Alignment from '../../db/models/Alignment';
 import { NameInput, NameOutput } from '../../db/models/interfaces/nameInterfaces';
 import { Transaction } from 'sequelize/types';
 

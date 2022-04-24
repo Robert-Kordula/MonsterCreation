@@ -1,4 +1,4 @@
-import { Optional, DataTypes, ForeignKey, Model } from "sequelize/types";
+import { Optional, DataTypes, ForeignKey, Model } from "sequelize";
 import sequelizeConnection from "../db-config";
 import Monster from "./Monster";
 
@@ -38,12 +38,11 @@ Sense.init({
 
 Monster.hasMany(Sense, {
     foreignKey: {
-        name: 'id',
+        name: 'monster_id',
         allowNull: false
     },
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
-Sense.belongsTo(Monster);
 
 export default Sense;

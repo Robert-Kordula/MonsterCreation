@@ -1,4 +1,4 @@
-import { Model, DataTypes, ForeignKey } from "sequelize/types";
+import { Model, DataTypes, ForeignKey } from "sequelize";
 import sequelizeConnection from "../db-config";
 import { DescAttributes, DescInput } from "./interfaces/descInterface";
 import Monster from "./Monster";
@@ -44,6 +44,5 @@ Monster.hasMany(Legendary_Action, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
-Legendary_Action.belongsTo(Monster);
 
 export default Legendary_Action;

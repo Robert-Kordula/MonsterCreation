@@ -1,4 +1,4 @@
-import { Optional, Model, DataTypes, ForeignKey, ENUM } from "sequelize/types";
+import { Optional, Model, DataTypes, ForeignKey, ENUM } from "sequelize";
 import sequelizeConnection from "../db-config";
 import Monster from "./Monster";
 export interface SpeedAttributes {
@@ -18,8 +18,14 @@ class Speeds extends Model<SpeedAttributes, SpeedInput> implements SpeedAttribut
 
 Speeds.init({
     terrain: {
-        type: DataTypes.ENUM('WALK', 'CLIMB', 'BURROW', 'SWIM', 'FLY', 'HOVER'),
-        allowNull: false
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            customValidator: (value: string) => {
+                const enums = ['WALK', 'CLIMB', 'BURROW', 'SWIM', 'FLY', 'HOVER'];
+                if (!enums.includes(value)) throw new Error("Not a valid option");
+            }
+        }
     },
     speed: {
         type: DataTypes.SMALLINT,
@@ -39,9 +45,9 @@ Speeds.init({
 });
 
 Monster.hasMany(Speeds, {
+    foreignKey: 'monster_id',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
-Speeds.belongsTo(Monster);
 
 export default Speeds;

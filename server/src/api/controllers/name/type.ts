@@ -1,6 +1,6 @@
-import * as service from '../services/subtypeService';
-import { CreateNameDTO, UpdateNameDTO } from '../dto/name';
-import { Name } from '../interfaces';
+import * as service from '../../services/typeService';
+import { CreateNameDTO, UpdateNameDTO } from '../../dto/name';
+import { Name } from '../../interfaces';
 import * as mapper from './nameMapper';
 import { Transaction } from 'sequelize/types';
 

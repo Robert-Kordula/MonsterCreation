@@ -1,4 +1,4 @@
-import { DataTypes, ForeignKey, Optional, Model } from "sequelize/types";
+import { DataTypes, ForeignKey, Optional, Model } from "sequelize";
 import sequelizeConnection from "../db-config";
 import { DescAttributes } from "./interfaces/descInterface";
 
@@ -96,9 +96,9 @@ Monster.hasMany(Action, {
         name: 'monster_id',
         allowNull: false
     },
-    onDelete: 'CASCASE',
+    onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 });
-Action.belongsTo(Monster);
+//Action.belongsTo(Monster);
 
 export default Action;
