@@ -2,16 +2,16 @@ import Group from '../models/Group';
 import { NameInput, NameOutput } from '../models/interfaces/nameInterfaces';
 import { Transaction } from 'sequelize/types';
 
-export const create = async (payload: NameInput, t: Transaction): Promise<number> => {
+export const create = async (payload: NameInput, t: Transaction): Promise<string> => {
     const group = await Group.create(payload, {transaction: t});
-    return group.id;
+    return group.name;
 }
 
 export const getAll = async (): Promise<NameOutput[]> => {
     return Group.findAll();
 }
 
-export const getById = async (id: number): Promise<NameOutput> => {
+export const getByID = async (id: number): Promise<NameOutput> => {
     const group = await Group.findByPk(id);
     if (!group) {
         throw new Error('not found');

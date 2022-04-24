@@ -2,16 +2,16 @@ import SubType from '../models/SubType';
 import { NameInput, NameOutput } from '../models/interfaces/nameInterfaces';
 import { Transaction } from 'sequelize/types';
 
-export const create = async (payload: NameInput, t: Transaction): Promise<number> => {
+export const create = async (payload: NameInput, t: Transaction): Promise<string> => {
     const subtype = await SubType.create(payload, {transaction: t});
-    return subtype.id;
+    return subtype.name;
 }
 
 export const getAll = async (): Promise<NameOutput[]> => {
     return SubType.findAll();
 }
 
-export const getById = async (id: number): Promise<NameOutput> => {
+export const getByID = async (id: number): Promise<NameOutput> => {
     const subtype = await SubType.findByPk(id);
     if (!subtype) {
         throw new Error('not found');

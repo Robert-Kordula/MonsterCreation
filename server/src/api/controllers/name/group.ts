@@ -4,7 +4,7 @@ import { Name } from '../../interfaces';
 import * as mapper from './nameMapper';
 import { Transaction } from 'sequelize/types';
 
-export const create = async (payload: CreateNameDTO, t: Transaction): Promise<number> => {
+export const create = async (payload: CreateNameDTO, t: Transaction): Promise<string | null> => {
     return await service.create(payload, t);
 }
 
