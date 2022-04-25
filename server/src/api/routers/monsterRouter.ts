@@ -5,8 +5,10 @@ import * as typeController from '../controllers/name/type';
 import * as subtypeController from '../controllers/name/subtype';
 import * as groupController from '../controllers/name/group';
 import * as alignmentController from '../controllers/name/alignment';
+import * as speedController from '../controllers/speed/speed';
+import * as dmgController from '../controllers/damage/damage';
 import sequelizeConnection from '../../db/db-config';
-import { createImportSpecifier } from 'typescript';
+
 
 const monsterRouter = Router();
 
@@ -31,11 +33,14 @@ monsterRouter.post('/', async (req: Request, res: Response) => {
             let group = await groupController.create({name: req.body.group}, t);
 
             let alignment = await alignmentController.create({name: req.body.alignment}, t);
-
-            const monster = await monsterController.create(payload, t);
-
             
-            final = {...monster, type: type, subtype: subtype, group: group, alignment: alignment};
+            let monster = await monsterController.create(payload, t);
+
+            let speed = await speedController.createMultiple(req.body.speed, monster.id, t);
+            
+            let dmgVul = await dmgController.createMultiple(req.body.damage_vulnerabilities, monster.id, t, 'vul');
+
+            final = {...monster, type: type, subtype: subtype, group: group, alignment: alignment, speed: speed};
             return final;
         });
         console.log(result);

@@ -1,6 +1,7 @@
 import { Optional, Model, DataTypes, ForeignKey, ENUM } from "sequelize";
 import sequelizeConnection from "../db-config";
 import Monster from "./Monster";
+import { terrains } from "../../api/dto/speed";
 export interface SpeedAttributes {
     monster_id: ForeignKey<number>;
     terrain: number;
@@ -18,13 +19,11 @@ class Speeds extends Model<SpeedAttributes, SpeedInput> implements SpeedAttribut
 
 Speeds.init({
     terrain: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            customValidator: (value: string) => {
-                const enums = ['WALK', 'CLIMB', 'BURROW', 'SWIM', 'FLY', 'HOVER'];
-                if (!enums.includes(value)) throw new Error("Not a valid option");
-            }
+            min: 0,
+            max: 5
         }
     },
     speed: {
@@ -32,7 +31,7 @@ Speeds.init({
         allowNull: true,
         validate: {
             customValidator(value: Number) {
-                if (value === null && this.terrain !== 'HOVER') {
+                if (value === null && this.terrain !== 5) {
                     throw new Error('Speed cannot be null unless it is hovering');
                 }
             }

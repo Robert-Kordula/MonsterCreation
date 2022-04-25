@@ -11,8 +11,8 @@ export const getAll = async (): Promise<NameOutput[]> => {
     return SubType.findAll();
 }
 
-export const getByID = async (id: number): Promise<NameOutput> => {
-    const subtype = await SubType.findByPk(id);
+export const getByID = async (id: number, t: Transaction): Promise<NameOutput> => {
+    const subtype = await SubType.findByPk(id, {transaction: t});
     if (!subtype) {
         throw new Error('not found');
     }
@@ -24,7 +24,8 @@ export const getIDFromName = async (name: string, t: Transaction): Promise<numbe
         attributes: ['id'],
         where: {
             name: name
-        }
+        },
+        transaction: t
     });
     try {
         console.log(`${name} exists with ID: ${id[0].id}`);

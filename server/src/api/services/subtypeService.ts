@@ -16,7 +16,7 @@ export const create = async (payload: CreateNameDTO | any, t: Transaction): Prom
             result = await subtypeDal.create(payload, t);
         }
     } else if(typeof name === 'number') {
-        result = await (await subtypeDal.getByID(name)).name;
+        result = await (await subtypeDal.getByID(name, t)).name;
     } else if (name === null || name === '') {
         return null;
     }
@@ -31,8 +31,8 @@ export const getAll = (): Promise<NameOutput[]> => {
     return subtypeDal.getAll();
 }
 
-export const getByID = (id: number): Promise<NameOutput> => {
-    return subtypeDal.getByID(id);
+export const getByID = (id: number, t: Transaction): Promise<NameOutput> => {
+    return subtypeDal.getByID(id, t);
 }
 
 export const getIDFromName = (name: string, t: Transaction): Promise<number> => {
