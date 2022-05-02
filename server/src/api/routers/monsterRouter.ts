@@ -38,9 +38,19 @@ monsterRouter.post('/', async (req: Request, res: Response) => {
 
             let speed = await speedController.createMultiple(req.body.speed, monster.id, t);
             
-            let dmgVul = await dmgController.createMultiple(req.body.damage_vulnerabilities, monster.id, t, 'vul');
+            let dmgVul = await dmgController.addMultiple(req.body.damage_vulnerabilities, monster.id, t, 'vul');
+            
+            console.log(dmgVul);
 
-            final = {...monster, type: type, subtype: subtype, group: group, alignment: alignment, speed: speed};
+            final = {
+                ...monster, 
+                type: type, 
+                subtype: subtype, 
+                group: group, 
+                alignment: alignment, 
+                speed: speed,
+                damage_vulnerabilities: dmgVul
+            };
             return final;
         });
         console.log(result);

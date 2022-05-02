@@ -4,6 +4,6 @@ import { Damage_Immunity, Damage_Resistance, Damage_Vulnerability } from "../../
 import * as service from '../../services/damageService';
 import * as mapper from './mapper';
 
-export const createMultiple = async (payload: (string|number)[], id: number, t: Transaction, model: string): Promise<string[]> => {
-    return mapper.toDamages(await service.createMultiple(payload, id, t, model));
+export const addMultiple = async (payload: (string|number)[], id: number, t: Transaction, model: string): Promise<string[]> => {
+    return mapper.toDamages(await service.addMultiple(payload, id, t, model), t);
 }
