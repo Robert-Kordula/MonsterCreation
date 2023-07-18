@@ -4,7 +4,7 @@ import { NameInput, NameOutput } from '../../db/models/interfaces/nameInterfaces
 import { Transaction } from 'sequelize/types';
 import { CreateNameDTO } from '../dto/name';
 
-export const create = async (payload: CreateNameDTO | any, t: Transaction): Promise<string> => {
+export const create = async (payload: CreateNameDTO, t: Transaction): Promise<string> => {
     let result: string|never;
     let name = payload.name
     console.log(`Checking if ${name} exists in table Type`);
