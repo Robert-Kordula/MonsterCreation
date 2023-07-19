@@ -2,9 +2,9 @@ import {Router, Request, Response} from 'express';
 const methods = require('./methods');
 import sequelizeConnection from '../../db/db-config';
 
-const typeRouter = Router();
+const subTypeRouter = Router();
 
-typeRouter.post('/', async (req: Request, res: Response) => {
+subTypeRouter.post('/', async (req: Request, res: Response) => {
     try {
         const result = await sequelizeConnection.transaction(async (t) => {
             return methods.createType(req.body['type'], t);
@@ -17,4 +17,4 @@ typeRouter.post('/', async (req: Request, res: Response) => {
     }
 });
 
-export default typeRouter;
+export default subTypeRouter;
