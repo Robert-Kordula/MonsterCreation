@@ -1,7 +1,7 @@
-version: '3.7'
+version: '3.8'
 
-services:
-  ts-node-docker:
-    build:
+services: 
+  server: 
+    build: 
       target: production
-    command: node build/index.js
+    command: node build/server.js
