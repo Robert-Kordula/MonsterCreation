@@ -1,6 +1,5 @@
 import { ForeignKey, DataTypes, Model, Optional } from "sequelize";
 import sequelizeConnection from "../db-config";
-import { NameAttributes, NameInput } from "./interfaces/nameInterfaces";
 import Monster from "./Monster";
 export interface LanguageAttributes {
     monster_id: ForeignKey<number>;
@@ -10,12 +9,7 @@ export interface LanguageAttributes {
 export interface LanguageInput extends Optional<LanguageAttributes, 'language_id'> {}
 export interface LanguageOuput extends Required<LanguageAttributes> {}
 
-class Language extends Model<NameAttributes, NameInput> implements NameAttributes {
-    public id!: number;
-    public name!: string;
-}
-
-Language.init({
+const Language = sequelizeConnection.define('language', {
     id: {
         type: DataTypes.SMALLINT,
         allowNull: false,
@@ -30,21 +24,9 @@ Language.init({
             len: [3, 20]
         }
     }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'SingleLanguage',
-    freezeTableName: true
 });
 
-class Languages extends Model<LanguageAttributes, LanguageInput> implements LanguageAttributes {
-    public monster_id!: ForeignKey<number>;
-    public language_id!: ForeignKey<number>;
-}
-
-Languages.init({}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Language',
-});
+const Languages = sequelizeConnection.define('language_list', {});
 
 Monster.belongsToMany(Language, {
     through: Languages, 
@@ -55,4 +37,4 @@ Language.belongsToMany(Monster, {
     foreignKey: 'monster_id'
 });
 
-export {Language, Languages };
+export default {Language, Languages};

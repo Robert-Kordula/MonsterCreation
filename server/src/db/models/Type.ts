@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelizeConnection from '../db-config';
 
-export default sequelizeConnection.define("types", {
+const Type = sequelizeConnection.define("types", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -16,3 +16,5 @@ export default sequelizeConnection.define("types", {
         }
     }
 });
+
+export default Type;

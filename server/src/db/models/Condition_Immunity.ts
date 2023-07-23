@@ -1,13 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import sequelizeConnection from "../db-config";
-import { NameAttributes, NameInput } from "./interfaces/nameInterfaces";
 import Monster from "./Monster";
-class Condition extends Model<NameAttributes, NameInput> implements NameAttributes {
-    public id!: number;
-    public name!: string;
-}
-
-Condition.init({
+export const Condition_Immunity = sequelizeConnection.define('condition_immunity', {
     id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
@@ -21,26 +15,16 @@ Condition.init({
             len: [3, 20]
         }
     }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Condition',
-    tableName: 'Conditions'
 });
 
-class Condition_Immunity extends Model {}
+const Condition_Immunities = sequelizeConnection.define('condition_immunities', {});
 
-Condition_Immunity.init({}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Condition_Immunity',
-    tableName: 'Condition_Immunities'
-});
-
-Monster.belongsToMany(Condition, {
+Monster.belongsToMany(Condition_Immunity, {
     through: Condition_Immunity,
     foreignKey: 'monster_id'
 });
-Condition.belongsToMany(Monster, {
+Condition_Immunity.belongsToMany(Monster, {
     through: Condition_Immunity,
     foreignKey: 'condition_id'});
 
-export default Condition_Immunity;
+export default Condition_Immunities;

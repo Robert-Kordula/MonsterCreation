@@ -1,16 +1,8 @@
 import { Model, DataTypes, ForeignKey } from "sequelize";
 import sequelizeConnection from "../db-config";
-import { DescAttributes, DescInput } from "./interfaces/descInterface";
 import Monster from "./Monster";
 
-class Legendary_Action extends Model<DescAttributes, DescInput> implements DescAttributes {
-    public id!: number;
-    public monster_id!: ForeignKey<number>;
-    public name!: string;
-    public desc!: string;
-}
-
-Legendary_Action.init({
+const Legendary_Action = sequelizeConnection.define('legendary_actions', {
     id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
@@ -30,10 +22,6 @@ Legendary_Action.init({
             len: [5, 1023]
         }
     }
-}, {
-    sequelize: sequelizeConnection, 
-    modelName: 'Legendary_Action',
-    tableName: 'Legendary_Actions'
 });
 
 Monster.hasMany(Legendary_Action, {

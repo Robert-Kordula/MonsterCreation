@@ -9,7 +9,7 @@ export interface SpellAttributes {
 export interface SpellInput extends Optional<SpellAttributes, 'id'> {}
 export interface SpellOutput extends Required<SpellAttributes> {}
 
-export default sequelizeConnection.define('spells', {
+const Spell = sequelizeConnection.define('spells', {
     id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
@@ -23,3 +23,5 @@ export default sequelizeConnection.define('spells', {
         }
     }
 });
+
+export default Spell;

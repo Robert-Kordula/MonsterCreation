@@ -1,18 +1,19 @@
-import { DataTypes, ForeignKey, Optional, Model } from "sequelize";
+import { DataTypes, ForeignKey, Optional, Model, InferAttributes, InferCreationAttributes, CreationOptional } from "sequelize";
 import sequelizeConnection from "../db-config";
-import { DescAttributes } from "./interfaces/descInterface";
 
 import Monster from "./Monster";
-export interface ActionAttributes extends DescAttributes{
-    attack_bonus?: number | undefined;
-    damage_dice?: string;
-    damage_bonus?: number;
+
+interface ActionsModel extends Model<InferAttributes<ActionsModel>, InferCreationAttributes<ActionsModel>> {
+    id: CreationOptional<number>;
+    //monster_id: ForeignKey<number>;
+    name: string;
+    desc: string;
+    attack_bonus: number;
+    damage_dice: string;
+    damage_bonus: number;
 }
 
-export interface ActionInput extends Optional<ActionAttributes, 'id'> {}
-export interface ActionOutput extends Required<ActionAttributes> {}
-
-const Actions = sequelizeConnection.define('actions', {
+const Actions = sequelizeConnection.define<ActionsModel>('actions', {
     id: {
         type: DataTypes.SMALLINT,
         autoIncrement: true,
@@ -41,7 +42,7 @@ const Actions = sequelizeConnection.define('actions', {
         }
     },
     attack_bonus: {
-        type:DataTypes.SMALLINT,
+        type: DataTypes.SMALLINT,
         validate: {
             checkDamage(value: number) {
                 if (this.damage_dice === null) {

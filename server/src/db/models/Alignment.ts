@@ -1,14 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelizeConnection from '../db-config';
-import { NameAttributes, NameInput } from './interfaces/nameInterfaces';
 
-
-class Alignment extends Model<NameAttributes, NameInput> implements NameAttributes {
-    public id!: number;
-    public name!: string;
-}
-
-Alignment.init({
+const Alignment = sequelizeConnection.define('alignment', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -22,10 +15,6 @@ Alignment.init({
             len: [3, 20]
         }
     }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Alignment',
-    tableName: 'Alignments'
 });
 
 export default Alignment;
