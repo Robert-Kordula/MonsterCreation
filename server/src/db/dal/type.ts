@@ -1,10 +1,8 @@
 import Type from '../models/Type';
 import { NameInput, NameOutput } from '../models/interfaces/nameInterfaces';
-import monsterRouter from '../../api/routers/monsterRouter';
-import { Transaction } from 'sequelize/types';
 
-export const create = async (payload: NameInput, t: Transaction): Promise<string> => {
-    const type = await Type.create(payload, {transaction: t});
+export const create = async (payload: NameInput): Promise<string> => {
+    const type = await Type.create(payload);
     return type.name;
 }
 
@@ -20,7 +18,7 @@ export const getByID = async (id: number): Promise<NameOutput> => {
     return type;
 }
 
-export const getIDFromName = async (payload: string, t: Transaction): Promise<number> => {
+export const getIDFromName = async (payload: string): Promise<number> => {
     const id = await Type.findAll({
         attributes: ['id'],
         where: {

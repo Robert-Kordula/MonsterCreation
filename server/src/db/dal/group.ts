@@ -1,9 +1,8 @@
 import Group from '../models/Group';
 import { NameInput, NameOutput } from '../models/interfaces/nameInterfaces';
-import { Transaction } from 'sequelize/types';
 
-export const create = async (payload: NameInput, t: Transaction): Promise<string> => {
-    const group = await Group.create(payload, {transaction: t});
+export const create = async (payload: NameInput): Promise<string> => {
+    const group = await Group.create(payload);
     return group.name;
 }
 
@@ -19,7 +18,7 @@ export const getByID = async (id: number): Promise<NameOutput> => {
     return group;
 }
 
-export const getIDFromName = async (name: string, t: Transaction): Promise<number> => {
+export const getIDFromName = async (name: string): Promise<number> => {
     const id = await Group.findAll({
         attributes: ['id'],
         where: {

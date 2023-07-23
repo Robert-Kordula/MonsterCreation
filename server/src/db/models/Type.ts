@@ -1,13 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelizeConnection from '../db-config';
-import { NameAttributes, NameInput } from './interfaces/nameInterfaces';
 
-class Type extends Model<NameAttributes, NameInput> implements NameAttributes {
-    public id!: number;
-    public name!: string;
-}
-
-Type.init({
+export default sequelizeConnection.define("types", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -21,10 +15,4 @@ Type.init({
             len: [3, 20]
         }
     }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Type',
-    tableName: 'Types'
 });
-
-export default Type;

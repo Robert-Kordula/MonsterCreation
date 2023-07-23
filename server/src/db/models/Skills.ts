@@ -12,12 +12,7 @@ export interface SkillsAttributes {
 export interface SkillsInput extends Optional<SkillsAttributes, 'skill_id'> {}
 export interface SkillsOutput extends Required<SkillsAttributes> {}
 
-class Skill extends Model<NameAttributes, NameInput> implements NameAttributes{
-    public id!: number;
-    public name!: string;
-}
-
-Skill.init({
+const Skills = sequelizeConnection.define('skills', {
     id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
@@ -31,12 +26,9 @@ Skill.init({
             len: [3, 10]
         }
     }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Skill'
 });
 
-Monster.hasMany(Skill, {
+Monster.hasMany(Skills, {
     foreignKey: {
         name: 'monster_id',
         allowNull: false
@@ -45,4 +37,4 @@ Monster.hasMany(Skill, {
     onUpdate: 'CASCADE'
 });
 
-export default Skill;
+export default Skills;

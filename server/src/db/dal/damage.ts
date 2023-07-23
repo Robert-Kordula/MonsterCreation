@@ -1,18 +1,17 @@
-import { Transaction } from "sequelize/types";
 import { Damage_Immunity, Damage_Resistance, Damage_Vulnerability, Damage_Type } from "../models";
 import { DamageInput, DamageOutput } from "../models/Damage_Type";
 import { NameInput, NameOutput } from "../models/interfaces/nameInterfaces";
 
-export const createDamage = async (payload: string, t:Transaction): Promise<NameOutput> => {
+export const createDamage = async (payload: string): Promise<NameOutput> => {
     console.log(`Adding new damage type ${payload}`);
-    return await Damage_Type.create({name: payload}, {transaction: t});
+    return await Damage_Type.create({name: payload});
 }
 
-export const addToMonster = async(payload: DamageInput, t: Transaction, model: string): Promise<DamageOutput> => {
+export const addToMonster = async(payload: DamageInput, model: string): Promise<DamageOutput> => {
 
     switch(model) {
         case('vul'): {
-            return await Damage_Vulnerability.create(payload, {transaction: t});
+            return await Damage_Vulnerability.create(payload,);
         }
         default: {
             throw new Error('Error inserting into Damage Tables');
@@ -20,14 +19,13 @@ export const addToMonster = async(payload: DamageInput, t: Transaction, model: s
     }
 }
 
-export const getIDFromName = async (payload: string, t:Transaction): Promise<number> => {
+export const getIDFromName = async (payload: string): Promise<number> => {
     try {
         let id = (await Damage_Type.findAll({
             attributes: ['id'],
             where: {
                 name: payload
-            },
-            transaction: t
+            }
         }))[0].id;
         return id;
     } catch (error) {
@@ -36,8 +34,8 @@ export const getIDFromName = async (payload: string, t:Transaction): Promise<num
     }
 }
 
-export const getByID = async (id: number, t: Transaction): Promise<NameOutput|null> => {
-    const damage = await Damage_Type.findByPk(id, {transaction: t});
+export const getByID = async (id: number): Promise<NameOutput|null> => {
+    const damage = await Damage_Type.findByPk(id,);
     if (!damage) {
         return null;
     }

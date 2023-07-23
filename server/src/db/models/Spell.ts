@@ -9,12 +9,7 @@ export interface SpellAttributes {
 export interface SpellInput extends Optional<SpellAttributes, 'id'> {}
 export interface SpellOutput extends Required<SpellAttributes> {}
 
-class Spell extends Model<SpellAttributes, SpellInput> implements SpellAttributes {
-    public id!: number;
-    public url!: string;
-}
-
-Spell.init({
+export default sequelizeConnection.define('spells', {
     id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
@@ -27,10 +22,4 @@ Spell.init({
             isUrl: true
         }
     }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Spell',
-    tableName: 'Spells'
 });
-
-export default Spell;

@@ -1,13 +1,13 @@
 import {Router, Request, Response} from 'express';
-import * as TypeController from '../controllers/name/type';
+import * as TypeController from '../../db/dal/type';
 import sequelizeConnection from '../../db/db-config';
 
 const typeRouter = Router();
 
 typeRouter.post('/', async (req: Request, res: Response) => {
     try {
-        const result = await sequelizeConnection.transaction(async (t) => {
-            return TypeController.create({name: req.body['type']}, t);
+        const result = await sequelizeConnection.transaction(async () => {
+            return TypeController.create({name: req.body['type']});
         });
 
         return res.status(200).send(result);

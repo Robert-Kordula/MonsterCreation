@@ -1,12 +1,12 @@
 import express, { Router, Request, Response } from 'express';
 import { CreateMonsterDTO } from '../dto/monster';
-import * as monsterController from '../controllers/monster/monster';
-import * as typeController from '../controllers/name/type';
-import * as subtypeController from '../controllers/name/subtype';
-import * as groupController from '../controllers/name/group';
-import * as alignmentController from '../controllers/name/alignment';
-import * as speedController from '../controllers/speed/speed';
-import * as dmgController from '../controllers/damage/damage';
+import * as monsterController from '../../db/dal/monster';
+import * as typeController from '../../db/dal/type';
+import * as subtypeController from '../../db/dal/subtype';
+import * as groupController from '../../db/dal/group';
+import * as alignmentController from '../../db/dal/alignment';
+import * as speedController from '../../db/dal/speed';
+import * as dmgController from '../../db/dal/damage';
 import sequelizeConnection from '../../db/db-config';
 
 
@@ -26,21 +26,21 @@ monsterRouter.post('/', async (req: Request, res: Response) => {
         const result = await sequelizeConnection.transaction(async (t) => {
             let final = {};
             
-            let type = await typeController.create({name: req.body.type}, t);
+            let type = await typeController.create({name: req.body.type});
             
-            let subtype = await subtypeController.create({name: req.body.subtype}, t);
+            let subtype = await subtypeController.create({name: req.body.subtype});
 
-            let group = await groupController.create({name: req.body.group}, t);
+            let group = await groupController.create({name: req.body.group});
 
-            let alignment = await alignmentController.create({name: req.body.alignment}, t);
+            let alignment = await alignmentController.create({name: req.body.alignment});
             
-            let monster = await monsterController.create(payload, t);
+            let monster = await monsterController.create(payload);
 
-            let speed = await speedController.createMultiple(req.body.speed, monster.id, t);
+            //let speed = await speedController.createMultiple(req.body.speed, monster.id);
             
-            let dmgVul = await dmgController.addMultiple(req.body.damage_vulnerabilities, monster.id, t, 'vul');
+            //let dmgVul = await dmgController.addMultiple(req.body.damage_vulnerabilities, monster.id, 'vul');
             
-            console.log(dmgVul);
+            //console.log(dmgVul);
 
             final = {
                 ...monster, 
@@ -48,8 +48,8 @@ monsterRouter.post('/', async (req: Request, res: Response) => {
                 subtype: subtype, 
                 group: group, 
                 alignment: alignment, 
-                speed: speed,
-                damage_vulnerabilities: dmgVul
+                //speed: speed,
+                //damage_vulnerabilities: dmgVul
             };
             return final;
         });

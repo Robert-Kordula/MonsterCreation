@@ -8,7 +8,7 @@ class SubType extends Model<NameAttributes, NameInput> implements NameAttributes
     public name!: string;
 }
 
-SubType.init({
+export default sequelizeConnection.define('subtypes', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -22,10 +22,4 @@ SubType.init({
             len: [3, 20]
         }
     }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'SubType',
-    tableName: 'SubTypes'
 });
-
-export default SubType;

@@ -12,17 +12,7 @@ export interface ActionAttributes extends DescAttributes{
 export interface ActionInput extends Optional<ActionAttributes, 'id'> {}
 export interface ActionOutput extends Required<ActionAttributes> {}
 
-class Action extends Model<ActionAttributes, ActionInput> implements ActionAttributes{
-    public id!: number;
-    public monster_id!: ForeignKey<number>;
-    public name!: string;
-    public desc!: string;
-    public attack_bonus?: number;
-    public damage_dice?: string;
-    public damage_bonus?: number;
-}
-
-Action.init({
+const Actions = sequelizeConnection.define('actions', {
     id: {
         type: DataTypes.SMALLINT,
         autoIncrement: true,
@@ -85,13 +75,9 @@ Action.init({
             max: 10
         }
     }
-}, {
-    sequelize: sequelizeConnection, 
-    modelName: 'Action',
-    tableName: 'Actions'
 });
 
-Monster.hasMany(Action, {
+Monster.hasMany(Actions, {
     foreignKey: {
         name: 'monster_id',
         allowNull: false
@@ -101,4 +87,4 @@ Monster.hasMany(Action, {
 });
 //Action.belongsTo(Monster);
 
-export default Action;
+export default Actions;

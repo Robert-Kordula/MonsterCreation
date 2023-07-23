@@ -1,9 +1,8 @@
 import Alignment from '../models/Alignment';
 import { NameInput, NameOutput } from '../models/interfaces/nameInterfaces';
-import { Transaction } from 'sequelize/types';
 
-export const create = async (payload: NameInput, t: Transaction): Promise<string> => {
-    const alignment = await Alignment.create(payload, {transaction: t});
+export const create = async (payload: NameInput): Promise<string> => {
+    const alignment = await Alignment.create(payload);
     return alignment.name;
 }
 
@@ -19,7 +18,7 @@ export const getByID = async (id: number): Promise<NameOutput> => {
     return alignment;
 }
 
-export const getIDFromName = async (name: string, t: Transaction): Promise<number> => {
+export const getIDFromName = async (name: string): Promise<number> => {
     const id = await Alignment.findAll({
         attributes: ['id'],
         where: {

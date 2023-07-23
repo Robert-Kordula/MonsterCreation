@@ -11,13 +11,7 @@ export interface SpeedAttributes {
 export interface SpeedInput extends Optional<SpeedAttributes, 'monster_id'> { }
 export interface SpeedOutput extends Required<SpeedAttributes> { }
 
-class Speeds extends Model<SpeedAttributes, SpeedInput> implements SpeedAttributes {
-    public monster_id!: ForeignKey<number>;
-    public terrain!: number;
-    public speed!: number;
-}
-
-Speeds.init({
+const Speeds = sequelizeConnection.define('speeds', {
     terrain: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -37,10 +31,6 @@ Speeds.init({
             }
         }
     }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Speed',
-    tableName: 'Speeds'
 });
 
 Monster.hasMany(Speeds, {

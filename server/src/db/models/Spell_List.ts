@@ -10,16 +10,7 @@ export interface ListAttributes {
 export interface ListInput extends Optional<ListAttributes, 'spell_id'> {}
 export interface ListOutput extends Required<ListAttributes> {}
 
-class Spell_List extends Model<ListAttributes, ListInput> implements ListAttributes {
-    public spell_id!: ForeignKey<number>;
-    public monster_id!: ForeignKey<number>;
-}
-
-Spell_List.init({}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Spell_List',
-    tableName: 'Spell_List'
-});
+const Spell_List = sequelizeConnection.define('spell_list', {});
 
 Monster.belongsToMany(Spell, {
     through: Spell_List,

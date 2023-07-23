@@ -3,15 +3,7 @@ import sequelizeConnection from "../db-config";
 import { DescAttributes, DescInput } from "./interfaces/descInterface";
 import Monster from "./Monster";
 
-class Reaction extends Model<DescAttributes, DescInput> implements DescAttributes {
-    public id!: number;
-    public monster_id!: ForeignKey<number>;
-    public name!: string;
-    public desc!: string;
-}
-
-
-Reaction.init({
+const Reactions = sequelizeConnection.define('reactions', {
     id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
@@ -31,13 +23,9 @@ Reaction.init({
             len: [5, 1023]
         }
     }
-}, {
-    sequelize: sequelizeConnection, 
-    modelName: 'Reaction',
-    tableName: 'Reactions'
 });
 
-Monster.hasMany(Reaction, {
+Monster.hasMany(Reactions, {
     foreignKey: {
         name: 'monster_id',
         allowNull: false
@@ -46,4 +34,4 @@ Monster.hasMany(Reaction, {
     onUpdate: 'CASCADE'
 });
 
-export default Reaction;
+export default Reactions;

@@ -1,17 +1,8 @@
-import { Model, DataTypes, ForeignKey, Optional } from "sequelize";
+import { DataTypes } from "sequelize";
 import sequelizeConnection from "../db-config";
-import { DescAttributes, DescInput } from "./interfaces/descInterface";
 import Monster from "./Monster";
 
-class Special_Ability extends Model<DescAttributes, DescInput> implements DescAttributes {
-    public id!: number;
-    public monster_id!: ForeignKey<number>;
-    public name!: string;
-    public desc!: string;
-}
-
-
-Special_Ability.init({
+const Special_Ability = sequelizeConnection.define('special_abilities', {
     id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
@@ -31,10 +22,6 @@ Special_Ability.init({
             len: [5, 1023]
         }
     }
-}, {
-    sequelize: sequelizeConnection, 
-    modelName: 'Special_Ability',
-    tableName: 'Special_Abilities'
 });
 
 Monster.hasMany(Special_Ability, {

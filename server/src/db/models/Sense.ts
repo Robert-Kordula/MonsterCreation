@@ -11,13 +11,7 @@ export interface SenseAttributes {
 export interface SenseInput extends Optional<SenseAttributes, 'id'> {}
 export interface SenseOutput extends Required<SenseAttributes> {}
 
-class Sense extends Model<SenseAttributes, SenseInput> {
-    public id!: number;
-    public monster_id!: ForeignKey<number>;
-    public sense!: string;
-}
-
-Sense.init({
+const Senses = sequelizeConnection.define('senses', {
     id: {
         type: DataTypes.SMALLINT,
         autoIncrement: true,
@@ -30,13 +24,9 @@ Sense.init({
             len: [5, 20]
         }
     }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Sense',
-    tableName: 'Senses'
 });
 
-Monster.hasMany(Sense, {
+Monster.hasMany(Senses, {
     foreignKey: {
         name: 'monster_id',
         allowNull: false
@@ -45,4 +35,4 @@ Monster.hasMany(Sense, {
     onUpdate: 'CASCADE'
 });
 
-export default Sense;
+export default Senses;

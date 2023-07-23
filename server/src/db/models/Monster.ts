@@ -1,4 +1,4 @@
-import { DataTypes, Model, ForeignKey, Optional } from 'sequelize';
+import { Sequelize, DataTypes, Optional } from 'sequelize';
 import sequelizeConnection from './../db-config';
 
 import Type from './Type';
@@ -32,31 +32,7 @@ export interface MonsterAttributes {
 export interface MonsterInput extends Optional<MonsterAttributes, 'id'> {}
 export interface MonsterOutput extends Required<MonsterAttributes> {}
 
-class Monster extends Model<MonsterAttributes, MonsterInput> implements MonsterAttributes{
-    public id!: number;
-    public name!: string;
-    public size!: number;
-    public armor_class!: number;
-    public armor_desc!: string;
-    public hit_points!: number;
-    public hit_dice!: string;
-    public strength!: number;
-    public dexterity!: number;
-    public constitution!: number;
-    public intelligence!: number;
-    public wisdom!: number;
-    public charisma!: number;
-    public perception!: number;
-    public challenge_rating!: number;
-    public strength_save!: number;
-    public dexterity_save!: number;
-    public intelligence_save!: number;
-    public wisdom_save!: number;
-    public charisma_save!: number;
-    public legendary_desc!: string;
-}
-
-Monster.init({
+export const Monster = sequelizeConnection.define('monsters', {
     id: {
         type: DataTypes.SMALLINT,
         autoIncrement: true,
@@ -71,7 +47,7 @@ Monster.init({
     },
     size: {
         type: DataTypes.STRING,
-        //values: ['SMALL', 'MEDIUM', 'LARGE', 'HUGE'],
+        values: ['SMALL', 'MEDIUM', 'LARGE', 'HUGE'],
         allowNull: false
     }, 
     armor_class: {
@@ -205,12 +181,7 @@ Monster.init({
         validate: {
             len: [50, 511]
         }
-    }
-}, {
-    sequelize: sequelizeConnection,
-    modelName: 'Monster',
-    tableName: 'Monsters'
-});
+    }});
 
 Type.hasMany(Monster, {
     foreignKey: 'id',
