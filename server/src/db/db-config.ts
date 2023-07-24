@@ -1,7 +1,4 @@
-import modelIndex from '../db/models/index';
 import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
-dotenv.config();
 
 let port = parseInt(<string>process.env.DB_PORT) || 5432
 
@@ -17,6 +14,7 @@ process.env.DB_PASSWORD || '',
     }
 });
 
+import modelIndex from '../db/models/index';
 console.log(sequelizeConnection);
 
 export const dbInit = () => Promise.all([

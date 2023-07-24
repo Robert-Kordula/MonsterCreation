@@ -1,7 +1,12 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelizeConnection from '../db-config';
 
-const Type = sequelizeConnection.define("types", {
+interface TypeModel extends Model<InferAttributes<TypeModel>, InferCreationAttributes<TypeModel>> {
+    id: CreationOptional<number>;
+    name: string;
+}
+
+const Type = sequelizeConnection.define<TypeModel>("types", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

@@ -1,16 +1,12 @@
-import { DataTypes, Model, ForeignKey, Optional } from "sequelize";
+import { DataTypes, Model, ForeignKey, InferAttributes, InferCreationAttributes, CreationOptional } from "sequelize";
 import sequelizeConnection from "../db-config";
-import { NameAttributes, NameInput } from "./interfaces/nameInterfaces";
-
 import Monster from "./Monster";
 
-export interface DamageAttributes {
-    monster_id: ForeignKey<number>;
-    damage_id: ForeignKey<number>;
+interface Damage_Model extends Model<InferAttributes<Damage_Model>, InferCreationAttributes<Damage_Model>> {
+    id: CreationOptional<number>;
+    name: string;
 }
 
-export interface DamageInput extends Optional<DamageAttributes, 'damage_id'> {}
-export interface DamageOutput extends Required<DamageAttributes> {}
 const Damage_Types = sequelizeConnection.define('damage_types', {
     id: {
         type: DataTypes.SMALLINT,
@@ -28,35 +24,78 @@ const Damage_Types = sequelizeConnection.define('damage_types', {
     }
 });
 
-const Damage_Resistance = sequelizeConnection.define('damage_resistances', {});
+interface Damages_Model extends Model<InferAttributes<Damages_Model>, InferCreationAttributes<Damages_Model>> {
+    monster_id: ForeignKey<number>;
+    damage_id: ForeignKey<number>;
+}
 
-const Damage_Immunity = sequelizeConnection.define('damage_immunities', {});
+const Damage_Resistance = sequelizeConnection.define<Damages_Model>('damage_resistances', {
+    monster_id: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        references: {
+            model: Monster, 
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    },
+    damage_id: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        references: {
+            model: Damage_Types, 
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    }
+});
 
-const Damage_Vulnerability = sequelizeConnection.define('damage_vulnerabilities', {});
+const Damage_Immunity = sequelizeConnection.define<Damages_Model>('damage_resistances', {
+    monster_id: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        references: {
+            model: Monster, 
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    },
+    damage_id: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        references: {
+            model: Damage_Types, 
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    }
+});
 
-Monster.belongsToMany(Damage_Types, {
-    through: Damage_Resistance,
-    foreignKey: 'damage_id'
-});
-Damage_Types.belongsToMany(Monster, {
-    through: Damage_Resistance,
-    foreignKey: 'monster_id'
-});
-Monster.belongsToMany(Damage_Types, {
-    through: Damage_Immunity,
-    foreignKey: 'damage_id'
-});
-Damage_Types.belongsToMany(Monster, {
-    through: Damage_Immunity,
-    foreignKey: 'monster_id'
-});
-Monster.belongsToMany(Damage_Types, {
-    through: Damage_Vulnerability,
-    foreignKey: 'damage_id'
-});
-Damage_Types.belongsToMany(Monster, {
-    through: Damage_Vulnerability,
-    foreignKey: 'monster_id'
+const Damage_Vulnerability = sequelizeConnection.define<Damages_Model>('damage_resistances', {
+    monster_id: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        references: {
+            model: Monster, 
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    },
+    damage_id: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        references: {
+            model: Damage_Types, 
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    }
 });
 
 export default { Damage_Types, Damage_Immunity, Damage_Resistance, Damage_Vulnerability };

@@ -1,12 +1,29 @@
-import { Model, DataTypes, ForeignKey } from "sequelize";
+import { Model, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, CreationOptional } from "sequelize";
 import sequelizeConnection from "../db-config";
 import Monster from "./Monster";
 
-const Legendary_Action = sequelizeConnection.define('legendary_actions', {
+interface Legendary_Model extends Model<InferAttributes<Legendary_Model>, InferCreationAttributes<Legendary_Model>> {
+    id: CreationOptional<number>;
+    monster_id: CreationOptional<number>;
+    name: string;
+    desc: string;
+}
+
+const Legendary_Action = sequelizeConnection.define<Legendary_Model>('legendary_actions', {
     id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
         autoIncrement: true
+    },
+    monster_id: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        references: {
+            model: Monster, 
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
     },
     name: {
         type: DataTypes.STRING,
@@ -22,15 +39,6 @@ const Legendary_Action = sequelizeConnection.define('legendary_actions', {
             len: [5, 1023]
         }
     }
-});
-
-Monster.hasMany(Legendary_Action, {
-    foreignKey: {
-        name: 'monster_id',
-        allowNull: false
-    },
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
 });
 
 export default Legendary_Action;

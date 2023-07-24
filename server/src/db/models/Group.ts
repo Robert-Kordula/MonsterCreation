@@ -1,7 +1,11 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelizeConnection from '../db-config';
 
-const Groups = sequelizeConnection.define('groups', {
+interface Groups_Model extends Model<InferAttributes<Groups_Model>, InferCreationAttributes<Groups_Model>> {
+    id: CreationOptional<number>;
+    name: string;
+}
+const Groups = sequelizeConnection.define<Groups_Model>('groups', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

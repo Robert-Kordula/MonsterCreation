@@ -1,7 +1,12 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelizeConnection from '../db-config';
 
-const Alignment = sequelizeConnection.define('alignment', {
+interface AlignmentModel extends Model<InferAttributes<AlignmentModel>, InferCreationAttributes<AlignmentModel>> {
+    id: CreationOptional<number>;
+    name: string;
+}
+
+const Alignment = sequelizeConnection.define<AlignmentModel>('alignment', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

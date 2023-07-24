@@ -1,15 +1,29 @@
-import { Model, DataTypes, ForeignKey, Optional } from "sequelize";
+import { Model, DataTypes, ForeignKey, Optional, InferAttributes, InferCreationAttributes, CreationOptional } from "sequelize";
 import sequelizeConnection from "../db-config";
-import { DescAttributes, DescInput } from "./interfaces/descInterface";
 import Monster from "./Monster";
 
-const Reactions = sequelizeConnection.define('reactions', {
+interface Reactions_Models extends Model<InferAttributes<Reactions_Models>, InferCreationAttributes<Reactions_Models>> {
+    id: CreationOptional<number>;
+    monster_id: number;
+    name: string;
+    desc: string;
+}
+const Reactions = sequelizeConnection.define<Reactions_Models>('reactions', {
     id: {
         type: DataTypes.SMALLINT,
         primaryKey: true,
         autoIncrement: true
     },
-    name: {
+    monster_id: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        references: {
+            model: Monster, 
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    },name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -23,15 +37,6 @@ const Reactions = sequelizeConnection.define('reactions', {
             len: [5, 1023]
         }
     }
-});
-
-Monster.hasMany(Reactions, {
-    foreignKey: {
-        name: 'monster_id',
-        allowNull: false
-    },
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
 });
 
 export default Reactions;

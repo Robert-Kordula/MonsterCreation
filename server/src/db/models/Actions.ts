@@ -1,11 +1,10 @@
-import { DataTypes, ForeignKey, Optional, Model, InferAttributes, InferCreationAttributes, CreationOptional } from "sequelize";
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, ForeignKey } from "sequelize";
 import sequelizeConnection from "../db-config";
-
 import Monster from "./Monster";
 
 interface ActionsModel extends Model<InferAttributes<ActionsModel>, InferCreationAttributes<ActionsModel>> {
     id: CreationOptional<number>;
-    //monster_id: ForeignKey<number>;
+    monster_id: ForeignKey<number>;
     name: string;
     desc: string;
     attack_bonus: number;
@@ -19,14 +18,16 @@ const Actions = sequelizeConnection.define<ActionsModel>('actions', {
         autoIncrement: true,
         primaryKey: true,
     },
-    // monster_id: {
-    //     type: DataTypes.SMALLINT,
-    //     allowNull: false,
-    //     references: {
-    //         model: Monster, 
-    //         key: 'id'
-    //     }
-    // },
+    monster_id: {
+        type: DataTypes.SMALLINT,
+        allowNull: false,
+        references: {
+            model: Monster, 
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -77,15 +78,5 @@ const Actions = sequelizeConnection.define<ActionsModel>('actions', {
         }
     }
 });
-
-Monster.hasMany(Actions, {
-    foreignKey: {
-        name: 'monster_id',
-        allowNull: false
-    },
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-});
-//Action.belongsTo(Monster);
 
 export default Actions;
