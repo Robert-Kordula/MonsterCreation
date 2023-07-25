@@ -1,16 +1,16 @@
-import Alignment from '../models/Alignment';
-import { NameInput, NameOutput } from '../models/interfaces/nameInterfaces';
+import { InferCreationAttributes } from 'sequelize';
+import Alignment, { AlignmentModel } from '../models/Alignment';
 
-export const create = async (payload: NameInput): Promise<string> => {
+export const create = async (payload: InferCreationAttributes<AlignmentModel>): Promise<AlignmentModel> => {
     const alignment = await Alignment.create(payload);
-    return alignment.name;
+    return alignment;
 }
 
-export const getAll = async (): Promise<NameOutput[]> => {
+export const getAll = async (): Promise<AlignmentModel[]> => {
     return Alignment.findAll();
 }
 
-export const getByID = async (id: number): Promise<NameOutput> => {
+export const getByID = async (id: number): Promise<AlignmentModel> => {
     const alignment = await Alignment.findByPk(id);
     if (!alignment) {
         throw new Error('not found');

@@ -1,6 +1,5 @@
 import express, { Application, Router, urlencoded, Request, Response } from 'express';
 import router from './api/routers';
-import {dbInit} from './db/db-config';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,8 +11,6 @@ let corsOptions = {
               preflightContinue: false,
               optionsSuccessStatus: 204
 };
-
-dbInit();
 
 app.use(cors(corsOptions));
 

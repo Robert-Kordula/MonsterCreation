@@ -1,11 +1,11 @@
 import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
-import sequelizeConnection from '../db-config';
+import connection from '../db-config';
 
-interface SkillsModel extends Model<InferAttributes<SkillsModel>, InferCreationAttributes<SkillsModel>> {
+export interface SubtypeModel extends Model<InferAttributes<SubtypeModel>, InferCreationAttributes<SubtypeModel>> {
     id: CreationOptional<number>;
     name: string;
 }
-const Subtype = sequelizeConnection.define('subtypes', {
+const Subtype = connection.define<SubtypeModel>('subtypes', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

@@ -1,16 +1,16 @@
-import SubType from '../models/SubType';
-import { NameInput, NameOutput } from '../models/interfaces/nameInterfaces';
+import { InferCreationAttributes } from 'sequelize';
+import SubType, { SubtypeModel } from '../models/SubType';
 
-export const create = async (payload: NameInput): Promise<string> => {
+export const create = async (payload: InferCreationAttributes<SubtypeModel>): Promise<SubtypeModel> => {
     const subtype = await SubType.create(payload);
-    return subtype.name;
+    return subtype;
 }
 
-export const getAll = async (): Promise<NameOutput[]> => {
+export const getAll = async (): Promise<SubtypeModel[]> => {
     return SubType.findAll();
 }
 
-export const getByID = async (id: number): Promise<NameOutput> => {
+export const getByID = async (id: number): Promise<SubtypeModel> => {
     const subtype = await SubType.findByPk(id);
     if (!subtype) {
         throw new Error('not found');

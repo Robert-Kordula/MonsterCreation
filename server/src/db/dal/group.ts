@@ -1,16 +1,16 @@
-import Group from '../models/Group';
-import { NameInput, NameOutput } from '../models/interfaces/nameInterfaces';
+import { InferCreationAttributes } from 'sequelize';
+import Group, { Groups_Model } from '../models/Group';
 
-export const create = async (payload: NameInput): Promise<string> => {
+export const create = async (payload: InferCreationAttributes<Groups_Model>): Promise<Groups_Model> => {
     const group = await Group.create(payload);
-    return group.name;
+    return group;
 }
 
-export const getAll = async (): Promise<NameOutput[]> => {
+export const getAll = async (): Promise<Groups_Model[]> => {
     return Group.findAll();
 }
 
-export const getByID = async (id: number): Promise<NameOutput> => {
+export const getByID = async (id: number): Promise<Groups_Model> => {
     const group = await Group.findByPk(id);
     if (!group) {
         throw new Error('not found');

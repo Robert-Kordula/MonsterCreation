@@ -1,14 +1,13 @@
-import { default as db } from '../../../src/db/db-config';
-
-import * as MonsterDB from '../../../src/db/dal/monster';
+import Monster from '../../../src/db/dal/monster'
+import database from '../../../src/db/db-config';
 
 beforeAll(async () => {
-    await db.sync({ force: true });
+    await database.sync({force: true});
 });
 
 test('create person', async () => {
     expect.assertions(1);
-    const monster = await MonsterDB.create({
+    const monster = await Monster.create({
         'name': 'Aatxe',
         'size': 2,
         'armor_class': 14,
@@ -21,33 +20,27 @@ test('create person', async () => {
         'intelligence': 10,
         'wisdom': 14,
         'charisma': 14,
-        'perception': 0,
         'challenge_rating': 5,
-        'strength_save': 0,
-        'dexterity_save': 0,
-        'intelligence_save': 0,
-        'wisdom_save': 0,
-        'charisma_save': 0,
-        'legendary_desc': ''
+        'legendary_desc': '',
     });
     expect(monster.name).toEqual('Aatxe');
 });
 
 test('get person', async () => {
     expect.assertions(2);
-    const monster = await MonsterDB.findByID(1);
+    const monster = await Monster.findByID(1);
     expect(monster).toBeDefined();
     expect(monster?.name).toEqual('Aatxe');
 });
 
 test('delete person', async () => {
     expect.assertions(2);
-    let noDeleted = await MonsterDB.deleteMonster(1);
-    const monster = await MonsterDB.findByID(1);
+    let noDeleted = await Monster.deleteMonster(1);
+    const monster = await Monster.findByID(1);
     expect(noDeleted).toEqual(1)
     expect(monster).toBeNull();
 });
 
 afterAll(async () => {
-    await db.close();
+    await database.close();
 });

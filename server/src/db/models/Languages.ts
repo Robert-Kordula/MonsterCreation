@@ -11,9 +11,6 @@ export interface Languages_Model extends Model<InferAttributes<Languages_Model>,
     language_id: ForeignKey<number>;
 }
 
-// export interface LanguageInput extends Optional<LanguageAttributes, 'language_id'> {}
-// export interface LanguageOuput extends Required<LanguageAttributes> {}
-
 const Language = sequelizeConnection.define('language', {
     id: {
         type: DataTypes.SMALLINT,

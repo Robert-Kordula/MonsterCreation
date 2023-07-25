@@ -1,5 +1,4 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from "sequelize";
-import sequelizeConnection from "../db-config";
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, ForeignKey, Sequelize } from "sequelize";
 import Monster from "./Monster";
 
 interface Condition_Model extends Model<InferAttributes<Condition_Model>, InferCreationAttributes<Condition_Model>> {
@@ -7,48 +6,55 @@ interface Condition_Model extends Model<InferAttributes<Condition_Model>, InferC
     name: string;
 }
 interface Immunities_Model extends Model<InferAttributes<Immunities_Model>, InferCreationAttributes<Immunities_Model>> {
-    monster_id: CreationOptional<number>;
-    condition_id: CreationOptional<number>;
+    monster_id?: ForeignKey<number>;
+    condition_id?: ForeignKey<number>;
 }
 
-export const Condition_Immunity = sequelizeConnection.define<Condition_Model>('condition_immunity', {
-    id: {
-        type: DataTypes.SMALLINT,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-            len: [3, 20]
+function Condition_Immunity(sequelize: Sequelize) {
+    let condition_immunity = sequelize.define<Condition_Model>('condition_immunity', {
+        id: {
+            type: DataTypes.SMALLINT,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                len: [3, 20]
+            }
         }
-    },
-    
-});
+    });
+    Condition_Immunity(sequelize)
+    return condition_immunity;
+}
 
-const Condition_Immunities = sequelizeConnection.define<Immunities_Model>('condition_immunities', {
-    monster_id: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-        references: {
-            model: Monster, 
-            key: 'id'
+function Condition_Immunities(sequelize: Sequelize) {
+    let condition_Immunities = sequelize.define<Immunities_Model>('condition_immunities', {
+        monster_id: {
+            type: DataTypes.SMALLINT,
+            allowNull: false,
+            references: {
+                model: Monster(sequelize), 
+                key: 'id'
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-    },
-    condition_id: {
-        type: DataTypes.SMALLINT,
-        allowNull: false,
-        references: {
-            model: Condition_Immunity, 
-            key: 'id'
-        },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-    }
-});
+        condition_id: {
+            type: DataTypes.SMALLINT,
+            allowNull: false,
+            references: {
+                model: Condition_Immunity(sequelize), 
+                key: 'id'
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
+        }
+    });
+    Monster(sequelize).belongsToMany(Condition_Immunity(sequelize), { through: condition_Immunities});
+    return condition_Immunities;
+}
 
 export default Condition_Immunities;

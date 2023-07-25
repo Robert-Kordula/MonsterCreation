@@ -4,10 +4,10 @@
   "description": "",
   "main": "build/server.js",
   "scripts": {
-    "test": "jest",
-    "build": "npx tsc",
+    "test": "concurrently \"npx tsc -p tsconfig-dev.json\" \"jest\"",
+    "build": "rm -rf ./build && npx tsc -p tsconfig-prod.json",
     "start": "node build/server.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q build/server.js\""
+    "dev": "concurrently \"npx tsc -p tsconfig-dev.json --watch\" \"nodemon -q build/src/server.js\""
   },
   "jest": {
     "collectCoverage": true,
@@ -33,6 +33,7 @@
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.19.0",
+    "sequelize-typescript": "^2.1.5",
     "typescript": "^4.6.3"
   },
   "devDependencies": {

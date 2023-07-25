@@ -1,22 +1,24 @@
-import Monster from '../models/Monster';
-import { MonsterInput, MonsterOutput } from '../models/Monster';
+import { InferCreationAttributes } from 'sequelize';
+import Monster, { Monster_Model } from '../models/Monster';
+import dbConnection from '../db-config';
 
-export const create = async (payload: MonsterInput): Promise<MonsterOutput> => {
-    const monster = await Monster.create(payload);
+let monster_table = Monster(dbConnection);
+const create = async (payload: InferCreationAttributes<Monster_Model>): Promise<Monster_Model> => {
+    const monster = await monster_table.create(payload);
     return monster;
 }
 
-export const getAll = async (): Promise<MonsterOutput[]> => {
-    return await Monster.findAll();
+const getAll = async (): Promise<Monster_Model[]> => {
+    return await monster_table.findAll();
 }
 
-export const findByID = async (id: number): Promise<MonsterOutput | null> => {
-    return await Monster.findByPk(id);
+const findByID = async (id: number): Promise<Monster_Model | null> => {
+    return await monster_table.findByPk(id);
 };
 
-export const deleteMonster = async(id: number):Promise<number> => {
+const deleteMonster = async(id: number):Promise<number> => {
     try {
-        let rowsDestroyed = await Monster.destroy({
+        let rowsDestroyed = await monster_table.destroy({
             where: {
                 id: id
             }
@@ -31,3 +33,5 @@ export const deleteMonster = async(id: number):Promise<number> => {
         return -1;
     }
 }
+
+export default { create, getAll, findByID, deleteMonster };

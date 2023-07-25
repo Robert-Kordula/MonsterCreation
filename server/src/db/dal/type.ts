@@ -1,16 +1,16 @@
-import Type from '../models/Type';
-import { NameInput, NameOutput } from '../models/interfaces/nameInterfaces';
+import { InferCreationAttributes } from 'sequelize';
+import Type, { TypeModel } from '../models/Type';
 
-export const create = async (payload: NameInput): Promise<string> => {
+export const create = async (payload: InferCreationAttributes<TypeModel>): Promise<TypeModel> => {
     const type = await Type.create(payload);
-    return type.name;
+    return type;
 }
 
-export const getAll = async (): Promise<NameOutput[]> => {
+export const getAll = async (): Promise<TypeModel[]> => {
     return Type.findAll();
 }
 
-export const getByID = async (id: number): Promise<NameOutput> => {
+export const getByID = async (id: number): Promise<TypeModel> => {
     const type = await Type.findByPk(id);
     if (!type) {
         throw new Error('not found');
