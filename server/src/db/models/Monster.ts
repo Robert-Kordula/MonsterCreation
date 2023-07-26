@@ -197,7 +197,7 @@ export default function( sequelize: Sequelize) {
             type: DataTypes.SMALLINT,
             allowNull: false,
             references: {
-                model: SubType, 
+                model: SubType(sequelize), 
                 key: 'id'
             },
             onDelete: 'CASCADE',
@@ -207,7 +207,7 @@ export default function( sequelize: Sequelize) {
             type: DataTypes.SMALLINT,
             allowNull: false,
             references: {
-                model: Group, 
+                model: Group(sequelize), 
                 key: 'id'
             },
             onDelete: 'CASCADE',
@@ -217,7 +217,7 @@ export default function( sequelize: Sequelize) {
             type: DataTypes.SMALLINT,
             allowNull: false,
             references: {
-                model: Alignment, 
+                model: Alignment(sequelize), 
                 key: 'id'
             },
             onDelete: 'CASCADE',
