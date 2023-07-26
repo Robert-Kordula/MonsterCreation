@@ -224,4 +224,4 @@ export default function( sequelize: Sequelize) {
             onUpdate: 'CASCADE'
         }
     });
-};
+}

@@ -1,11 +1,10 @@
-import {Router, Request, Response} from 'express';
-import * as TypeController from '../../db/dal/type';
-import sequelizeConnection from '../../db/db-config';
+// import {Router, Request, Response} from 'express';
+// import sequelizeConnection from '../../db/db-config';
 
-const typeRouter = Router();
+// const typeRouter = Router();
 
-typeRouter.post('/', async (req: Request, res: Response) => {
+// typeRouter.post('/', async (req: Request, res: Response) => {
 
-});
+// });
 
-export default typeRouter;
+// export default typeRouter;

@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import monsterRouter from './monsterRouter';
+// import { Router } from 'express';
+// import monsterRouter from './monsterRouter';
 
-const router = Router();
+// const router = Router();
 
-router.use('/monsters', monsterRouter);
+// router.use('/monsters', monsterRouter);
 
-export default router;
+// export default router;

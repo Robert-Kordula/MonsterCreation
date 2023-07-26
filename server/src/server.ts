@@ -1,5 +1,5 @@
 import express, { Application, Router, urlencoded, Request, Response } from 'express';
-import router from './api/routers';
+//import router from './api/routers';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -24,7 +24,7 @@ app.use((req: Request, res: Response, next) => {
     next();
 });
 
-app.use('/api', router);
+//app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
     res.json({message: 'Where have you gone?'});

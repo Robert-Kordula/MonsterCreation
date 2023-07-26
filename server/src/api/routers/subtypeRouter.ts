@@ -1,10 +1,10 @@
-import {Router, Request, Response} from 'express';
-const methods = require('./methods');
-import sequelizeConnection from '../../db/db-config';
+// import {Router, Request, Response} from 'express';
+// const methods = require('./methods');
+// import sequelizeConnection from '../../db/db-config';
 
-const subTypeRouter = Router();
+// const subTypeRouter = Router();
 
-subTypeRouter.post('/', async (req: Request, res: Response) => {
-});
+// subTypeRouter.post('/', async (req: Request, res: Response) => {
+// });
 
-export default subTypeRouter;
+// export default subTypeRouter;
