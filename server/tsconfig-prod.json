@@ -1,9 +1,6 @@
 {
     "extends": "./tsconfig-base.json",
-    "compilerOptions": {
-        
-    },
     "exclude": [
-        "./__tests__"
+        "./src/__tests__"
     ]
 }

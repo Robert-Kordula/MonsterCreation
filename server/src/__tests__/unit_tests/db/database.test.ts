@@ -1,5 +1,5 @@
-import Monster from '../../../src/db/dal/monster'
-import database from '../../../src/db/db-config';
+import Monster from '../../../db/dal/monster'
+import database from '../../../db/db-config';
 
 beforeAll(async () => {
     await database.sync({force: true});

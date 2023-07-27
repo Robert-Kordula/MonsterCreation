@@ -33,7 +33,7 @@ export interface Monster_Model extends Model<InferAttributes<Monster_Model>, Inf
 }
 
 export default function( sequelize: Sequelize) {
-    return sequelize.define<Monster_Model>('monsters', {
+    let monster = sequelize.define<Monster_Model>('monsters', {
         id: {
             type: DataTypes.SMALLINT,
             autoIncrement: true,
@@ -224,4 +224,10 @@ export default function( sequelize: Sequelize) {
             onUpdate: 'CASCADE'
         }
     });
+
+    monster.hasOne(Type(sequelize), { foreignKey: 'type_id'});
+    monster.hasOne(SubType(sequelize), { foreignKey: 'subtype_id'});
+    monster.hasOne(Group(sequelize), { foreignKey: 'group_id'});
+    monster.hasOne(Alignment(sequelize), { foreignKey: 'alignment_id'});
+    return monster;
 }
