@@ -1,5 +1,4 @@
 import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, Sequelize } from 'sequelize';
-import connection from '../db-config';
 
 export interface Groups_Model extends Model<InferAttributes<Groups_Model>, InferCreationAttributes<Groups_Model>> {
     id: CreationOptional<number>;
@@ -7,7 +6,7 @@ export interface Groups_Model extends Model<InferAttributes<Groups_Model>, Infer
 }
 
 export default function (sequelize: Sequelize) {
-    let groups = connection.define<Groups_Model>('groups', {
+    let groups = sequelize.define<Groups_Model>('groups', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,

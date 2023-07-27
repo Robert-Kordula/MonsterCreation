@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import TypeModel from './models/Type';
+import Type from './models/Type';
 import Monster from './models/Monster';
 let port = parseInt(<string>process.env.DB_PORT) || 5432
 
@@ -16,8 +16,7 @@ process.env.DB_PASSWORD || '',
 });
 
 console.log(Monster(connection));
-console.log(TypeModel(connection));
 const monster = Monster(connection);
-const Type = TypeModel(connection);
+const type = Type(connection);
 
 export default connection;

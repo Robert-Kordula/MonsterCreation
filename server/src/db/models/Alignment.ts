@@ -1,5 +1,4 @@
 import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, Sequelize } from 'sequelize';
-import connection from '../db-config';
 
 export interface AlignmentModel extends Model<InferAttributes<AlignmentModel>, InferCreationAttributes<AlignmentModel>> {
     id: CreationOptional<number>;
@@ -7,7 +6,7 @@ export interface AlignmentModel extends Model<InferAttributes<AlignmentModel>, I
 }
 
 export default function(sequelize: Sequelize) {
-    let alignment = connection.define<AlignmentModel>('alignment', {
+    let alignment = sequelize.define<AlignmentModel>('alignment', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,

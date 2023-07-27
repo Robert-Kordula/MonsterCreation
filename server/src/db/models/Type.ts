@@ -1,7 +1,7 @@
 import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, Sequelize } from 'sequelize';
 
 export interface TypeModel extends Model<InferAttributes<TypeModel>, InferCreationAttributes<TypeModel>> {
-    id: CreationOptional<number>;
+    id?: CreationOptional<number>;
     name: string;
 }
 
