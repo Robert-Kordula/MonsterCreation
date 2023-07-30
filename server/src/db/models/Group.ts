@@ -1,25 +1,28 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, Sequelize } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
+import connection from '../db-config';
+import { Name_Attributes, NameInput } from './NameInterface'
 
-export interface Groups_Model extends Model<InferAttributes<Groups_Model>, InferCreationAttributes<Groups_Model>> {
-    id: CreationOptional<number>;
-    name: string;
+class Group extends Model<Name_Attributes, NameInput> implements Name_Attributes {
+    id!: number;
+    name!: string;
+
 }
-
-export default function (sequelize: Sequelize) {
-    let groups = sequelize.define<Groups_Model>('groups', {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                len: [3, 20]
-            }
+Group.init({
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            len: [3, 20]
         }
-    });
-    return groups;
-};
+    }
+}, {
+    sequelize: connection
+});
+
+export default Group;

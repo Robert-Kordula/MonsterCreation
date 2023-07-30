@@ -5,19 +5,15 @@ WORKDIR /home/node/app
 COPY package*.json ./
 
 FROM base as test
-
-RUN npm ci
-
+ENV NODE_ENV=development
+RUN npm install --include=dev
 COPY . .
-
-CMD ["npm", "run", "test"]
+RUN npm run test
 
 FROM base as production
-
+ENV NODE_ENV=production
 RUN npm ci --production
-
 COPY . .
-
 CMD ["node", "build/server.js"]
 
 ENV NODE_PATH = ./build

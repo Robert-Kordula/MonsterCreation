@@ -1,7 +1,5 @@
-import Damage from "../models/Damage_Type";
-
-
-
+// import Damage from "../models/Damage_Type";
+//
 // export const createDamage = async (payload: string): Promise<NameOutput> => {
 //     console.log(`Adding new damage type ${payload}`);
 //     return await Damage_Type.create({name: payload});

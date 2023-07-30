@@ -1,24 +1,20 @@
-import { InferCreationAttributes } from 'sequelize';
-import Monster, { Monster_Model } from '../models/Monster';
-import dbConnection from '../db-config';
+import Monster, { MonsterInput, MonsterOutput } from '../models/Monster';
 
-let monster_table = Monster(dbConnection);
-const create = async (payload: InferCreationAttributes<Monster_Model>): Promise<Monster_Model> => {
-    const monster = await monster_table.create(payload);
-    return monster;
+const create = async (payload: MonsterInput): Promise<Monster> => {
+    return await Monster.create(payload);
 }
 
-const getAll = async (): Promise<Monster_Model[]> => {
-    return await monster_table.findAll();
+const getAll = async (): Promise<Monster[]> => {
+    return await Monster.findAll();
 }
 
-const findByID = async (id: number): Promise<Monster_Model | null> => {
-    return await monster_table.findByPk(id);
+const findByID = async (id: number): Promise<Monster | null> => {
+    return await Monster.findByPk(id);
 };
 
 const deleteMonster = async(id: number):Promise<number> => {
     try {
-        let rowsDestroyed = await monster_table.destroy({
+        let rowsDestroyed = await Monster.destroy({
             where: {
                 id: id
             }

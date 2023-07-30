@@ -1,6 +1,7 @@
 import express, { Application, Router, urlencoded, Request, Response } from 'express';
 //import router from './api/routers';
 import dotenv from 'dotenv';
+import dbInit from './db/init';
 
 dotenv.config();
 const cors = require('cors');
@@ -11,7 +12,7 @@ let corsOptions = {
               preflightContinue: false,
               optionsSuccessStatus: 204
 };
-
+dbInit();
 app.use(cors(corsOptions));
 
 app.use(express.json());

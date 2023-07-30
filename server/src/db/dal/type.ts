@@ -1,38 +1,42 @@
-import { InferCreationAttributes } from 'sequelize';
-import Type, { TypeModel } from '../models/Type'
-import connection from '../db-config';
+import Type from '../models/Type';
+import { NameInput } from '../models/NameInterface';
 
-const create = async (payload: InferCreationAttributes<TypeModel>): Promise<TypeModel> => {
-    const type = await Type(connection).create(payload);
-    return type;
+const create = async (payload: NameInput): Promise<Type> => {
+    return await Type.create(payload);
 }
 
-const getAll = async (): Promise<TypeModel[]> => {
-    return Type(connection).findAll();
+const getAll = async (): Promise<Type[]> => {
+    return Type.findAll();
 }
 
-const getByID = async (id: number): Promise<TypeModel> => {
-    const type = await Type(connection).findByPk(id);
-    if (!type) {
-        throw new Error('not found');
-    }
-    return type;
+const getByID = async (id: number): Promise<Type | null> => {
+    return Type.findByPk(id);
 }
 
-const getIDsFromName = async (name: string): Promise<TypeModel[] | null> => {
-    let type = await Type(connection).findAll({
+const getIDsFromName = async (name: string): Promise<Type[] | null> => {
+    return Type.findAll({
         attributes: ['id'],
         where: {
             name: name
         }
     });
+}
+
+const deleteType = async(id: number): Promise<number> => {
     try {
-        console.log(`${name} exists with ID: ${type}`);
-        return type;
-    } catch {
-        console.log(`${name} does not exist`);
-        return null;
+        let rowsDestroyed = await Type.destroy({
+            where: {
+                id: id
+            }
+        });
+        if (rowsDestroyed === 1) console.log('Deleted Successfully');
+        else console.log(`Type with ID ${id} does not exist`);
+        return rowsDestroyed;
+
+    } catch (err) {
+        console.log(err);
+        return -1;
     }
 }
 
-export default { create, getAll, getByID, getIDsFromName};
+export default { create, getAll, getByID, getIDsFromName, deleteType};

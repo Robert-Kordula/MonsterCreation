@@ -1,24 +1,28 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, Sequelize } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
+import connection from '../db-config';
+import { Name_Attributes, NameInput } from './NameInterface'
 
-export interface TypeModel extends Model<InferAttributes<TypeModel>, InferCreationAttributes<TypeModel>> {
-    id?: CreationOptional<number>;
-    name: string;
+class Type extends Model<Name_Attributes, NameInput> implements Name_Attributes {
+    public id!: number;
+    public name!: string;
+
 }
-
-export default function( sequelize: Sequelize) {
-    return sequelize.define<TypeModel>("types", {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-            validate: {
-                len: [3, 20]
-            }
+Type.init({
+    id: {
+        type: DataTypes.SMALLINT,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            len: [3, 20]
         }
-    });
-}
+    }
+}, {
+    sequelize: connection
+});
+
+export default Type;

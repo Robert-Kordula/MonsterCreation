@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:${DB_PORT}'
+    volumes: 
+      - monster_db:/var/lib/postgresql/data 
+  server:
+    build: 
+      context: .
+      dockerfile: ./DockerFile
+      target: test
+    environment:
+      - DB_SCHEMA='postgres'
+      - DB_USER='postgres'
+      - DB_PASSWORD=''
+      - DB_HOST='localhost'
+      - DB_PORT=5432
+      - DB_SSL=true
+    container_name: monster-creation-server
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+    expose: 
+      - '3000'
+    ports: 
+      - '${PORT}:${PORT}'
+    command: npm run dev
+volumes:
+  monster_db:
